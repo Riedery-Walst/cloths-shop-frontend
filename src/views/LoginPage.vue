@@ -1,6 +1,7 @@
 <template>
   <div class="login-container">
-    <BackgroundImage />
+    <!-- Передаем путь к изображению через imageSrc -->
+    <BackgroundImage imageSrc="/src/assets/login-background.jpg" />
     <div class="login-form">
       <CloseButton @click="closeLogin" />
       <LoginForm />

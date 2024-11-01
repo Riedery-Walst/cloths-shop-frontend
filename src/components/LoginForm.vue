@@ -4,7 +4,13 @@
     <form @submit.prevent="submitLogin">
       <input type="email" placeholder="Электронная почта" v-model="email" required />
       <input type="password" placeholder="Пароль" v-model="password" required />
-      <button type="submit" class="login-button">Войти</button>
+
+      <!-- Сообщение об ошибке -->
+      <span v-if="loginError" class="error-message">
+        Неверная электронная почта или пароль
+      </span>
+
+      <button type="submit" class="submit-button">Войти</button>
     </form>
     <button class="register-button" @click="goToRegister">Регистрация</button>
     <a href="#" class="forgot-password">Забыли пароль?</a>
@@ -20,10 +26,12 @@ export default {
     return {
       email: '',
       password: '',
+      loginError: false, // Добавляем переменную для отображения ошибки
     };
   },
   methods: {
     async submitLogin() {
+      this.loginError = false; // Сбрасываем ошибку при новой попытке входа
       try {
         const response = await axios.post('/auth/login', {
           email: this.email,
@@ -39,6 +47,7 @@ export default {
         this.$router.push('/');
       } catch (error) {
         console.error('Ошибка при входе:', error);
+        this.loginError = true; // Устанавливаем ошибку, если запрос не удался
       }
     },
     goToRegister() {
@@ -50,6 +59,7 @@ export default {
 
 <style scoped>
 h1 {
+  color: #181818;
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
@@ -69,7 +79,7 @@ input[type="password"] {
   border-radius: 0.5rem;
 }
 
-.login-button {
+.submit-button {
   background-color: black;
   color: white;
   padding: 0.75rem;
@@ -83,6 +93,7 @@ input[type="password"] {
 
 .register-button {
   background: none;
+  width: 100%;
   color: blue;
   padding: 0.5rem;
   font-size: 1rem;
@@ -96,5 +107,11 @@ input[type="password"] {
   text-align: right;
   font-size: 0.875rem;
   margin-top: 0.5rem;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
 }
 </style>

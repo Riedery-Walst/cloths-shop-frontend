@@ -1,12 +1,18 @@
 <template>
   <div class="background-image">
-    <img src="@/assets/login-background.jpg" alt="Background" />
+    <img :src="imageSrc" alt="Background" />
   </div>
 </template>
 
 <script>
 export default {
   name: 'BackgroundImage',
+  props: {
+    imageSrc: {
+      type: String,
+      required: true,
+    },
+  },
 };
 </script>
 

@@ -17,7 +17,7 @@ import ProductList from '../components/ProductList.vue';
 
 export default {
   name: 'MainPage',
-  components: { AppHeader, AppFooter, FilterSidebar, ProductList },
+  components: {AppHeader, AppFooter, FilterSidebar, ProductList},
 };
 </script>
 
