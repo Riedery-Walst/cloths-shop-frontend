@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import MainPage from '@/views/MainPage.vue';
 import LoginPage from "@/views/LoginPage.vue";
 import RegistrationPage from "@/views/RegistrationPage.vue";
+import AdminColorsPage from "@/views/AdminColorsPage.vue";
+import AdminSizesPage from "@/views/AdminSizesPage.vue";
 
 const routes = [
     {
@@ -18,6 +20,16 @@ const routes = [
         path: '/register',
         name: 'RegisterPage',
         component: RegistrationPage,
+    },
+    {
+        path: '/colors',
+        name: 'AdminColorsPage',
+        component: AdminColorsPage
+    },
+    {
+        path: '/sizes',
+        name: 'AdminSizesPage',
+        component: AdminSizesPage
     },
 ];
 
