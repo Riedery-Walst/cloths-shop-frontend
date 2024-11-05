@@ -1,34 +1,67 @@
 <template>
   <tr>
     <td>{{ index + 1 }}</td>
-    <td>{{ color.name }}</td>
-    <td>{{ color.hex }}</td>
     <td>
-      <div class="color-preview" :style="{ backgroundColor: `#${color.hex}` }"></div>
+      <input
+          v-if="color.isEditing"
+          v-model="color.name"
+          type="text"
+      />
+      <span v-else>{{ color.name }}</span>
     </td>
     <td>
-      <button @click="$emit('edit', color)">Изменить</button>
-      <button @click="$emit('delete', color)">Удалить</button>
+      <input
+          v-if="color.isEditing"
+          v-model="color.hex"
+          type="text"
+      />
+      <span v-else>{{ color.hex }}</span>
+    </td>
+    <td>
+      <input
+          type="color"
+          v-model="color.hex"
+          @input="updateHex"
+          class="color-preview"
+          :disabled="!color.isEditing"
+      />
+    </td>
+    <td>
+      <button v-if="color.isEditing" @click="saveColor">Сохранить</button>
+      <button v-else @click="$emit('edit')">Изменить</button>
+      <button v-if="color.isEditing" @click="$emit('cancel')">Отменить</button>
+      <button v-else @click="$emit('delete')">Удалить</button>
     </td>
   </tr>
 </template>
 
 <script>
 export default {
-  name: 'ColorRow',
   props: {
-    color: Object,
-    index: Number
-  }
+    color: {
+      type: Object,
+      required: true,
+    },
+    index: {
+      type: Number,
+      required: true,
+    },
+  },
+  methods: {
+    updateHex(event) {
+      this.$emit('update-hex', event.target.value);
+    },
+    saveColor() {
+      this.$emit('save');
+    },
+  },
 };
 </script>
 
 <style scoped>
-/* Стиль для предварительного просмотра цвета */
 .color-preview {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  width: 40px;
+  height: 40px;
+  border: none;
 }
 </style>

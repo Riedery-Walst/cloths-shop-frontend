@@ -1,18 +1,16 @@
 <template>
-  <div class="colors-view">
+  <div class="admin-page">
     <Sidebar />
-    <div class="content">
-      <Header title="Цвет" />
-      <button @click="openAddModal">Добавить</button>
-      <ColorTable :colors="colors" @edit="openEditModal" @delete="deleteColor" />
-
-      <ColorModal
-          v-if="isModalVisible"
-          :isVisible="isModalVisible"
-          :isEdit="isEdit"
-          :colorData="selectedColor"
-          @close="closeModal"
-          @submit="handleFormSubmit"
+    <div class="main-content">
+      <Header />
+      <h2>Цвета</h2>
+      <button @click="goToAddColorPage" class="add-button">Добавить</button>
+      <ColorTable
+          :colors="colors"
+          @save="saveColor"
+          @delete="deleteColor"
+          @edit="editColor"
+          @cancel="cancelEdit"
       />
     </div>
   </div>
@@ -22,79 +20,75 @@
 import Sidebar from '../components/AdminSidebar.vue';
 import Header from '../components/AdminHeader.vue';
 import ColorTable from '../components/ColorTable.vue';
-import ColorModal from '../components/ColorModal.vue';
 import axios from '../axiosInstance';
 
 export default {
-  name: 'ColorsView',
-  components: {Sidebar, Header, ColorTable, ColorModal},
+  components: {
+    Sidebar,
+    Header,
+    ColorTable,
+  },
   data() {
     return {
-      colors: [],
-      isModalVisible: false,
-      isEdit: false,
-      selectedColor: {name: '', hex: ''}
+      colors: [], // Массив цветов, загружаемый с сервера
     };
   },
-  created() {
-    this.fetchColors();
-  },
   methods: {
-    async fetchColors() {
+    async loadColors() {
       try {
         const response = await axios.get('/colors');
-        this.colors = response.data;
+        this.colors = response.data.map(color => ({ ...color, isEditing: false }));
       } catch (error) {
-        console.error('Error fetching colors:', error);
+        console.error('Ошибка загрузки цветов:', error);
       }
     },
-    openAddModal() {
-      this.selectedColor = {name: '', hex: ''};
-      this.isEdit = false;
-      this.isModalVisible = true;
+    goToAddColorPage() {
+      this.$router.push({ name: 'AdminAddColorPage' });
     },
-    openEditModal(color) {
-      this.selectedColor = {...color};
-      this.isEdit = true;
-      this.isModalVisible = true;
-    },
-    closeModal() {
-      this.isModalVisible = false;
-    },
-    async handleFormSubmit(colorData) {
-      if (this.isEdit) {
-        await this.updateColor(colorData);
-      } else {
-        await this.addColor(colorData);
-      }
-      this.fetchColors();
-    },
-    async addColor(colorData) {
+    async saveColor(color) {
       try {
-        await axios.post('/admin/colors', colorData);
+        await axios.put(`/admin/colors/${color.id}`, {
+          name: color.name,
+          hex: color.hex,
+        });
+        color.isEditing = false;
+        this.loadColors();
       } catch (error) {
-        console.error('Error adding color:', error);
-      }
-    },
-    async updateColor(colorData) {
-      try {
-        await axios.put(`/admin/colors/${colorData.id}`, colorData);
-      } catch (error) {
-        console.error('Error updating color:', error);
+        console.error('Ошибка сохранения цвета:', error);
       }
     },
     async deleteColor(color) {
       try {
         await axios.delete(`/admin/colors/${color.id}`);
-        this.fetchColors();
+        this.loadColors();
       } catch (error) {
-        console.error('Error deleting color:', error);
+        console.error('Ошибка удаления цвета:', error);
       }
-    }
-  }
+    },
+    editColor(color) {
+      color.isEditing = true;
+    },
+    cancelEdit(color) {
+      color.isEditing = false;
+      this.loadColors(); // Перезагрузка цветов для отмены изменений
+    },
+  },
+  mounted() {
+    this.loadColors(); // Загрузка данных при монтировании компонента
+  },
 };
 </script>
 
 <style scoped>
-/* Добавьте стили для страницы, если необходимо */
+.admin-page {
+  display: flex;
+}
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+.add-button {
+  margin-bottom: 10px;
+  padding: 5px 10px;
+}
 </style>

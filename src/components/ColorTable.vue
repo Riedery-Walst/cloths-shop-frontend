@@ -5,7 +5,7 @@
       <th>#</th>
       <th>Цвет</th>
       <th>HEX</th>
-      <th>Предварительный просмотр</th>
+      <th>Предварительный цвет</th>
       <th>Действие</th>
     </tr>
     </thead>
@@ -13,10 +13,13 @@
     <ColorRow
         v-for="(color, index) in colors"
         :key="color.id"
-        :index="index"
         :color="color"
-        @edit="onEdit"
-        @delete="onDelete"
+        :index="index"
+        @save="saveColor(color)"
+        @delete="deleteColor(color)"
+        @edit="editColor(color)"
+        @cancel="cancelEdit(color)"
+        @update-hex="(hex) => color.hex = hex"
     />
     </tbody>
   </table>
@@ -26,22 +29,28 @@
 import ColorRow from './ColorRow.vue';
 
 export default {
-  name: 'ColorTable',
-  components: {ColorRow},
+  components: {
+    ColorRow,
+  },
   props: {
-    colors: Array
+    colors: {
+      type: Array,
+      required: true,
+    },
   },
   methods: {
-    onEdit(color) {
+    saveColor(color) {
+      this.$emit('save', color);
+    },
+    deleteColor(color) {
+      this.$emit('delete', color);
+    },
+    editColor(color) {
       this.$emit('edit', color);
     },
-    onDelete(color) {
-      this.$emit('delete', color);
-    }
-  }
+    cancelEdit(color) {
+      this.$emit('cancel', color);
+    },
+  },
 };
 </script>
-
-<style scoped>
-/* Добавьте стили для таблицы, если необходимо */
-</style>
