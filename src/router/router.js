@@ -43,6 +43,23 @@ const routes = [
         name: 'AdminAddSizePage',
         component: AdminAddSizePage
     },
+    {
+        path: '/products',
+        name: 'AdminProductsPage',
+        component: () => import('../views/AdminProductsPage.vue'),
+    },
+    {
+        path: '/products/add',
+        name: 'AdminAddProductPage',
+        component: () => import('../views/AdminChangeAndAddProductPage.vue'),
+        props: { isEdit: false },
+    },
+    {
+        path: '/products/edit/:id',
+        name: 'AdminEditProductPage',
+        component: () => import('../views/AdminChangeAndAddProductPage.vue'),
+        props: route => ({ isEdit: true, productId: parseInt(route.params.id) }),
+    },
 
 ];
 
