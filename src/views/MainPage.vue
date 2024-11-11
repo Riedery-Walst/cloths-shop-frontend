@@ -1,12 +1,12 @@
 <template>
   <div class="main-page">
     <AppHeader />
+    <ProductList />
     <AppFooter />
   </div>
 </template>
 
 <script>
-import axios from '../axiosInstance';
 import AppHeader from '../components/AppHeader.vue';
 import AppFooter from '../components/AppFooter.vue';
 import ProductList from '../components/ProductList.vue';
@@ -18,7 +18,10 @@ export default {
 </script>
 
 <style scoped>
-.content {
+.main-page {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
 }
 </style>

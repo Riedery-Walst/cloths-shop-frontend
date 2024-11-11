@@ -1,13 +1,10 @@
 <template>
   <header class="header">
-    <div class="logo">FIREWALK</div>
-    <input type="text" placeholder="Поиск" class="search-bar" />
+    <div class="logo">Softsands</div>
     <div class="icons">
-      <!-- Иконка корзины -->
+      <!-- Профиль с проверкой на авторизацию -->
+      <span @click="handleProfileClick" class="profile-link">Профиль</span>
       <img src="@/assets/icons/shopping-cart.svg" alt="Cart" class="icon" />
-
-      <!-- Иконка профиля с обработчиком клика для перехода на страницу входа -->
-      <img src="@/assets/icons/profile.svg" alt="Profile" class="icon" @click="goToLogin" />
     </div>
   </header>
 </template>
@@ -16,8 +13,13 @@
 export default {
   name: 'AppHeader',
   methods: {
-    goToLogin() {
-      this.$router.push('/login'); // Переход на страницу входа
+    handleProfileClick() {
+      const isLoggedIn = localStorage.getItem('authToken');
+      if (isLoggedIn) {
+        this.$router.push('/account');
+      } else {
+        this.$router.push('/login');
+      }
     },
   },
 };
@@ -26,25 +28,27 @@ export default {
 <style scoped>
 .header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding: 1rem 20px;
 }
 
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
-}
-
-.search-bar {
-  flex: 1;
-  padding: 0.5rem;
-  margin: 0 1rem;
+  color: #ff8269;
 }
 
 .icons {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.profile-link {
+  cursor: pointer;
+  font-size: 1rem;
+  color: #4f4f4f;
 }
 
 .icon {

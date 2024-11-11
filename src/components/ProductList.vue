@@ -10,7 +10,7 @@ import ProductItem from './ProductItem.vue';
 
 export default {
   name: 'ProductList',
-  components: { ProductItem },
+  components: {ProductItem},
   data() {
     return {
       products: [],
@@ -33,5 +33,12 @@ export default {
 </script>
 
 <style scoped>
-/* Стили для списка товаров */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+}
 </style>

@@ -7,21 +7,30 @@
       <button @click="goToAddProductPage" class="add-button">Добавить</button>
       <div class="products-list">
         <div v-for="product in products" :key="product.id" class="product-card">
-          <!-- Используем getImageUrl для формирования полного пути к изображению -->
-          <img :src="getImageUrl(product.mainImage)" alt="Product Image" class="product-image" />
+          <div class="image-slider">
+            <button @click="prevImage(product)" class="arrow-button">❮</button>
+            <img :src="getImageUrl(product.photos[product.currentPhotoIndex])" alt="Product Image" class="product-image" />
+            <button @click="nextImage(product)" class="arrow-button">❯</button>
+          </div>
           <h3>{{ product.name }}</h3>
           <p class="price">{{ product.price }} ₽</p>
+
+          <!-- Цветовые кружки -->
           <div class="color-options">
             <span
                 v-for="color in product.colors"
                 :key="color.id"
-                :style="{ backgroundColor: color.hexCode }"
+                :style="{ backgroundColor: color.hex }"
                 class="color-circle"
+                :title="color.name"
             ></span>
           </div>
+
+          <!-- Названия размеров -->
           <div class="size-options">
-            <span v-for="size in product.sizes" :key="size" class="size-badge">{{ size }}</span>
+            <span v-for="size in product.sizes" :key="size.id" class="size-badge">{{ size.name }}</span>
           </div>
+
           <p class="description">{{ product.description }}</p>
           <div class="actions">
             <button @click="goToEditProductPage(product)" class="edit-button">Изменить</button>
@@ -52,33 +61,30 @@ export default {
     async loadProducts() {
       try {
         const response = await axios.get('/products');
-        // Преобразуем данные, чтобы добавить mainImage с полным URL
         this.products = response.data.map(product => {
           return {
             ...product,
-            mainImage: product.photos && product.photos.length > 0
-                ? this.getImageUrl(product.photos[0])
-                : this.getImageUrl('path/to/default-image.jpg'), // Путь к изображению по умолчанию, если фото нет
+            photos: product.photos || ['path/to/default-image.jpg'], // Заменяем пустой массив на изображение по умолчанию
+            currentPhotoIndex: 0, // Добавляем индекс текущего фото
           };
         });
       } catch (error) {
         console.error('Ошибка загрузки продуктов:', error);
       }
     },
-    // Метод для формирования полного URL к изображению
     getImageUrl(imagePath) {
-      const baseUrl = 'http://localhost:8080'; // Укажите здесь URL вашего сервера
+      const baseUrl = 'http://localhost:8080';
       if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-        return imagePath; // Если imagePath уже полный URL, возвращаем его без изменений
+        return imagePath;
       }
-      const formattedPath = imagePath.replace(/\\/g, '/'); // Заменяем "\\" на "/" для корректного пути
+      const formattedPath = imagePath.replace(/\\/g, '/');
       return `${baseUrl}/${formattedPath}`;
     },
     goToAddProductPage() {
-      this.$router.push({ name: 'AdminAddProductPage' });
+      this.$router.push({name: 'AdminAddProductPage'});
     },
     goToEditProductPage(product) {
-      this.$router.push({ name: 'AdminEditProductPage', params: { id: product.id } });
+      this.$router.push({name: 'AdminEditProductPage', params: {id: product.id}});
     },
     async deleteProduct(productId) {
       try {
@@ -87,6 +93,12 @@ export default {
       } catch (error) {
         console.error('Ошибка при удалении продукта:', error);
       }
+    },
+    nextImage(product) {
+      product.currentPhotoIndex = (product.currentPhotoIndex + 1) % product.photos.length;
+    },
+    prevImage(product) {
+      product.currentPhotoIndex = (product.currentPhotoIndex - 1 + product.photos.length) % product.photos.length;
     },
   },
   mounted() {
@@ -99,10 +111,12 @@ export default {
 .admin-page {
   display: flex;
 }
+
 .main-content {
   flex: 1;
   padding: 20px;
 }
+
 .add-button {
   margin-bottom: 20px;
   padding: 8px 16px;
@@ -112,14 +126,17 @@ export default {
   border-radius: 4px;
   cursor: pointer;
 }
+
 .add-button:hover {
   background-color: #444;
 }
+
 .products-list {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
 }
+
 .product-card {
   width: 250px;
   padding: 20px;
@@ -129,49 +146,87 @@ export default {
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.image-slider {
+  position: relative;
+}
+
+.arrow-button {
+  position: absolute;
+  top: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  font-size: 16px;
+  transform: translateY(-50%);
+}
+
+.arrow-button:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.arrow-button:first-of-type {
+  left: 5px;
+}
+
+.arrow-button:last-of-type {
+  right: 5px;
+}
+
 .product-image {
   width: 100%;
   height: auto;
   border-radius: 8px;
   margin-bottom: 10px;
 }
+
 .price {
   font-weight: bold;
   margin: 8px 0;
 }
+
 .color-options {
   display: flex;
   justify-content: center;
   gap: 8px;
   margin: 8px 0;
 }
+
 .color-circle {
   width: 20px;
   height: 20px;
   border-radius: 50%;
   border: 1px solid #ccc;
 }
+
 .size-options {
   display: flex;
   justify-content: center;
   gap: 8px;
   margin: 8px 0;
 }
+
 .size-badge {
   padding: 5px 10px;
   border: 1px solid #ccc;
   border-radius: 20px;
   font-size: 12px;
 }
+
 .description {
   font-size: 14px;
   color: #666;
   margin: 10px 0;
 }
+
 .actions {
   display: flex;
   justify-content: space-between;
 }
+
 .edit-button,
 .delete-button {
   padding: 5px 10px;
@@ -179,17 +234,21 @@ export default {
   border-radius: 4px;
   cursor: pointer;
 }
+
 .edit-button {
   background-color: #007bff;
   color: #fff;
 }
+
 .edit-button:hover {
   background-color: #0056b3;
 }
+
 .delete-button {
   background-color: #dc3545;
   color: #fff;
 }
+
 .delete-button:hover {
   background-color: #c82333;
 }
