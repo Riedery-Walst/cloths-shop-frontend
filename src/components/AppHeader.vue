@@ -1,10 +1,11 @@
 <template>
   <header class="header">
-    <div class="logo">Softsands</div>
+    <div class="logo" @click="goToHome">Softsands</div>
     <div class="icons">
-      <!-- Профиль с проверкой на авторизацию -->
       <span @click="handleProfileClick" class="profile-link">Профиль</span>
-      <img src="@/assets/icons/shopping-cart.svg" alt="Cart" class="icon" />
+      <img src="../assets/icons/profile.svg" alt="Profile" class="icon" @click="handleProfileClick" />
+      <span @click="goToCart" class="cart">Корзина</span>
+      <img src="../assets/icons/cart.svg" alt="Cart" class="icon" @click="goToCart" />
     </div>
   </header>
 </template>
@@ -21,6 +22,12 @@ export default {
         this.$router.push('/login');
       }
     },
+    goToCart() {
+      this.$router.push('/cart'); // Переход на страницу корзины
+    },
+    goToHome() {
+      this.$router.push('/'); // Переход на главную страницу при клике на логотип
+    }
   },
 };
 </script>
@@ -37,6 +44,7 @@ export default {
   font-size: 1.5rem;
   font-weight: bold;
   color: #ff8269;
+  cursor: pointer;
 }
 
 .icons {

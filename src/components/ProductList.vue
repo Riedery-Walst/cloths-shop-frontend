@@ -1,44 +1,68 @@
 <template>
-  <div class="product-list">
-    <ProductItem v-for="product in products" :key="product.id" :product="product" />
+  <div class="products-list">
+    <ProductCard
+        v-for="product in products"
+        :key="product.id"
+        :product="product"
+        :isAdmin="isAdmin"
+    :showActions="showActions"
+    :showImageArrows="showImageArrows"
+    @edit-product="editProduct"
+    @delete-product="deleteProduct"
+    />
   </div>
 </template>
 
 <script>
+import ProductCard from './ProductCard.vue';
 import axios from '../axiosInstance';
-import ProductItem from './ProductItem.vue';
 
 export default {
   name: 'ProductList',
-  components: {ProductItem},
+  components: { ProductCard },
+  props: {
+    isAdmin: { // добавлено
+      type: Boolean,
+      default: false
+    },
+    showActions: {
+      type: Boolean,
+      default: false
+    },
+    showImageArrows: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
-      products: [],
+      products: []
     };
   },
-  created() {
-    this.fetchProducts();
-  },
   methods: {
-    async fetchProducts() {
+    async loadProducts() {
       try {
         const response = await axios.get('/products');
-        this.products = response.data;
+        this.products = response.data.map(product => ({
+          ...product,
+          photos: product.photos || ['path/to/default-image.jpg']
+        }));
       } catch (error) {
-        console.error('Ошибка при загрузке товаров:', error);
+        console.error('Ошибка загрузки продуктов:', error);
       }
     },
+    editProduct(product) {
+      this.$emit('edit-product', product);
+    },
+    deleteProduct(productId) {
+      this.$emit('delete-product', productId);
+    }
   },
+  mounted() {
+    this.loadProducts();
+  }
 };
 </script>
 
 <style scoped>
-.product-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  width: 100%;
-  max-width: 1200px;
-  padding: 20px;
-}
 </style>

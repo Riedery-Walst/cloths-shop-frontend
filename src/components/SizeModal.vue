@@ -33,10 +33,7 @@ export default {
   },
   watch: {
     sizeData: {
-      immediate: true,
-      handler(newData) {
-        this.formData = { ...newData };
-      }
+      immediate: true
     }
   },
   methods: {
