@@ -1,8 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import MainPage from '@/views/MainPage.vue';
-import LoginPage from '@/views/LoginPage.vue';
-import RegistrationPage from '@/views/RegistrationPage.vue';
-import ProductPage from '@/views/ProductPage.vue';
+import LoginPage from "@/views/LoginPage.vue";
+import RegistrationPage from "@/views/RegistrationPage.vue";
+import AdminColorsPage from "@/views/AdminColorsPage.vue";
+import AdminSizesPage from "@/views/AdminSizesPage.vue";
+import AdminAddColorPage from "@/views/AdminAddColorPage.vue";
+import AdminAddSizePage from "@/views/AdminAddSizePage.vue";
+import ProductPage from "@/views/ProductPage.vue"; // Импортируем ProductPage
 
 const routes = [
     {
@@ -21,48 +25,48 @@ const routes = [
         component: RegistrationPage,
     },
     {
-        path: '/product/:id',
-        name: 'ProductPage',
-        component: ProductPage,
-        props: true,
-    },
-    {
-        path: '/admin/colors',
+        path: '/colors',
         name: 'AdminColorsPage',
-        component: () => import('../views/AdminColorsPage.vue')
+        component: AdminColorsPage
     },
     {
-        path: '/admin/colors/add',
+        path: '/colors/add',
         name: 'AdminAddColorPage',
-        component: () => import('../views/AdminAddColorPage.vue')
+        component: AdminAddColorPage,
     },
     {
-        path: '/admin/sizes',
+        path: '/sizes',
         name: 'AdminSizesPage',
-        component: () => import('../views/AdminSizesPage.vue')
+        component: AdminSizesPage
     },
     {
-        path: '/admin/sizes/add',
+        path: '/sizes/add',
         name: 'AdminAddSizePage',
-        component: () => import('../views/AdminAddSizePage.vue')
+        component: AdminAddSizePage
     },
     {
-        path: '/admin/products',
+        path: '/products',
         name: 'AdminProductsPage',
-        component: () => import('../views/AdminProductsPage.vue')
+        component: () => import('../views/AdminProductsPage.vue'),
     },
     {
-        path: '/admin/products/add',
+        path: '/products/add',
         name: 'AdminAddProductPage',
         component: () => import('../views/AdminChangeAndAddProductPage.vue'),
         props: { isEdit: false },
     },
     {
-        path: '/admin/products/edit/:id',
+        path: '/products/edit/:id',
         name: 'AdminEditProductPage',
         component: () => import('../views/AdminChangeAndAddProductPage.vue'),
         props: route => ({ isEdit: true, productId: parseInt(route.params.id) }),
     },
+    {
+        path: '/product/:id', // Добавляем маршрут для страницы продукта
+        name: 'ProductPage',
+        component: ProductPage,
+        props: true // Передаем параметр id как prop
+    }
 ];
 
 const router = createRouter({

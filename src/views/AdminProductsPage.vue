@@ -1,49 +1,51 @@
+<template>
+  <div class="admin-page">
+    <Sidebar />
+    <div class="main-content">
+      <Header />
+      <h2>Продукты</h2>
+      <button @click="goToAddProductPage" class="add-button">Добавить</button>
+      <ProductList
+          ref="productList"
+          :isAdmin="true"
+          :showActions="true"
+          @edit-product="goToEditProductPage"
+          @delete-product="deleteProduct"
+      />
+    </div>
+  </div>
+</template>
+
 <script>
-import AppHeader from '../components/AppHeader.vue';
-import AppFooter from '../components/AppFooter.vue';
+import Sidebar from '../components/AdminSidebar.vue';
+import Header from '../components/AdminHeader.vue';
+import ProductList from '../components/ProductList.vue';
 import axiosInstance from '../axiosInstance';
 
 export default {
   components: {
-    AppHeader,
-    AppFooter
-  },
-  data() {
-    return {
-      product: null,
-      selectedColor: null,
-      selectedSize: null,
-      quantity: 1
-    };
+    Sidebar,
+    Header,
+    ProductList
   },
   methods: {
-    async fetchProductData() {
+    goToAddProductPage() {
+      this.$router.push({ name: 'AdminAddProductPage' });
+    },
+    goToEditProductPage(product) {
+      this.$router.push({name: 'AdminEditProductPage', params: {id: product.id}});
+    },
+    async deleteProduct(productId) {
       try {
-        const productId = this.$route.params.id;
-        const response = await axiosInstance.get(`/products/${productId}`);
-        console.log(productId);
-        this.product = response.data;
+        await axiosInstance.delete(`/admin/products/${productId}`);
+        await this.$refs.productList.loadProducts(); // Обновляем список продуктов после удаления
       } catch (error) {
-        console.error('Ошибка загрузки данных продукта:', error);
+        console.error('Ошибка при удалении продукта:', error);
       }
-    },
-    getImageUrl(imagePath) {
-      const baseUrl = "http://localhost:8080";
-      return `${baseUrl}/${imagePath.replace(/\\/g, "/")}`;
-    },
-    decreaseQuantity() {
-      if (this.quantity > 1) this.quantity--;
-    },
-    increaseQuantity() {
-      this.quantity++;
     }
-  },
-  mounted() {
-    this.fetchProductData();
   }
 };
 </script>
-
 
 <style scoped>
 .admin-page {
@@ -68,5 +70,4 @@ export default {
 .add-button:hover {
   background-color: #444;
 }
-
 </style>
