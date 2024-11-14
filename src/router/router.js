@@ -6,7 +6,8 @@ import AdminColorsPage from "@/views/AdminColorsPage.vue";
 import AdminSizesPage from "@/views/AdminSizesPage.vue";
 import AdminAddColorPage from "@/views/AdminAddColorPage.vue";
 import AdminAddSizePage from "@/views/AdminAddSizePage.vue";
-import ProductPage from "@/views/ProductPage.vue"; // Импортируем ProductPage
+import ProductPage from "@/views/ProductPage.vue";
+import axios from "axios";
 
 const routes = [
     {
@@ -27,39 +28,46 @@ const routes = [
     {
         path: '/colors',
         name: 'AdminColorsPage',
-        component: AdminColorsPage
+        component: AdminColorsPage,
+        meta: { requiresAuth: true },
     },
     {
         path: '/colors/add',
         name: 'AdminAddColorPage',
         component: AdminAddColorPage,
+        meta: { requiresAuth: true },
     },
     {
         path: '/sizes',
         name: 'AdminSizesPage',
-        component: AdminSizesPage
+        component: AdminSizesPage,
+        meta: { requiresAuth: true },
     },
     {
         path: '/sizes/add',
         name: 'AdminAddSizePage',
-        component: AdminAddSizePage
+        component: AdminAddSizePage,
+        meta: { requiresAuth: true },
     },
     {
         path: '/products',
         name: 'AdminProductsPage',
         component: () => import('../views/AdminProductsPage.vue'),
+        meta: { requiresAuth: true },
     },
     {
         path: '/products/add',
         name: 'AdminAddProductPage',
         component: () => import('../views/AdminChangeAndAddProductPage.vue'),
         props: { isEdit: false },
+        meta: { requiresAuth: true },
     },
     {
         path: '/products/edit/:id',
         name: 'AdminEditProductPage',
         component: () => import('../views/AdminChangeAndAddProductPage.vue'),
         props: route => ({ isEdit: true, productId: parseInt(route.params.id) }),
+        meta: { requiresAuth: true },
     },
     {
         path: '/product/:id', // Добавляем маршрут для страницы продукта
@@ -73,5 +81,27 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
 });
+
+router.beforeEach(async (to, from, next) => {
+    const isAuthenticated = !!localStorage.getItem('authToken');
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (isAuthenticated) {
+            try {
+                // Проверяем действительность токена на сервере перед переходом
+                await axios.get('/auth/validate-token'); // Ваш API для проверки токена
+                next();
+            } catch (error) {
+                console.error('Token expired or invalid');
+                localStorage.removeItem('authToken');
+                next('/login'); // Перенаправляем на страницу авторизации
+            }
+        } else {
+            next('/login'); // Если нет токена, перенаправляем на страницу авторизации
+        }
+    } else {
+        next(); // Разрешаем переход на страницу, если она не требует авторизации
+    }
+});
+
 
 export default router;

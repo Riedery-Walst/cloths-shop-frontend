@@ -23,7 +23,6 @@ export default {
   },
   methods: {
     closeLogin() {
-      // Закрытие формы или переход на другую страницу
       this.$router.push('/');
     },
   },
