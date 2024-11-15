@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import Sidebar from '../components/AdminSidebar.vue';
-import Header from '../components/AdminHeader.vue';
-import SizeTable from '../components/SizeTable.vue';
+import Sidebar from '../components/admin/AdminSidebar.vue';
+import Header from '../components/admin/AdminHeader.vue';
+import SizeTable from '../components/admin/SizeTable.vue';
 import axios from '../axiosInstance';
 
 export default {

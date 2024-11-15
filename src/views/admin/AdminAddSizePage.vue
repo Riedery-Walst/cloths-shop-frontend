@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import Sidebar from '../components/AdminSidebar.vue';
-import Header from '../components/AdminHeader.vue';
-import axios from '../axiosInstance';
+import Sidebar from '../../components/admin/AdminSidebar.vue';
+import Header from '../../components/admin/AdminHeader.vue';
+import axios from '../../axiosInstance.js';
 
 export default {
   components: {

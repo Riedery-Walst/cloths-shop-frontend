@@ -51,7 +51,7 @@
           <button @click="increaseQuantity">+</button>
         </div>
 
-        <button class="add-to-cart-button">Добавить в корзину</button>
+        <button class="add-to-cart-button" @click="addToCart">Добавить в корзину</button>
       </div>
     </div>
     <AppFooter />
@@ -62,18 +62,19 @@
 import AppHeader from '../components/AppHeader.vue';
 import AppFooter from '../components/AppFooter.vue';
 import axiosInstance from '../axiosInstance';
+import { addProductToCart } from '../services/cartService';
 
 export default {
   components: {
     AppHeader,
-    AppFooter
+    AppFooter,
   },
   data() {
     return {
-      product: null, // Данные продукта будут загружены с бэкенда
+      product: null, // Информация о продукте будет загружена с сервера
       selectedColor: null,
       selectedSize: null,
-      quantity: 1
+      quantity: 1,
     };
   },
   methods: {
@@ -95,11 +96,27 @@ export default {
     },
     increaseQuantity() {
       this.quantity++;
-    }
+    },
+    async addToCart() {
+      if (!this.selectedColor || !this.selectedSize) {
+        alert('Пожалуйста, выберите цвет и размер.');
+        return;
+      }
+      try {
+        const productId = this.product.id;
+
+        // Вызов метода для добавления продукта в корзину
+        await addProductToCart(productId, this.quantity, this.selectedColor.id, this.selectedSize.id);
+        alert('Товар добавлен в корзину!');
+      } catch (error) {
+        console.error('Ошибка добавления в корзину:', error);
+        alert('Не удалось добавить товар в корзину.');
+      }
+    },
   },
   mounted() {
-    this.fetchProductData(); // Загружаем данные продукта при монтировании компонента
-  }
+    this.fetchProductData();
+  },
 };
 </script>
 

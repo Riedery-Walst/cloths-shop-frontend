@@ -64,9 +64,9 @@
 </template>
 
 <script>
-import axios from '../axiosInstance';
-import Sidebar from '../components/AdminSidebar.vue';
-import Header from '../components/AdminHeader.vue';
+import axios from '../../axiosInstance.js';
+import Sidebar from '../../components/admin/AdminSidebar.vue';
+import Header from '../../components/admin/AdminHeader.vue';
 
 export default {
   components: {

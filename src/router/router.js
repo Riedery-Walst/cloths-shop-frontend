@@ -2,12 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router';
 import MainPage from '@/views/MainPage.vue';
 import LoginPage from "@/views/LoginPage.vue";
 import RegistrationPage from "@/views/RegistrationPage.vue";
-import AdminColorsPage from "@/views/AdminColorsPage.vue";
+import AdminColorsPage from "@/views/admin/AdminColorsPage.vue";
 import AdminSizesPage from "@/views/AdminSizesPage.vue";
-import AdminAddColorPage from "@/views/AdminAddColorPage.vue";
-import AdminAddSizePage from "@/views/AdminAddSizePage.vue";
+import AdminAddColorPage from "@/views/admin/AdminAddColorPage.vue";
+import AdminAddSizePage from "@/views/admin/AdminAddSizePage.vue";
 import ProductPage from "@/views/ProductPage.vue";
 import axios from "axios";
+import CartPage from "@/views/CartPage.vue";
 
 const routes = [
     {
@@ -52,20 +53,20 @@ const routes = [
     {
         path: '/products',
         name: 'AdminProductsPage',
-        component: () => import('../views/AdminProductsPage.vue'),
+        component: () => import('../views/admin/AdminProductsPage.vue'),
         meta: { requiresAuth: true },
     },
     {
         path: '/products/add',
         name: 'AdminAddProductPage',
-        component: () => import('../views/AdminChangeAndAddProductPage.vue'),
+        component: () => import('../views/admin/AdminChangeAndAddProductPage.vue'),
         props: { isEdit: false },
         meta: { requiresAuth: true },
     },
     {
         path: '/products/edit/:id',
         name: 'AdminEditProductPage',
-        component: () => import('../views/AdminChangeAndAddProductPage.vue'),
+        component: () => import('../views/admin/AdminChangeAndAddProductPage.vue'),
         props: route => ({ isEdit: true, productId: parseInt(route.params.id) }),
         meta: { requiresAuth: true },
     },
@@ -74,6 +75,12 @@ const routes = [
         name: 'ProductPage',
         component: ProductPage,
         props: true // Передаем параметр id как prop
+    },
+    {
+        path: '/cart', // Добавляем маршрут для корзины
+        name: 'CartPage',
+        component: CartPage,
+        meta: { requiresAuth: true },
     }
 ];
 
