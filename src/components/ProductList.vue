@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import ProductCard from './ProductCard.vue';
-import axios from '../axiosInstance';
+import ProductCard from '@components/ProductCard.vue';
+import axios from '@axios';
 
 export default {
   name: 'ProductList',

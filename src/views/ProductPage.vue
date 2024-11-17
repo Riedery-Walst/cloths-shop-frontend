@@ -59,10 +59,10 @@
 </template>
 
 <script>
-import AppHeader from '../components/AppHeader.vue';
-import AppFooter from '../components/AppFooter.vue';
-import axiosInstance from '../axiosInstance';
-import { addProductToCart } from '../services/cartService';
+import AppHeader from '@components/AppHeader.vue';
+import AppFooter from '@components/AppFooter.vue';
+import axios from '@axios';
+import { addProductToCart } from '@services/cartService';
 
 export default {
   components: {
@@ -81,7 +81,7 @@ export default {
     async fetchProductData() {
       try {
         const productId = this.$route.params.id;
-        const response = await axiosInstance.get(`/products/${productId}`);
+        const response = await axios.get(`/products/${productId}`);
         this.product = response.data;
       } catch (error) {
         console.error('Ошибка загрузки данных продукта:', error);

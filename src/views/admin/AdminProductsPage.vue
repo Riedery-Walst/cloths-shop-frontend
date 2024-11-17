@@ -17,10 +17,10 @@
 </template>
 
 <script>
-import Sidebar from '../../components/admin/AdminSidebar.vue';
-import Header from '../../components/admin/AdminHeader.vue';
-import ProductList from '../../components/ProductList.vue';
-import axiosInstance from '../../axiosInstance.js';
+import Sidebar from '@components/admin/AdminSidebar.vue';
+import Header from '@components/admin/AdminHeader.vue';
+import ProductList from '@components/ProductList.vue';
+import axios from '@axios';
 
 export default {
   components: {
@@ -37,7 +37,7 @@ export default {
     },
     async deleteProduct(productId) {
       try {
-        await axiosInstance.delete(`/admin/products/${productId}`);
+        await axios.delete(`/admin/products/${productId}`);
         await this.$refs.productList.loadProducts(); // Обновляем список продуктов после удаления
       } catch (error) {
         console.error('Ошибка при удалении продукта:', error);

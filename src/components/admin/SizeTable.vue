@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import SizeRow from './SizeRow.vue';
+import SizeRow from '@components/admin/SizeRow.vue';
 
 export default {
   components: {

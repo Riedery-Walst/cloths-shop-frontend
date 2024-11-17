@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import ImageSlider from './ImageSlider.vue';
+import ImageSlider from '@components/ImageSlider.vue';
 
 export default {
   name: 'ProductCard',

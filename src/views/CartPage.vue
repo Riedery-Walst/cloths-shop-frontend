@@ -23,12 +23,12 @@
 </template>
 
 <script>
-import AppHeader from '../components/AppHeader.vue';
-import AppFooter from '../components/AppFooter.vue';
-import CartItem from '../components/CartItem.vue';
-import CartSummary from '../components/CartSummary.vue';
-import { getCart, removeProductFromCart, clearCart } from '../services/cartService';
-import axiosInstance from '../axiosInstance';
+import AppHeader from '@components/AppHeader.vue';
+import AppFooter from '@components/AppFooter.vue';
+import CartItem from '@components/CartItem.vue';
+import CartSummary from '@components/CartSummary.vue';
+import { getCart, removeProductFromCart, clearCart } from '@services/cartService';
+import axios from '@axios';
 
 export default {
   components: {
@@ -48,8 +48,8 @@ export default {
   methods: {
     async fetchColorsAndSizes() {
       try {
-        const colorResponse = await axiosInstance.get('/colors');
-        const sizeResponse = await axiosInstance.get('/sizes');
+        const colorResponse = await axios.get('/colors');
+        const sizeResponse = await axios.get('/sizes');
         this.colors = colorResponse.data;
         this.sizes = sizeResponse.data;
       } catch (error) {

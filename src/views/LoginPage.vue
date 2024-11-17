@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import BackgroundImage from '../components/BackgroundImage.vue';
-import CloseButton from '../components/CloseButton.vue';
-import LoginForm from '../components/LoginForm.vue';
+import BackgroundImage from '@components/BackgroundImage.vue';
+import CloseButton from '@components/CloseButton.vue';
+import LoginForm from '@components/LoginForm.vue';
 
 export default {
   name: 'LoginPage',

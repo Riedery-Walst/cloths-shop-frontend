@@ -1,15 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import MainPage from '@/views/MainPage.vue';
-import LoginPage from "@/views/LoginPage.vue";
-import RegistrationPage from "@/views/RegistrationPage.vue";
-import AdminColorsPage from "@/views/admin/AdminColorsPage.vue";
-import AdminSizesPage from "@/views/AdminSizesPage.vue";
-import AdminAddColorPage from "@/views/admin/AdminAddColorPage.vue";
-import AdminAddSizePage from "@/views/admin/AdminAddSizePage.vue";
-import ProductPage from "@/views/ProductPage.vue";
-import CartPage from "@/views/CartPage.vue";
-import axios from 'axios';
 
+// Динамически загружаем все компоненты
+const MainPage = () => import('@/views/MainPage.vue');
+const LoginPage = () => import('@/views/LoginPage.vue');
+const RegistrationPage = () => import('@/views/RegistrationPage.vue');
+const AdminColorsPage = () => import('@/views/admin/AdminColorsPage.vue');
+const AdminSizesPage = () => import('@/views/AdminSizesPage.vue');
+const AdminAddColorPage = () => import('@/views/admin/AdminAddColorPage.vue');
+const AdminAddSizePage = () => import('@/views/admin/AdminAddSizePage.vue');
+const ProductPage = () => import('@/views/ProductPage.vue');
+const CartPage = () => import('@/views/CartPage.vue');
+const AdminProductsPage = () => import('@/views/admin/AdminProductsPage.vue');
+const AdminChangeAndAddProductPage = () => import('@/views/admin/AdminChangeAndAddProductPage.vue');
+
+// Определяем маршруты
 const routes = [
     {
         path: '/',
@@ -53,71 +57,70 @@ const routes = [
     {
         path: '/products',
         name: 'AdminProductsPage',
-        component: () => import('../views/admin/AdminProductsPage.vue'),
+        component: AdminProductsPage,
         meta: { requiresAuth: true, requiredRole: 'ADMIN' },
     },
     {
         path: '/products/add',
         name: 'AdminAddProductPage',
-        component: () => import('../views/admin/AdminChangeAndAddProductPage.vue'),
+        component: AdminChangeAndAddProductPage,
         props: { isEdit: false },
         meta: { requiresAuth: true, requiredRole: 'ADMIN' },
     },
     {
         path: '/products/edit/:id',
         name: 'AdminEditProductPage',
-        component: () => import('../views/admin/AdminChangeAndAddProductPage.vue'),
+        component: AdminChangeAndAddProductPage,
         props: route => ({ isEdit: true, productId: parseInt(route.params.id) }),
         meta: { requiresAuth: true, requiredRole: 'ADMIN' },
     },
     {
-        path: '/product/:id', // Добавляем маршрут для страницы продукта
+        path: '/product/:id',
         name: 'ProductPage',
         component: ProductPage,
-        props: true // Передаем параметр id как prop
+        props: true,
     },
     {
-        path: '/cart', // Добавляем маршрут для корзины
+        path: '/cart',
         name: 'CartPage',
         component: CartPage,
         meta: { requiresAuth: true },
     }
 ];
 
+// Создаем и настраиваем маршрутизатор
 const router = createRouter({
     history: createWebHistory(),
     routes,
 });
 
+// Защита маршрутов и проверка авторизации
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('authToken');
-    const role = token ? getRoleFromToken(token) : null;  // Извлекаем роль из токена
+    const role = token ? getRoleFromToken(token) : null;
 
-    // Проверка, нужен ли доступ к защищенному маршруту
+    // Проверяем, нужен ли доступ к защищенному маршруту
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!token) {
-            // Если токена нет, перенаправляем на страницу логина
             next('/login');
         } else {
-            // Если токен есть, проверяем роль
             const requiredRole = to.meta.requiredRole;
             if (requiredRole && role !== requiredRole) {
-                // Если роль не совпадает с требуемой для маршрута
-                next('/');  // Перенаправляем на главную страницу
+                next('/');
             } else {
-                // Если роль совпадает, продолжаем переход
                 next();
             }
         }
     } else {
-        next();  // Если маршрут не требует авторизации, просто продолжаем переход
+        next();
     }
 });
 
+// Функция для получения роли пользователя из токена
 function getRoleFromToken(token) {
     try {
         const decodedToken = JSON.parse(atob(token.split('.')[1])); // Декодируем токен
-        return decodedToken.role; // Возвращаем роль из токена
+        return decodedToken.role; // Возвращаем роль
     } catch (error) {
         console.error('Ошибка при декодировании токена', error);
         return null;

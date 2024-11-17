@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import axios from '../../axiosInstance.js';
+import axios from '@axios';
 
 export default {
   data() {

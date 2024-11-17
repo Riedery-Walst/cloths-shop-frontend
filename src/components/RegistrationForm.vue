@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import axios from '../axiosInstance';
+import axios from '@axios';
 
 export default {
   name: 'RegistrationForm',

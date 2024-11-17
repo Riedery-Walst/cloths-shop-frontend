@@ -1,4 +1,4 @@
-import axios from '../axiosInstance';
+import axios from '@axios';
 
 // Получение содержимого корзины текущего пользователя
 export const getCart = () => {

@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import ColorRow from './ColorRow.vue';
+import ColorRow from '@components/admin/ColorRow.vue';
 
 export default {
   components: {
