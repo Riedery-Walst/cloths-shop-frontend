@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import { updateCartItemQuantity } from '../services/cartService';
+
 export default {
   props: {
     item: Object,
@@ -37,14 +39,23 @@ export default {
     removeItem() {
       this.$emit('remove-item', this.item.id);
     },
-    increaseQuantity() {
+    async increaseQuantity() {
       this.item.quantity++;
+      await this.updateQuantityOnServer();
       this.$emit('update-quantity', this.item);
     },
-    decreaseQuantity() {
+    async decreaseQuantity() {
       if (this.item.quantity > 1) {
         this.item.quantity--;
+        await this.updateQuantityOnServer();
         this.$emit('update-quantity', this.item);
+      }
+    },
+    async updateQuantityOnServer() {
+      try {
+        await updateCartItemQuantity(this.item.id, this.item.quantity);
+      } catch (error) {
+        console.error('Ошибка при обновлении количества на сервере:', error);
       }
     },
     getImageUrl(photos) {

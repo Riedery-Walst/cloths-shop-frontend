@@ -11,6 +11,7 @@
             :colors="colors"
             :sizes="sizes"
             @remove-item="removeItem"
+            @update-quantity="calculateTotal"
         />
         <CartSummary :total="total" />
         <button class="clear-cart-button" @click="clearCartItems">Очистить корзину</button>
@@ -26,7 +27,7 @@ import AppHeader from '../components/AppHeader.vue';
 import AppFooter from '../components/AppFooter.vue';
 import CartItem from '../components/CartItem.vue';
 import CartSummary from '../components/CartSummary.vue';
-import {getCart, removeProductFromCart, clearCart} from '../services/cartService';
+import { getCart, removeProductFromCart, clearCart } from '../services/cartService';
 import axiosInstance from '../axiosInstance';
 
 export default {
@@ -39,16 +40,16 @@ export default {
   data() {
     return {
       cartItems: [],
-      colors: [], // Для загрузки доступных цветов
-      sizes: [],  // Для загрузки доступных размеров
+      colors: [],
+      sizes: [],
       total: 0,
     };
   },
   methods: {
     async fetchColorsAndSizes() {
       try {
-        const colorResponse = await axiosInstance.get('/colors'); // Замените на ваш API
-        const sizeResponse = await axiosInstance.get('/sizes');   // Замените на ваш API
+        const colorResponse = await axiosInstance.get('/colors');
+        const sizeResponse = await axiosInstance.get('/sizes');
         this.colors = colorResponse.data;
         this.sizes = sizeResponse.data;
       } catch (error) {
@@ -59,7 +60,7 @@ export default {
       try {
         const response = await getCart();
         this.cartItems = response.data.items;
-        this.calculateTotal();
+        this.calculateTotal(); // Пересчитываем общую стоимость при загрузке корзины
       } catch (error) {
         console.error("Ошибка загрузки корзины:", error);
       }
@@ -67,7 +68,7 @@ export default {
     async removeItem(cartItemId) {
       try {
         await removeProductFromCart(cartItemId);
-        await this.fetchCart(); // Обновить корзину после удаления
+        await this.fetchCart();
       } catch (error) {
         console.error("Ошибка удаления из корзины:", error);
       }
@@ -87,7 +88,7 @@ export default {
     },
   },
   async mounted() {
-    await this.fetchColorsAndSizes(); // Загрузка цветов и размеров перед отображением
+    await this.fetchColorsAndSizes();
     await this.fetchCart();
   }
 };

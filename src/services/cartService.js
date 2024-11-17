@@ -17,6 +17,12 @@ export const removeProductFromCart = (cartItemId) => {
     return axios.delete(`/cart/remove/${cartItemId}`);
 };
 
+export const updateCartItemQuantity = (cartItemId, quantity) => {
+    return axios.patch(`/cart/updateQuantity/${cartItemId}`, null, {
+        params: { quantity }
+    });
+};
+
 // Очистка всей корзины текущего пользователя
 export const clearCart = () => {
     return axios.delete('/cart/clear');
