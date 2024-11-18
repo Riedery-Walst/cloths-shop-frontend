@@ -45,11 +45,11 @@
 
         <p class="description">{{ product.description }}</p>
 
-        <div class="quantity-selection">
-          <button @click="decreaseQuantity">-</button>
-          <span>{{ quantity }}</span>
-          <button @click="increaseQuantity">+</button>
-        </div>
+        <!-- Use the QuantityControl component here -->
+        <QuantityControl
+            :quantity="quantity"
+            @update-quantity="updateQuantity"
+        />
 
         <button class="add-to-cart-button" @click="addToCart">Добавить в корзину</button>
       </div>
@@ -61,6 +61,7 @@
 <script>
 import AppHeader from '@components/AppHeader.vue';
 import AppFooter from '@components/AppFooter.vue';
+import QuantityControl from '@components/QuantityControl.vue'; // Import the QuantityControl component
 import axios from '@axios';
 import { addProductToCart } from '@services/cartService';
 
@@ -68,6 +69,7 @@ export default {
   components: {
     AppHeader,
     AppFooter,
+    QuantityControl, // Register the component
   },
   data() {
     return {
@@ -91,11 +93,8 @@ export default {
       const baseUrl = "http://localhost:8080";
       return `${baseUrl}/${imagePath.replace(/\\/g, "/")}`;
     },
-    decreaseQuantity() {
-      if (this.quantity > 1) this.quantity--;
-    },
-    increaseQuantity() {
-      this.quantity++;
+    updateQuantity(newQuantity) {
+      this.quantity = newQuantity;
     },
     async addToCart() {
       if (!this.selectedColor || !this.selectedSize) {
@@ -195,21 +194,6 @@ export default {
   margin-top: 20px;
   font-size: 14px;
   color: #666;
-}
-
-.quantity-selection {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.quantity-selection button {
-  background: none;
-  border: 1px solid #ccc;
-  padding: 5px 10px;
-  font-size: 16px;
-  cursor: pointer;
 }
 
 .add-to-cart-button {

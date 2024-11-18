@@ -9,11 +9,7 @@
     </div>
 
     <slot name="quantity-control">
-      <div v-if="showControls" class="quantity-control">
-        <button @click="decreaseQuantity">-</button>
-        <span>{{ item.quantity }}</span>
-        <button @click="increaseQuantity">+</button>
-      </div>
+      <QuantityControl :quantity="item.quantity" @update-quantity="updateQuantity" />
     </slot>
 
     <slot name="remove-button">
@@ -23,9 +19,13 @@
 </template>
 
 <script>
-import { updateCartItemQuantity } from '../services/cartService';
+import QuantityControl from '@components/QuantityControl.vue';
+import {updateCartItemQuantity} from "@/services/cartService.js"; // Импортируем компонент
 
 export default {
+  components: {
+    QuantityControl,
+  },
   props: {
     item: Object,
     showControls: {
@@ -39,17 +39,10 @@ export default {
     removeItem() {
       this.$emit('remove-item', this.item.id);
     },
-    async increaseQuantity() {
-      this.item.quantity++;
-      await this.updateQuantityOnServer();
+    updateQuantity(newQuantity) {
+      this.item.quantity = newQuantity;
       this.$emit('update-quantity', this.item);
-    },
-    async decreaseQuantity() {
-      if (this.item.quantity > 1) {
-        this.item.quantity--;
-        await this.updateQuantityOnServer();
-        this.$emit('update-quantity', this.item);
-      }
+      this.updateQuantityOnServer();
     },
     async updateQuantityOnServer() {
       try {
@@ -91,12 +84,6 @@ export default {
 
 .item-details {
   flex: 1;
-}
-
-.quantity-control {
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
 .quantity-control button {
