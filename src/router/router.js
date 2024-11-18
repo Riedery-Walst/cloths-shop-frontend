@@ -1,6 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router';
-
 // Динамически загружаем все компоненты
+import {createRouter, createWebHistory} from "vue-router";
+
 const MainPage = () => import('@/views/MainPage.vue');
 const LoginPage = () => import('@/views/LoginPage.vue');
 const RegistrationPage = () => import('@/views/RegistrationPage.vue');
@@ -10,6 +10,7 @@ const AdminAddColorPage = () => import('@/views/admin/AdminAddColorPage.vue');
 const AdminAddSizePage = () => import('@/views/admin/AdminAddSizePage.vue');
 const ProductPage = () => import('@/views/ProductPage.vue');
 const CartPage = () => import('@/views/CartPage.vue');
+const CheckoutPage = () => import('@/views/CheckoutPage.vue'); // Новый импорт
 const AdminProductsPage = () => import('@/views/admin/AdminProductsPage.vue');
 const AdminChangeAndAddProductPage = () => import('@/views/admin/AdminChangeAndAddProductPage.vue');
 
@@ -85,7 +86,13 @@ const routes = [
         name: 'CartPage',
         component: CartPage,
         meta: { requiresAuth: true },
-    }
+    },
+    {
+        path: '/checkout', // Новый маршрут
+        name: 'CheckoutPage',
+        component: CheckoutPage,
+        meta: { requiresAuth: true }, // Защищённый маршрут
+    },
 ];
 
 // Создаем и настраиваем маршрутизатор
@@ -97,7 +104,11 @@ const router = createRouter({
 // Защита маршрутов и проверка авторизации
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('authToken');
-    const role = token ? getRoleFromToken(token) : null;
+    let role = null;
+
+    if (token) {
+        role = getRoleFromToken(token);
+    }
 
     // Проверяем, нужен ли доступ к защищенному маршруту
     if (to.matched.some(record => record.meta.requiresAuth)) {
@@ -116,14 +127,34 @@ router.beforeEach((to, from, next) => {
     }
 });
 
-// Функция для получения роли пользователя из токена
+// Функция для получения роли пользователя из токена с обработкой ошибок
 function getRoleFromToken(token) {
     try {
-        const decodedToken = JSON.parse(atob(token.split('.')[1])); // Декодируем токен
-        return decodedToken.role; // Возвращаем роль
+        const decodedToken = decodeToken(token);
+        return decodedToken?.role || null;
     } catch (error) {
-        console.error('Ошибка при декодировании токена', error);
+        console.error('Ошибка при декодировании токена:', error);
         return null;
+    }
+}
+
+// Функция для декодирования JWT токена
+function decodeToken(token) {
+    if (!token) {
+        throw new Error('Токен отсутствует');
+    }
+
+    const parts = token.split('.');
+
+    if (parts.length !== 3) {
+        throw new Error('Некорректный JWT токен');
+    }
+
+    try {
+        const decoded = atob(parts[1]); // Декодируем payload токена
+        return JSON.parse(decoded); // Возвращаем объект данных
+    } catch (error) {
+        throw new Error('Ошибка при декодировании токена: ' + error.message);
     }
 }
 

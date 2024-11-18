@@ -2,7 +2,7 @@
   <div class="cart-summary">
     <h3>Детали заказа</h3>
     <p>Всего: {{ total }} ₽</p>
-    <button @click="$emit('checkout')" class="checkout-button">Оформить заказ</button>
+    <button @click="goToCheckoutPage" class="checkout-button">Оформить заказ</button>
   </div>
 </template>
 
@@ -14,6 +14,12 @@ export default {
       required: true,
     },
   },
+  methods: {
+    goToCheckoutPage() {
+      // Переход на страницу оформления заказа
+      this.$router.push('/checkout');
+    }
+  }
 };
 </script>
 
