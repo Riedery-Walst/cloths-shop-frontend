@@ -8,19 +8,24 @@
       <p>{{ item.product.price }} ₽</p>
     </div>
 
-    <slot name="quantity-control">
-      <QuantityControl :quantity="item.quantity" @update-quantity="updateQuantity" />
-    </slot>
+    <!-- Управление количеством -->
+    <div v-if="!disableQuantityControls">
+      <slot name="quantity-control">
+        <QuantityControl :quantity="item.quantity" @update-quantity="updateQuantity" />
+      </slot>
+    </div>
 
     <slot name="remove-button">
-      <button v-if="showControls" @click="removeItem" class="remove-button">Удалить</button>
+      <button v-if="showControls && !disableQuantityControls" @click="removeItem" class="remove-button">
+        Удалить
+      </button>
     </slot>
   </div>
 </template>
 
 <script>
 import QuantityControl from '@components/QuantityControl.vue';
-import {updateCartItemQuantity} from "@/services/cartService.js"; // Импортируем компонент
+import { updateCartItemQuantity } from "@/services/cartService.js";
 
 export default {
   components: {
@@ -31,6 +36,10 @@ export default {
     showControls: {
       type: Boolean,
       default: true,
+    },
+    disableQuantityControls: {
+      type: Boolean,
+      default: false, // Управление кнопками изменения количества
     },
     colors: Array,
     sizes: Array,
@@ -62,7 +71,7 @@ export default {
     findSizeName(sizeId) {
       const size = this.sizes.find(s => s.id === sizeId);
       return size ? size.name : null;
-    }
+    },
   },
 };
 </script>
