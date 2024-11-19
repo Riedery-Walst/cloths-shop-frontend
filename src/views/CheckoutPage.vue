@@ -114,10 +114,7 @@ export default {
       }
     },
     calculateTotal() {
-      this.total = this.cartItems.reduce(
-          (sum, item) => sum + item.product.price * item.quantity,
-          0
-      );
+      this.total = this.cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
     },
     async submitOrder() {
       const orderData = {
@@ -141,9 +138,9 @@ export default {
     },
   },
   async mounted() {
-    await this.fetchColorsAndSizes(); // Загрузка цветов и размеров
-    await this.fetchCountries(); // Загрузка списка стран
-    await this.fetchCart(); // Загрузка корзины
+    await this.fetchColorsAndSizes();
+    await this.fetchCountries();
+    await this.fetchCart();
   },
 };
 </script>

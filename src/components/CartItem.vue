@@ -3,18 +3,19 @@
     <img :src="getImageUrl(item.product.photos)" alt="Product Image" class="product-image" />
     <div class="item-details">
       <p>{{ item.product.name }}</p>
-      <p>Размер: {{ findSizeName(item.sizeId) || 'Не указан' }}</p>
-      <p>Цвет: {{ findColorName(item.colorId) || 'Не указан' }}</p>
+      <p>Размер: {{ getSizeName(item.sizeId) }}</p>
+      <p>Цвет: {{ getColorName(item.colorId) }}</p>
       <p>{{ item.product.price }} ₽</p>
     </div>
 
-    <!-- Управление количеством -->
+    <!-- Управление количеством (опционально) -->
     <div v-if="!disableQuantityControls">
       <slot name="quantity-control">
         <QuantityControl :quantity="item.quantity" @update-quantity="updateQuantity" />
       </slot>
     </div>
 
+    <!-- Кнопка удаления -->
     <slot name="remove-button">
       <button v-if="showControls && !disableQuantityControls" @click="removeItem" class="remove-button">
         Удалить
@@ -24,8 +25,8 @@
 </template>
 
 <script>
-import QuantityControl from '@components/QuantityControl.vue';
-import { updateCartItemQuantity } from "@/services/cartService.js";
+import QuantityControl from "@components/QuantityControl.vue";
+import { updateCartItemQuantity } from "@/services/cartService";
 
 export default {
   components: {
@@ -33,44 +34,48 @@ export default {
   },
   props: {
     item: Object,
+    colors: Array,
+    sizes: Array,
     showControls: {
       type: Boolean,
       default: true,
     },
     disableQuantityControls: {
       type: Boolean,
-      default: false, // Управление кнопками изменения количества
+      default: false,
     },
-    colors: Array,
-    sizes: Array,
   },
   methods: {
     removeItem() {
-      this.$emit('remove-item', this.item.id);
+      this.$emit("remove-item", this.item.id);
     },
     updateQuantity(newQuantity) {
       this.item.quantity = newQuantity;
-      this.$emit('update-quantity', this.item);
+      this.$emit("update-quantity", this.item);
       this.updateQuantityOnServer();
     },
     async updateQuantityOnServer() {
       try {
         await updateCartItemQuantity(this.item.id, this.item.quantity);
       } catch (error) {
-        console.error('Ошибка при обновлении количества на сервере:', error);
+        console.error("Ошибка при обновлении количества на сервере:", error);
       }
     },
     getImageUrl(photos) {
       const baseUrl = "http://localhost:8080";
-      return photos && photos.length > 0 ? `${baseUrl}/${photos[0].photoUrl.replace(/\\/g, "/")}` : '';
+      return photos && photos.length > 0
+          ? `${baseUrl}/${photos[0].photoUrl.replace(/\\/g, "/")}`
+          : "";
     },
-    findColorName(colorId) {
-      const color = this.colors.find(c => c.id === colorId);
-      return color ? color.name : null;
+    getColorName(colorId) {
+      if (!this.colors || !colorId) return "Не указан";
+      const color = this.colors.find((c) => c.id === colorId);
+      return color ? color.name : "Не указан";
     },
-    findSizeName(sizeId) {
-      const size = this.sizes.find(s => s.id === sizeId);
-      return size ? size.name : null;
+    getSizeName(sizeId) {
+      if (!this.sizes || !sizeId) return "Не указан";
+      const size = this.sizes.find((s) => s.id === sizeId);
+      return size ? size.name : "Не указан";
     },
   },
 };
