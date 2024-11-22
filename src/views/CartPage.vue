@@ -12,6 +12,7 @@
             :sizes="sizes"
             @remove-item="removeItem"
             @update-quantity="calculateTotal"
+            @view-product="goToProductPage"
         />
         <CartSummary :total="total" />
         <button class="clear-cart-button" @click="clearCartItems">Очистить корзину</button>
@@ -83,6 +84,9 @@ export default {
     },
     calculateTotal() {
       this.total = this.cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+    },
+    goToProductPage(productId) {
+      this.$router.push(`/product/${productId}`);
     },
   },
   async mounted() {

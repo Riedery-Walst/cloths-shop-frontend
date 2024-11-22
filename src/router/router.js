@@ -1,5 +1,5 @@
 // Динамически загружаем все компоненты
-import {createRouter, createWebHistory} from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 
 const MainPage = () => import('@/views/MainPage.vue');
 const LoginPage = () => import('@/views/LoginPage.vue');
@@ -10,9 +10,10 @@ const AdminAddColorPage = () => import('@/views/admin/AdminAddColorPage.vue');
 const AdminAddSizePage = () => import('@/views/admin/AdminAddSizePage.vue');
 const ProductPage = () => import('@/views/ProductPage.vue');
 const CartPage = () => import('@/views/CartPage.vue');
-const CheckoutPage = () => import('@/views/CheckoutPage.vue'); // Новый импорт
+const CheckoutPage = () => import('@/views/CheckoutPage.vue');
 const AdminProductsPage = () => import('@/views/admin/AdminProductsPage.vue');
 const AdminChangeAndAddProductPage = () => import('@/views/admin/AdminChangeAndAddProductPage.vue');
+const UserProfilePage = () => import('@/views/UserProfilePage.vue'); // Новый импорт
 
 // Определяем маршруты
 const routes = [
@@ -32,48 +33,10 @@ const routes = [
         component: RegistrationPage,
     },
     {
-        path: '/colors',
-        name: 'AdminColorsPage',
-        component: AdminColorsPage,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
-    },
-    {
-        path: '/colors/add',
-        name: 'AdminAddColorPage',
-        component: AdminAddColorPage,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
-    },
-    {
-        path: '/sizes',
-        name: 'AdminSizesPage',
-        component: AdminSizesPage,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
-    },
-    {
-        path: '/sizes/add',
-        name: 'AdminAddSizePage',
-        component: AdminAddSizePage,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
-    },
-    {
-        path: '/products',
-        name: 'AdminProductsPage',
-        component: AdminProductsPage,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
-    },
-    {
-        path: '/products/add',
-        name: 'AdminAddProductPage',
-        component: AdminChangeAndAddProductPage,
-        props: { isEdit: false },
-        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
-    },
-    {
-        path: '/products/edit/:id',
-        name: 'AdminEditProductPage',
-        component: AdminChangeAndAddProductPage,
-        props: route => ({ isEdit: true, productId: parseInt(route.params.id) }),
-        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
+        path: '/profile',
+        name: 'UserProfilePage',
+        component: UserProfilePage,
+        meta: { requiresAuth: true },
     },
     {
         path: '/product/:id',
@@ -88,10 +51,54 @@ const routes = [
         meta: { requiresAuth: true },
     },
     {
-        path: '/checkout', // Новый маршрут
+        path: '/checkout',
         name: 'CheckoutPage',
         component: CheckoutPage,
-        meta: { requiresAuth: true }, // Защищённый маршрут
+        meta: { requiresAuth: true },
+    },
+    {
+        path: '/admin/colors',
+        name: 'AdminColorsPage',
+        component: AdminColorsPage,
+        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
+    },
+    {
+        path: '/admin/colors/add',
+        name: 'AdminAddColorPage',
+        component: AdminAddColorPage,
+        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
+    },
+    {
+        path: '/admin/sizes',
+        name: 'AdminSizesPage',
+        component: AdminSizesPage,
+        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
+    },
+    {
+        path: '/admin/sizes/add',
+        name: 'AdminAddSizePage',
+        component: AdminAddSizePage,
+        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
+    },
+    {
+        path: '/admin/products',
+        name: 'AdminProductsPage',
+        component: AdminProductsPage,
+        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
+    },
+    {
+        path: '/admin/products/add',
+        name: 'AdminAddProductPage',
+        component: AdminChangeAndAddProductPage,
+        props: { isEdit: false },
+        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
+    },
+    {
+        path: '/admin/products/edit/:id',
+        name: 'AdminEditProductPage',
+        component: AdminChangeAndAddProductPage,
+        props: route => ({ isEdit: true, productId: parseInt(route.params.id) }),
+        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
     },
 ];
 

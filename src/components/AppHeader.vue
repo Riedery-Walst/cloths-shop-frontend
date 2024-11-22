@@ -17,7 +17,7 @@ export default {
     handleProfileClick() {
       const isLoggedIn = localStorage.getItem('authToken');
       if (isLoggedIn) {
-        this.$router.push('/account');
+        this.$router.push('/profile');
       } else {
         this.$router.push('/login');
       }

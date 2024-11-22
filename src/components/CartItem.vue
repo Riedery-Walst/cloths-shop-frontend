@@ -1,8 +1,15 @@
 <template>
   <div class="cart-item">
-    <img :src="getImageUrl(item.product.photos)" alt="Product Image" class="product-image" />
+    <!-- Ссылка на изображение продукта -->
+    <router-link :to="`/product/${item.product.id}`" class="product-image-link">
+      <img :src="getImageUrl(item.product.photos)" alt="Product Image" class="product-image" />
+    </router-link>
+
+    <!-- Данные продукта -->
     <div class="item-details">
-      <p>{{ item.product.name }}</p>
+      <router-link :to="`/product/${item.product.id}`" class="product-name">
+        {{ item.product.name }}
+      </router-link>
       <p>Размер: {{ getSizeName(item.sizeId) }}</p>
       <p>Цвет: {{ getColorName(item.colorId) }}</p>
       <p>{{ item.product.price }} ₽</p>
@@ -89,6 +96,10 @@ export default {
   margin-bottom: 15px;
 }
 
+.product-image-link {
+  display: inline-block;
+}
+
 .product-image {
   width: 80px;
   height: 80px;
@@ -98,6 +109,16 @@ export default {
 
 .item-details {
   flex: 1;
+}
+
+.product-name {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.product-name:hover {
+  text-decoration: none;
 }
 
 .quantity-control button {

@@ -4,7 +4,7 @@
     <div class="checkout-container">
       <h1>Оформление заказа</h1>
 
-      <!-- Включение компонента AccountInfoForm -->
+      <!-- Форма с подгруженными данными из профиля -->
       <AccountInfoForm :form="form" :countries="countries" />
 
       <!-- Чекбокс для сохранения информации -->
@@ -42,6 +42,7 @@ import AppFooter from "@components/AppFooter.vue";
 import CartItem from "@components/CartItem.vue";
 import AccountInfoForm from "@components/AccountInfoForm.vue"; // Импорт компонента формы
 import { fetchColors, fetchSizes } from "@services/productOptionsService.js";
+import { getProfile, updateProfile } from "@services/profileService.js"; // Импорт сервиса профиля
 import { getCart } from "@services/cartService.js";
 import axios from "@axios";
 
@@ -79,6 +80,14 @@ export default {
     };
   },
   methods: {
+    async fetchProfileData() {
+      try {
+        const profile = await getProfile();
+        this.form = { ...profile }; // Подгружаем данные профиля в форму
+      } catch (error) {
+        console.error("Ошибка загрузки данных профиля:", error);
+      }
+    },
     async fetchColorsAndSizes() {
       try {
         this.colors = await fetchColors();
@@ -115,21 +124,22 @@ export default {
         // Отправка заказа
         await axios.post("/order/submit", orderData);
 
-        // Сохранение информации, если включен чекбокс
+        // Сохранение информации профиля, если включен чекбокс
         if (this.saveInfo) {
-          await axios.put("/profile", this.form);
-          alert("Информация сохранена в профиль!");
+          await updateProfile(this.form);
+          alert("Информация профиля обновлена!");
         }
 
         alert("Заказ успешно оформлен!");
         this.$router.push("/thank-you");
       } catch (error) {
-        console.error("Ошибка оформления заказа или сохранения профиля:", error);
+        console.error("Ошибка оформления заказа или обновления профиля:", error);
         alert("Произошла ошибка при оформлении заказа.");
       }
     },
   },
   async mounted() {
+    await this.fetchProfileData(); // Загружаем данные профиля
     await this.fetchColorsAndSizes();
     await this.fetchCart();
   },
