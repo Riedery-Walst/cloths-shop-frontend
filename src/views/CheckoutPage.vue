@@ -4,9 +4,11 @@
     <div class="checkout-container">
       <h1>Оформление заказа</h1>
 
-      <!-- Контактная информация и адрес -->
+      <!-- Контактная информация -->
       <div class="checkout-form">
         <h3>Контактная информация</h3>
+        <input v-model="form.firstName" type="text" placeholder="Имя" />
+        <input v-model="form.lastName" type="text" placeholder="Фамилия" />
         <input v-model="form.email" type="email" placeholder="Электронная почта" />
         <input v-model="form.phone" type="text" placeholder="Телефон" />
 
@@ -17,10 +19,10 @@
             {{ country.name }}
           </option>
         </select>
-        <input v-model="form.firstName" type="text" placeholder="Имя" />
-        <input v-model="form.lastName" type="text" placeholder="Фамилия" />
-        <input v-model="form.address" type="text" placeholder="Адрес" />
         <input v-model="form.city" type="text" placeholder="Город" />
+        <input v-model="form.street" type="text" placeholder="Улица" />
+        <input v-model="form.house" type="text" placeholder="Дом" />
+        <input v-model="form.apartment" type="text" placeholder="Квартира" />
         <input v-model="form.zipCode" type="text" placeholder="Почтовый индекс" />
 
         <div class="save-payment">
@@ -68,20 +70,26 @@ export default {
   data() {
     return {
       form: {
+        firstName: "",
+        lastName: "",
         email: "",
         phone: "",
         country: "",
-        firstName: "",
-        lastName: "",
-        address: "",
         city: "",
+        street: "",
+        house: "",
+        apartment: "",
         zipCode: "",
         savePaymentInfo: false,
       },
       cartItems: [],
       colors: [],
       sizes: [],
-      countries: [],
+      countries: [
+        { code: "RU", name: "Россия" },
+        { code: "KZ", name: "Казахстан" },
+        { code: "BY", name: "Беларусь" },
+      ],
       total: 0,
     };
   },
@@ -94,14 +102,6 @@ export default {
         this.sizes = sizeResponse.data;
       } catch (error) {
         console.error("Ошибка загрузки цветов и размеров:", error);
-      }
-    },
-    async fetchCountries() {
-      try {
-        const response = await axios.get("/countries");
-        this.countries = response.data;
-      } catch (error) {
-        console.error("Ошибка загрузки списка стран:", error);
       }
     },
     async fetchCart() {
@@ -139,7 +139,6 @@ export default {
   },
   async mounted() {
     await this.fetchColorsAndSizes();
-    await this.fetchCountries();
     await this.fetchCart();
   },
 };
