@@ -4,33 +4,15 @@
     <div class="checkout-container">
       <h1>Оформление заказа</h1>
 
-      <!-- Контактная информация -->
-      <div class="checkout-form">
-        <h3>Контактная информация</h3>
-        <input v-model="form.firstName" type="text" placeholder="Имя" />
-        <input v-model="form.lastName" type="text" placeholder="Фамилия" />
-        <input v-model="form.email" type="email" placeholder="Электронная почта" />
-        <input v-model="form.phone" type="text" placeholder="Телефон" />
+      <!-- Включение компонента AccountInfoForm -->
+      <AccountInfoForm :form="form" :countries="countries" />
 
-        <h3>Адрес</h3>
-        <select v-model="form.country">
-          <option disabled value="">Выберите страну</option>
-          <option v-for="country in countries" :key="country.code" :value="country.name">
-            {{ country.name }}
-          </option>
-        </select>
-        <input v-model="form.city" type="text" placeholder="Город" />
-        <input v-model="form.street" type="text" placeholder="Улица" />
-        <input v-model="form.house" type="text" placeholder="Дом" />
-        <input v-model="form.apartment" type="text" placeholder="Квартира" />
-        <input v-model="form.zipCode" type="text" placeholder="Почтовый индекс" />
-
-        <div class="save-payment">
-          <label>
-            <input v-model="form.savePaymentInfo" type="checkbox" />
-            Сохранить информацию об оплате
-          </label>
-        </div>
+      <!-- Чекбокс для сохранения информации -->
+      <div class="save-info">
+        <label>
+          <input v-model="saveInfo" type="checkbox" />
+          Сохранить информацию
+        </label>
       </div>
 
       <!-- Детали заказа -->
@@ -58,6 +40,8 @@
 import AppHeader from "@components/AppHeader.vue";
 import AppFooter from "@components/AppFooter.vue";
 import CartItem from "@components/CartItem.vue";
+import AccountInfoForm from "@components/AccountInfoForm.vue"; // Импорт компонента формы
+import { fetchColors, fetchSizes } from "@services/productOptionsService.js";
 import { getCart } from "@services/cartService.js";
 import axios from "@axios";
 
@@ -66,6 +50,7 @@ export default {
     AppHeader,
     AppFooter,
     CartItem,
+    AccountInfoForm,
   },
   data() {
     return {
@@ -80,8 +65,8 @@ export default {
         house: "",
         apartment: "",
         zipCode: "",
-        savePaymentInfo: false,
       },
+      saveInfo: false, // Для управления состоянием чекбокса
       cartItems: [],
       colors: [],
       sizes: [],
@@ -96,10 +81,8 @@ export default {
   methods: {
     async fetchColorsAndSizes() {
       try {
-        const colorResponse = await axios.get("/colors");
-        const sizeResponse = await axios.get("/sizes");
-        this.colors = colorResponse.data;
-        this.sizes = sizeResponse.data;
+        this.colors = await fetchColors();
+        this.sizes = await fetchSizes();
       } catch (error) {
         console.error("Ошибка загрузки цветов и размеров:", error);
       }
@@ -127,12 +110,21 @@ export default {
         })),
         total: this.total,
       };
+
       try {
+        // Отправка заказа
         await axios.post("/order/submit", orderData);
+
+        // Сохранение информации, если включен чекбокс
+        if (this.saveInfo) {
+          await axios.put("/profile", this.form);
+          alert("Информация сохранена в профиль!");
+        }
+
         alert("Заказ успешно оформлен!");
         this.$router.push("/thank-you");
       } catch (error) {
-        console.error("Ошибка оформления заказа:", error);
+        console.error("Ошибка оформления заказа или сохранения профиля:", error);
         alert("Произошла ошибка при оформлении заказа.");
       }
     },
@@ -153,28 +145,16 @@ export default {
 
 .checkout-container {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   gap: 20px;
   padding: 20px;
 }
 
-.checkout-form {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.save-info {
+  margin: 20px 0;
 }
 
-.checkout-form input,
-.checkout-form select {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-.save-payment label {
-  margin-top: 10px;
+.save-info label {
   display: flex;
   align-items: center;
   gap: 10px;
