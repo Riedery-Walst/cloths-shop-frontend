@@ -11,6 +11,8 @@
       <p>Цвет: {{ item.color }}</p>
       <p>Цена: {{ item.price }} ₽</p>
     </div>
+    <!-- Кнопка для удаления товара (отображается только если не на странице оформления заказа) -->
+    <button v-if="!isCheckoutPage" class="remove-btn" @click="removeItem">Удалить</button>
   </div>
 </template>
 
@@ -21,6 +23,11 @@ export default {
   props: {
     item: {
       type: Object,
+      required: true,
+    },
+    // Пропс для контроля, отображать ли кнопку удаления
+    isCheckoutPage: {
+      type: Boolean,
       required: true,
     },
   },
@@ -35,6 +42,12 @@ export default {
     },
     productLink() {
       return `/product/${this.item.productId}`;
+    },
+  },
+  methods: {
+    removeItem() {
+      // Отправляем событие для удаления товара
+      this.$emit("remove-item", this.item.id);
     },
   },
 };
@@ -68,5 +81,20 @@ export default {
 
 .product-name:hover {
   color: #ff7e5f;
+}
+
+/* Стиль для кнопки удаления */
+.remove-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.remove-btn:hover {
+  background-color: #e60000;
 }
 </style>
