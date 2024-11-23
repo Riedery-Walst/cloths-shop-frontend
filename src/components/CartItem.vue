@@ -1,8 +1,13 @@
 <template>
   <div class="cart-item">
-    <router-link :to="productLink">
-      <img :src="imageUrl" alt="Product Image" class="product-image" />
-    </router-link>
+    <!-- Изображение товара -->
+    <div class="image-container">
+      <router-link :to="productLink">
+        <img :src="imageUrl" alt="Product Image" class="product-image" />
+      </router-link>
+    </div>
+
+    <!-- Информация о товаре -->
     <div class="product-details">
       <router-link :to="productLink" class="product-name">
         <h3>{{ item.name }}</h3>
@@ -11,13 +16,32 @@
       <p>Цвет: {{ item.color }}</p>
       <p>Цена: {{ item.price }} ₽</p>
     </div>
-    <!-- Кнопка для удаления товара (отображается только если не на странице оформления заказа) -->
-    <button v-if="!isCheckoutPage" class="remove-btn" @click="removeItem">Удалить</button>
+
+    <!-- Управление количеством или отображение количества -->
+    <div class="controls">
+      <div v-if="isCheckoutPage" class="quantity-display">
+        <p>Количество: {{ item.quantity }}</p>
+      </div>
+      <div v-else class="quantity-controls">
+        <QuantityControl
+            :quantity="item.quantity"
+            @update-quantity="updateQuantity"
+        />
+      </div>
+      <button
+          v-if="!isCheckoutPage"
+          class="remove-btn"
+          @click="removeItem"
+      >
+        Удалить
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import { BASE_IMAGE_URL } from "@config/constants";
+import QuantityControl from "@components/QuantityControl.vue";
 
 export default {
   props: {
@@ -25,16 +49,17 @@ export default {
       type: Object,
       required: true,
     },
-    // Пропс для контроля, отображать ли кнопку удаления
     isCheckoutPage: {
       type: Boolean,
       required: true,
     },
   },
+  components: {
+    QuantityControl,
+  },
   computed: {
     imageUrl() {
       if (!this.item.imageUrl) {
-        // Показываем заглушку, если изображения нет
         return `${BASE_IMAGE_URL}default-placeholder.png`;
       }
       const normalizedPath = this.item.imageUrl.replace(/\\/g, "/");
@@ -46,8 +71,10 @@ export default {
   },
   methods: {
     removeItem() {
-      // Отправляем событие для удаления товара
       this.$emit("remove-item", this.item.id);
+    },
+    updateQuantity(newQuantity) {
+      this.$emit("update-quantity", this.item.id, newQuantity);
     },
   },
 };
@@ -83,7 +110,12 @@ export default {
   color: #ff7e5f;
 }
 
-/* Стиль для кнопки удаления */
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .remove-btn {
   background-color: #ff4d4d;
   color: white;

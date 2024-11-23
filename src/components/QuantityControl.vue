@@ -1,6 +1,6 @@
 <template>
   <div class="quantity-control">
-    <button @click="decreaseQuantity">-</button>
+    <button @click="decreaseQuantity" :disabled="quantity <= 1">-</button>
     <span>{{ quantity }}</span>
     <button @click="increaseQuantity">+</button>
   </div>
@@ -17,11 +17,11 @@ export default {
   methods: {
     decreaseQuantity() {
       if (this.quantity > 1) {
-        this.$emit('update-quantity', this.quantity - 1);
+        this.$emit('update-quantity', this.quantity - 1); // Передаем новое количество в родительский компонент
       }
     },
     increaseQuantity() {
-      this.$emit('update-quantity', this.quantity + 1);
+      this.$emit('update-quantity', this.quantity + 1); // Передаем новое количество в родительский компонент
     },
   },
 };

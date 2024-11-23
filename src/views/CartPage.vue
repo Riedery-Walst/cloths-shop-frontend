@@ -9,7 +9,8 @@
             :key="item.id"
             :item="item"
             @update-quantity="updateQuantity"
-            @remove-item="removeItem"
+        @remove-item="removeItem"
+        :isCheckoutPage="false"
         />
       </div>
       <div v-else>

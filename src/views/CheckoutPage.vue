@@ -23,6 +23,7 @@
             :key="item.id"
             :item="item"
             :disable-quantity-controls="true"
+            :isCheckoutPage="true"
         />
         <div class="total">
           <p>Итого: {{ totalPrice }} ₽</p>
