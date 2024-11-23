@@ -60,12 +60,14 @@ export default {
         lastName: "",
         email: "",
         phone: "",
-        country: "",
-        city: "",
-        street: "",
-        house: "",
-        apartment: "",
-        zipCode: "",
+        address: {
+          country: "",
+          city: "",
+          street: "",
+          house: "",
+          apartment: "",
+          postalCode: "",
+        },
       },
       saveInfo: false, // Для управления состоянием чекбокса
       cartItems: [],
@@ -83,7 +85,17 @@ export default {
     async fetchProfileData() {
       try {
         const profile = await getProfile();
-        this.form = { ...profile }; // Подгружаем данные профиля в форму
+        this.form = {
+          ...profile,
+          address: profile.address || {
+            country: "",
+            city: "",
+            street: "",
+            house: "",
+            apartment: "",
+            postalCode: "",
+          },
+        };
       } catch (error) {
         console.error("Ошибка загрузки данных профиля:", error);
       }
@@ -106,7 +118,10 @@ export default {
       }
     },
     calculateTotal() {
-      this.total = this.cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+      this.total = this.cartItems.reduce(
+          (sum, item) => sum + item.product.price * item.quantity,
+          0
+      );
     },
     async submitOrder() {
       const orderData = {

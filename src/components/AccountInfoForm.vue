@@ -7,17 +7,17 @@
     <input v-model="form.phone" type="text" placeholder="Телефон" />
 
     <h3>Адрес</h3>
-    <select v-model="form.country">
+    <select v-model="form.address.country">
       <option disabled value="">Выберите страну</option>
       <option v-for="country in countries" :key="country.code" :value="country.name">
         {{ country.name }}
       </option>
     </select>
-    <input v-model="form.city" type="text" placeholder="Город" />
-    <input v-model="form.street" type="text" placeholder="Улица" />
-    <input v-model="form.house" type="text" placeholder="Дом" />
-    <input v-model="form.apartment" type="text" placeholder="Квартира" />
-    <input v-model="form.zipCode" type="text" placeholder="Почтовый индекс" />
+    <input v-model="form.address.city" type="text" placeholder="Город" />
+    <input v-model="form.address.street" type="text" placeholder="Улица" />
+    <input v-model="form.address.house" type="text" placeholder="Дом" />
+    <input v-model="form.address.apartment" type="text" placeholder="Квартира" />
+    <input v-model="form.address.postalCode" type="text" placeholder="Почтовый индекс" />
   </div>
 </template>
 

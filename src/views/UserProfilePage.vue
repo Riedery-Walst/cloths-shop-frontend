@@ -13,6 +13,8 @@
           {{ isEditing ? "Сохранить" : "Редактировать" }}
         </button>
         <button v-if="isEditing" class="cancel-button" @click="cancelEdit">Отменить</button>
+        <button class="logout-button" @click="logout">Выйти из аккаунта</button>
+        <button class="delete-button" @click="deleteProfileConfirmation">Удалить профиль</button>
       </div>
     </div>
     <AppFooter />
@@ -22,8 +24,8 @@
 <script>
 import AppHeader from "@components/AppHeader.vue";
 import AppFooter from "@components/AppFooter.vue";
-import AccountInfoForm from "@components/AccountInfoForm.vue"; // Используемый компонент
-import { getProfile, updateProfile } from "@services/profileService.js"; // Работа с профилем
+import AccountInfoForm from "@components/AccountInfoForm.vue";
+import { getProfile, updateProfile, deleteProfile } from "@services/profileService.js";
 
 export default {
   components: {
@@ -38,12 +40,14 @@ export default {
         lastName: "",
         email: "",
         phone: "",
-        country: "",
-        city: "",
-        street: "",
-        house: "",
-        apartment: "",
-        zipCode: "",
+        address: {
+          country: "",
+          city: "",
+          street: "",
+          house: "",
+          apartment: "",
+          postalCode: "",
+        },
       },
       originalForm: {}, // Для хранения оригинальных данных
       isEditing: false, // Состояние редактирования
@@ -76,7 +80,7 @@ export default {
       try {
         await updateProfile(this.form);
         alert("Данные успешно сохранены!");
-        this.originalForm = { ...this.form }; // Обновляем оригинальные данные
+        this.originalForm = {...this.form}; // Обновляем оригинальные данные
       } catch (error) {
         console.error("Ошибка сохранения данных профиля:", error);
         alert("Не удалось сохранить данные.");
@@ -84,8 +88,35 @@ export default {
     },
     cancelEdit() {
       // Отмена изменений, возвращаемся к оригинальным данным
-      this.form = { ...this.originalForm };
+      this.form = {...this.originalForm};
       this.isEditing = false;
+    },
+    async logout() {
+      try {
+        // Удаляем токен из localStorage
+        localStorage.removeItem("authToken");
+        alert("Вы успешно вышли из аккаунта.");
+        window.location.href = "/login"; // Перенаправляем на страницу входа
+      } catch (error) {
+        console.error("Ошибка выхода из аккаунта:", error);
+        alert("Не удалось выйти из аккаунта.");
+      }
+    },
+    async deleteProfileConfirmation() {
+      if (confirm("Вы уверены, что хотите удалить профиль? Это действие необратимо.")) {
+        await this.deleteProfile();
+      }
+    },
+    async deleteProfile() {
+      try {
+        await deleteProfile();
+        alert("Ваш профиль успешно удалён.");
+        localStorage.removeItem("authToken"); // Удаляем токен после удаления профиля
+        window.location.href = "/"; // Перенаправляем на главную страницу
+      } catch (error) {
+        console.error("Ошибка удаления профиля:", error);
+        alert("Не удалось удалить профиль.");
+      }
     },
   },
   async mounted() {
@@ -114,7 +145,9 @@ export default {
 }
 
 .edit-button,
-.cancel-button {
+.cancel-button,
+.logout-button,
+.delete-button {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -131,11 +164,29 @@ export default {
   color: white;
 }
 
+.logout-button {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
 .edit-button:hover {
   background-color: #0056b3;
 }
 
 .cancel-button:hover {
   background-color: #e0a800;
+}
+
+.logout-button:hover {
+  background-color: #138496;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
 }
 </style>
