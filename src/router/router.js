@@ -5,7 +5,7 @@ const MainPage = () => import('@/views/MainPage.vue');
 const LoginPage = () => import('@/views/LoginPage.vue');
 const RegistrationPage = () => import('@/views/RegistrationPage.vue');
 const AdminColorsPage = () => import('@/views/admin/AdminColorsPage.vue');
-const AdminSizesPage = () => import('@/views/AdminSizesPage.vue');
+const AdminSizesPage = () => import('@/views/admin/AdminSizesPage.vue');
 const AdminAddColorPage = () => import('@/views/admin/AdminAddColorPage.vue');
 const AdminAddSizePage = () => import('@/views/admin/AdminAddSizePage.vue');
 const ProductPage = () => import('@/views/ProductPage.vue');
@@ -13,6 +13,7 @@ const CartPage = () => import('@/views/CartPage.vue');
 const CheckoutPage = () => import('@/views/CheckoutPage.vue');
 const AdminProductsPage = () => import('@/views/admin/AdminProductsPage.vue');
 const AdminChangeAndAddProductPage = () => import('@/views/admin/AdminChangeAndAddProductPage.vue');
+const ProfilePage = () => import('@/views/ProfilePage.vue');
 
 // Определяем маршруты
 const routes = [
@@ -48,6 +49,12 @@ const routes = [
         name: 'CheckoutPage',
         component: CheckoutPage,
         meta: { requiresAuth: true },
+    },
+    {
+        path: '/profile', // Добавляем маршрут для профиля
+        name: 'ProfilePage',
+        component: ProfilePage,
+        meta: { requiresAuth: true }, // Требуется авторизация
     },
     {
         path: '/admin/colors',

@@ -17,10 +17,10 @@
 </template>
 
 <script>
-import Sidebar from '@components/admin/AdminSidebar.vue';
-import Header from '@components/admin/AdminHeader.vue';
-import SizeTable from '@components/admin/SizeTable.vue';
-import axios from '@axios';
+import Sidebar from '@/components/admin/AdminSidebar.vue';
+import Header from '@/components/admin/AdminHeader.vue';
+import SizeTable from '@/components/admin/SizeTable.vue';
+import axios from '@/axiosInstance.js';
 
 export default {
   components: {
