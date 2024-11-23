@@ -13,7 +13,6 @@ const CartPage = () => import('@/views/CartPage.vue');
 const CheckoutPage = () => import('@/views/CheckoutPage.vue');
 const AdminProductsPage = () => import('@/views/admin/AdminProductsPage.vue');
 const AdminChangeAndAddProductPage = () => import('@/views/admin/AdminChangeAndAddProductPage.vue');
-const UserProfilePage = () => import('@/views/UserProfilePage.vue'); // Новый импорт
 
 // Определяем маршруты
 const routes = [
@@ -31,12 +30,6 @@ const routes = [
         path: '/register',
         name: 'RegisterPage',
         component: RegistrationPage,
-    },
-    {
-        path: '/profile',
-        name: 'UserProfilePage',
-        component: UserProfilePage,
-        meta: { requiresAuth: true },
     },
     {
         path: '/product/:id',

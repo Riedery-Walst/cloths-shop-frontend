@@ -4,7 +4,7 @@
     <div class="checkout-container">
       <h1>Оформление заказа</h1>
 
-      <!-- Форма с подгруженными данными из профиля -->
+      <!-- Форма с данными профиля -->
       <AccountInfoForm :form="form" :countries="countries" />
 
       <!-- Чекбокс для сохранения информации -->
@@ -22,12 +22,10 @@
             v-for="item in cartItems"
             :key="item.id"
             :item="item"
-            :colors="colors"
-            :sizes="sizes"
             :disable-quantity-controls="true"
         />
         <div class="total">
-          <p>Итого: {{ total }} ₽</p>
+          <p>Итого: {{ totalPrice }} ₽</p>
           <button class="pay-button" @click="submitOrder">Оплатить</button>
         </div>
       </div>
@@ -40,10 +38,9 @@
 import AppHeader from "@components/AppHeader.vue";
 import AppFooter from "@components/AppFooter.vue";
 import CartItem from "@components/CartItem.vue";
-import AccountInfoForm from "@components/AccountInfoForm.vue"; // Импорт компонента формы
-import { fetchColors, fetchSizes } from "@services/productOptionsService.js";
-import { getProfile, updateProfile } from "@services/profileService.js"; // Импорт сервиса профиля
-import { getCart } from "@services/cartService.js";
+import AccountInfoForm from "@components/AccountInfoForm.vue";
+import { getFullCartData } from "@services/cartProcessingService";
+import { getProfile, updateProfile } from "@services/profileService"; // Импортируем обновлённый profileService
 import axios from "@axios";
 
 export default {
@@ -69,77 +66,61 @@ export default {
           postalCode: "",
         },
       },
-      saveInfo: false, // Для управления состоянием чекбокса
+      saveInfo: false,
       cartItems: [],
-      colors: [],
-      sizes: [],
+      totalPrice: 0,
       countries: [
         { code: "RU", name: "Россия" },
         { code: "KZ", name: "Казахстан" },
         { code: "BY", name: "Беларусь" },
       ],
-      total: 0,
     };
   },
   methods: {
-    async fetchProfileData() {
-      try {
-        const profile = await getProfile();
-        this.form = {
-          ...profile,
-          address: profile.address || {
-            country: "",
-            city: "",
-            street: "",
-            house: "",
-            apartment: "",
-            postalCode: "",
-          },
-        };
-      } catch (error) {
-        console.error("Ошибка загрузки данных профиля:", error);
-      }
-    },
-    async fetchColorsAndSizes() {
-      try {
-        this.colors = await fetchColors();
-        this.sizes = await fetchSizes();
-      } catch (error) {
-        console.error("Ошибка загрузки цветов и размеров:", error);
-      }
-    },
+    // Метод для загрузки корзины
     async fetchCart() {
       try {
-        const response = await getCart();
-        this.cartItems = response.data.items;
-        this.calculateTotal();
+        const { items, totalPrice } = await getFullCartData();
+        this.cartItems = items;
+        this.totalPrice = totalPrice;
       } catch (error) {
         console.error("Ошибка загрузки корзины:", error);
       }
     },
-    calculateTotal() {
-      this.total = this.cartItems.reduce(
-          (sum, item) => sum + item.product.price * item.quantity,
-          0
-      );
+    // Метод для загрузки профиля
+    async fetchProfile() {
+      try {
+        const profile = await getProfile();
+        this.form = {
+          ...this.form,
+          ...profile, // Подставляем основные данные профиля
+          address: {
+            ...this.form.address,
+            ...profile.address, // Если есть данные адреса, добавляем их
+          },
+        };
+      } catch (error) {
+        console.error("Ошибка загрузки профиля:", error);
+      }
     },
+    // Отправка заказа
     async submitOrder() {
       const orderData = {
         ...this.form,
         items: this.cartItems.map((item) => ({
-          productId: item.product.id,
+          productId: item.productId,
           quantity: item.quantity,
-          colorId: item.colorId,
-          sizeId: item.sizeId,
+          colorId: item.color,
+          sizeId: item.size,
         })),
-        total: this.total,
+        total: this.totalPrice,
       };
 
       try {
-        // Отправка заказа
+        // Отправляем заказ
         await axios.post("/order/submit", orderData);
 
-        // Сохранение информации профиля, если включен чекбокс
+        // Обновляем профиль, если включён чекбокс "Сохранить информацию"
         if (this.saveInfo) {
           await updateProfile(this.form);
           alert("Информация профиля обновлена!");
@@ -154,9 +135,8 @@ export default {
     },
   },
   async mounted() {
-    await this.fetchProfileData(); // Загружаем данные профиля
-    await this.fetchColorsAndSizes();
-    await this.fetchCart();
+    await this.fetchCart(); // Загружаем данные корзины
+    await this.fetchProfile(); // Загружаем данные профиля
   },
 };
 </script>
@@ -177,12 +157,6 @@ export default {
 
 .save-info {
   margin: 20px 0;
-}
-
-.save-info label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
 .order-summary {

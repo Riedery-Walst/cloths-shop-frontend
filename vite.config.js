@@ -16,6 +16,7 @@ export default defineConfig({
       '@router': fileURLToPath(new URL('./src/router', import.meta.url)),
       '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
       '@axios': fileURLToPath(new URL('./src/axiosInstance.js', import.meta.url)),
+      '@config': fileURLToPath(new URL('./src/config', import.meta.url)),
     }
   }
 })

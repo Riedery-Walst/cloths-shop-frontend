@@ -1,88 +1,40 @@
 <template>
   <div class="cart-item">
-    <!-- Ссылка на изображение продукта -->
-    <router-link :to="`/product/${item.product.id}`" class="product-image-link">
-      <img :src="getImageUrl(item.product.photos)" alt="Product Image" class="product-image" />
+    <router-link :to="productLink">
+      <img :src="imageUrl" alt="Product Image" class="product-image" />
     </router-link>
-
-    <!-- Данные продукта -->
-    <div class="item-details">
-      <router-link :to="`/product/${item.product.id}`" class="product-name">
-        {{ item.product.name }}
+    <div class="product-details">
+      <router-link :to="productLink" class="product-name">
+        <h3>{{ item.name }}</h3>
       </router-link>
-      <p>Размер: {{ getSizeName(item.sizeId) }}</p>
-      <p>Цвет: {{ getColorName(item.colorId) }}</p>
-      <p>{{ item.product.price }} ₽</p>
+      <p>Размер: {{ item.size }}</p>
+      <p>Цвет: {{ item.color }}</p>
+      <p>Цена: {{ item.price }} ₽</p>
     </div>
-
-    <!-- Управление количеством (опционально) -->
-    <div v-if="!disableQuantityControls">
-      <slot name="quantity-control">
-        <QuantityControl :quantity="item.quantity" @update-quantity="updateQuantity" />
-      </slot>
-    </div>
-
-    <!-- Кнопка удаления -->
-    <slot name="remove-button">
-      <button v-if="showControls && !disableQuantityControls" @click="removeItem" class="remove-button">
-        Удалить
-      </button>
-    </slot>
   </div>
 </template>
 
 <script>
-import QuantityControl from "@components/QuantityControl.vue";
-import { updateCartItemQuantity } from "@/services/cartService";
+import { BASE_IMAGE_URL } from "@config/constants";
 
 export default {
-  components: {
-    QuantityControl,
-  },
   props: {
-    item: Object,
-    colors: Array,
-    sizes: Array,
-    showControls: {
-      type: Boolean,
-      default: true,
-    },
-    disableQuantityControls: {
-      type: Boolean,
-      default: false,
+    item: {
+      type: Object,
+      required: true,
     },
   },
-  methods: {
-    removeItem() {
-      this.$emit("remove-item", this.item.id);
-    },
-    updateQuantity(newQuantity) {
-      this.item.quantity = newQuantity;
-      this.$emit("update-quantity", this.item);
-      this.updateQuantityOnServer();
-    },
-    async updateQuantityOnServer() {
-      try {
-        await updateCartItemQuantity(this.item.id, this.item.quantity);
-      } catch (error) {
-        console.error("Ошибка при обновлении количества на сервере:", error);
+  computed: {
+    imageUrl() {
+      if (!this.item.imageUrl) {
+        // Показываем заглушку, если изображения нет
+        return `${BASE_IMAGE_URL}default-placeholder.png`;
       }
+      const normalizedPath = this.item.imageUrl.replace(/\\/g, "/");
+      return `${BASE_IMAGE_URL}${normalizedPath}`;
     },
-    getImageUrl(photos) {
-      const baseUrl = "http://localhost:8080";
-      return photos && photos.length > 0
-          ? `${baseUrl}/${photos[0].photoUrl.replace(/\\/g, "/")}`
-          : "";
-    },
-    getColorName(colorId) {
-      if (!this.colors || !colorId) return "Не указан";
-      const color = this.colors.find((c) => c.id === colorId);
-      return color ? color.name : "Не указан";
-    },
-    getSizeName(sizeId) {
-      if (!this.sizes || !sizeId) return "Не указан";
-      const size = this.sizes.find((s) => s.id === sizeId);
-      return size ? size.name : "Не указан";
+    productLink() {
+      return `/product/${this.item.productId}`;
     },
   },
 };
@@ -93,46 +45,28 @@ export default {
   display: flex;
   align-items: center;
   gap: 20px;
-  margin-bottom: 15px;
-}
-
-.product-image-link {
-  display: inline-block;
+  margin-bottom: 20px;
 }
 
 .product-image {
   width: 80px;
   height: 80px;
   object-fit: cover;
-  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s;
 }
 
-.item-details {
-  flex: 1;
+.product-details {
+  flex-grow: 1;
 }
 
 .product-name {
-  color: blue;
-  text-decoration: underline;
-  cursor: pointer;
+  text-decoration: none;
+  color: #000;
+  transition: color 0.3s;
 }
 
 .product-name:hover {
-  text-decoration: none;
-}
-
-.quantity-control button {
-  background: none;
-  border: 1px solid #ccc;
-  padding: 5px 10px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.remove-button {
-  background: none;
-  color: red;
-  border: none;
-  cursor: pointer;
+  color: #ff7e5f;
 }
 </style>

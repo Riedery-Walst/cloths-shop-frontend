@@ -1,96 +1,59 @@
 <template>
   <div class="cart-page">
-    <AppHeader />
-    <div class="cart-container">
-      <h1>Корзина</h1>
-      <div v-if="cartItems.length">
-        <CartItem
-            v-for="item in cartItems"
-            :key="item.id"
-            :item="item"
-            :colors="colors"
-            :sizes="sizes"
-            @remove-item="removeItem"
-            @update-quantity="calculateTotal"
-            @view-product="goToProductPage"
-        />
-        <CartSummary :total="total" />
-        <button class="clear-cart-button" @click="clearCartItems">Очистить корзину</button>
-      </div>
-      <p v-else>Корзина пуста</p>
+    <h1>Корзина</h1>
+    <div v-if="cartItems.length > 0" class="cart-items">
+      <CartItem
+          v-for="item in cartItems"
+          :key="item.id"
+          :item="item"
+          @update-quantity="updateQuantity"
+          @remove-item="removeItem"
+      />
     </div>
-    <AppFooter />
+    <div v-else>
+      <p>Ваша корзина пуста</p>
+    </div>
+    <TotalSummary v-if="cartItems.length > 0" :total="totalPrice" @checkout="checkout" />
   </div>
 </template>
 
 <script>
-import AppHeader from "@components/AppHeader.vue";
-import AppFooter from "@components/AppFooter.vue";
+import { getFullCartData } from "@services/cartProcessingService";
 import CartItem from "@components/CartItem.vue";
-import CartSummary from "@components/CartSummary.vue";
-import {fetchColors, fetchSizes} from "@services/productOptionsService.js";
-import {getCart, removeProductFromCart, clearCart} from "@services/cartService.js";
+import TotalSummary from "@components/TotalSummary.vue";
 
 export default {
   components: {
-    AppHeader,
-    AppFooter,
     CartItem,
-    CartSummary,
+    TotalSummary,
   },
   data() {
     return {
       cartItems: [],
-      colors: [],
-      sizes: [],
-      total: 0,
+      totalPrice: 0,
     };
   },
   methods: {
-    async fetchColorsAndSizes() {
-      try {
-        this.colors = await fetchColors();
-        this.sizes = await fetchSizes();
-      } catch (error) {
-        console.error("Ошибка загрузки цветов и размеров:", error);
-      }
-    },
     async fetchCart() {
       try {
-        const response = await getCart();
-        this.cartItems = response.data.items;
-        this.calculateTotal();
+        const { items, totalPrice } = await getFullCartData();
+        this.cartItems = items;
+        this.totalPrice = totalPrice;
       } catch (error) {
         console.error("Ошибка загрузки корзины:", error);
       }
     },
-    async removeItem(cartItemId) {
-      try {
-        await removeProductFromCart(cartItemId);
-        await this.fetchCart();
-      } catch (error) {
-        console.error("Ошибка удаления из корзины:", error);
-      }
+    updateQuantity(cartItemId, quantity) {
+      // Логика обновления количества (если необходимо)
     },
-    async clearCartItems() {
-      try {
-        await clearCart();
-        this.cartItems = [];
-        this.total = 0;
-        alert("Корзина очищена");
-      } catch (error) {
-        console.error("Ошибка при очистке корзины:", error);
-      }
+    removeItem(cartItemId) {
+      // Логика удаления элемента (если необходимо)
     },
-    calculateTotal() {
-      this.total = this.cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-    },
-    goToProductPage(productId) {
-      this.$router.push(`/product/${productId}`);
+    checkout() {
+      this.$router.push("/checkout");
     },
   },
   async mounted() {
-    await this.fetchColorsAndSizes();
     await this.fetchCart();
   },
 };
@@ -98,27 +61,12 @@ export default {
 
 <style scoped>
 .cart-page {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.cart-container {
-  flex: 1;
+  max-width: 800px;
+  margin: 0 auto;
   padding: 20px;
 }
 
-.clear-cart-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #ff0000;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.clear-cart-button:hover {
-  background-color: #cc0000;
+.cart-items {
+  margin-bottom: 20px;
 }
 </style>
