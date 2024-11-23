@@ -1,23 +1,74 @@
 <template>
   <div class="input-form">
     <h3>Контактная информация</h3>
-    <input v-model="form.firstName" type="text" placeholder="Имя" />
-    <input v-model="form.lastName" type="text" placeholder="Фамилия" />
-    <input v-model="form.email" type="email" placeholder="Электронная почта" />
-    <input v-model="form.phone" type="text" placeholder="Телефон" />
+    <input
+        v-model="form.firstName"
+        :class="{ 'input-error': showErrors && !form.firstName.trim() }"
+        type="text"
+        placeholder="Имя"
+    />
+    <input
+        v-model="form.lastName"
+        :class="{ 'input-error': showErrors && !form.lastName.trim() }"
+        type="text"
+        placeholder="Фамилия"
+    />
+    <input
+        v-model="form.email"
+        :class="{ 'input-error': showErrors && !form.email.trim() }"
+        type="email"
+        placeholder="Электронная почта"
+    />
+    <input
+        v-model="form.phone"
+        :class="{ 'input-error': showErrors && !form.phone.trim() }"
+        type="text"
+        placeholder="Телефон"
+    />
 
     <h3>Адрес</h3>
-    <select v-model="form.address.country">
+    <select
+        v-model="form.address.country"
+        :class="{ 'input-error': showErrors && !form.address.country.trim() }"
+    >
       <option disabled value="">Выберите страну</option>
-      <option v-for="country in countries" :key="country.code" :value="country.name">
+      <option
+          v-for="country in countries"
+          :key="country.code"
+          :value="country.name"
+      >
         {{ country.name }}
       </option>
     </select>
-    <input v-model="form.address.city" type="text" placeholder="Город" />
-    <input v-model="form.address.street" type="text" placeholder="Улица" />
-    <input v-model="form.address.house" type="text" placeholder="Дом" />
-    <input v-model="form.address.apartment" type="text" placeholder="Квартира" />
-    <input v-model="form.address.postalCode" type="text" placeholder="Почтовый индекс" />
+    <input
+        v-model="form.address.city"
+        :class="{ 'input-error': showErrors && !form.address.city.trim() }"
+        type="text"
+        placeholder="Город"
+    />
+    <input
+        v-model="form.address.street"
+        :class="{ 'input-error': showErrors && !form.address.street.trim() }"
+        type="text"
+        placeholder="Улица"
+    />
+    <input
+        v-model="form.address.house"
+        :class="{ 'input-error': showErrors && !form.address.house.trim() }"
+        type="text"
+        placeholder="Дом"
+    />
+    <input
+        v-model="form.address.apartment"
+        type="text"
+        placeholder="Квартира"
+    />
+    <input
+        v-model="form.address.postalCode"
+        :class="{ 'input-error': showErrors && !form.address.postalCode.trim() }"
+        type="text"
+        placeholder="Почтовый индекс"
+    />
   </div>
 </template>
 
@@ -30,6 +81,10 @@ export default {
     },
     countries: {
       type: Array,
+      required: true,
+    },
+    showErrors: {
+      type: Boolean,
       required: true,
     },
   },
@@ -49,6 +104,10 @@ export default {
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 16px;
+}
+
+.input-error {
+  border: 1px solid red;
 }
 
 .input-form h3 {

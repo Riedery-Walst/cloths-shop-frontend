@@ -5,7 +5,7 @@
       <h1>Оформление заказа</h1>
 
       <!-- Форма с данными профиля -->
-      <AccountInfoForm :form="form" :countries="countries" />
+      <AccountInfoForm :form="form" :countries="countries" :showErrors="showErrors" />
 
       <!-- Чекбокс для сохранения информации -->
       <div class="save-info">
@@ -41,7 +41,7 @@ import AppFooter from "@components/AppFooter.vue";
 import CartItem from "@components/CartItem.vue";
 import AccountInfoForm from "@components/AccountInfoForm.vue";
 import { getFullCartData } from "@services/cartProcessingService";
-import { getProfile, updateProfile } from "@services/profileService"; // Импортируем обновлённый profileService
+import { getProfile, updateProfile } from "@services/profileService";
 import axios from "@axios";
 
 export default {
@@ -53,6 +53,8 @@ export default {
   },
   data() {
     return {
+      // Переменная для хранения ID заказа
+      orderId: null,
       form: {
         firstName: "",
         lastName: "",
@@ -75,10 +77,11 @@ export default {
         { code: "KZ", name: "Казахстан" },
         { code: "BY", name: "Беларусь" },
       ],
+      showErrors: false,
     };
   },
   methods: {
-    // Метод для загрузки корзины
+    // Загрузка корзины
     async fetchCart() {
       try {
         const { items, totalPrice } = await getFullCartData();
@@ -88,56 +91,111 @@ export default {
         console.error("Ошибка загрузки корзины:", error);
       }
     },
-    // Метод для загрузки профиля
+    // Загрузка профиля пользователя
     async fetchProfile() {
       try {
         const profile = await getProfile();
         this.form = {
           ...this.form,
-          ...profile, // Подставляем основные данные профиля
+          ...profile,
           address: {
             ...this.form.address,
-            ...profile.address, // Если есть данные адреса, добавляем их
+            ...profile.address,
           },
         };
       } catch (error) {
         console.error("Ошибка загрузки профиля:", error);
       }
     },
-    // Отправка заказа
-    async submitOrder() {
+    // Проверка валидности формы
+    validateForm() {
+      const requiredFields = [
+        this.form.firstName,
+        this.form.lastName,
+        this.form.email,
+        this.form.phone,
+        this.form.address.country,
+        this.form.address.city,
+        this.form.address.street,
+        this.form.address.house,
+        this.form.address.postalCode,
+      ];
+      return requiredFields.every((field) => field && field.trim() !== "");
+    },
+    // Создание заказа
+    async createOrder() {
       const orderData = {
-        ...this.form,
+        customer: {
+          firstName: this.form.firstName,
+          lastName: this.form.lastName,
+          email: this.form.email,
+          phone: this.form.phone,
+        },
+        address: this.form.address,
         items: this.cartItems.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
-          colorId: item.color,
-          sizeId: item.size,
+          price: item.price,
         })),
         total: this.totalPrice,
       };
 
       try {
-        // Отправляем заказ
-        await axios.post("/order/submit", orderData);
-
-        // Обновляем профиль, если включён чекбокс "Сохранить информацию"
-        if (this.saveInfo) {
-          await updateProfile(this.form);
-          alert("Информация профиля обновлена!");
-        }
-
-        alert("Заказ успешно оформлен!");
-        this.$router.push("/thank-you");
+        const response = await axios.post("/orders", orderData);
+        this.orderId = response.data.id;  // Сохраняем id из ответа
+        return response.data;  // Возвращаем весь объект, включая id
       } catch (error) {
-        console.error("Ошибка оформления заказа или обновления профиля:", error);
-        alert("Произошла ошибка при оформлении заказа.");
+        console.error("Ошибка при создании заказа:", error);
+        alert("Произошла ошибка при создании заказа.");
+        throw error;
+      }
+    },
+    // Создание платежа и редирект на платёжную страницу
+    async submitOrder() {
+      if (!this.validateForm()) {
+        this.showErrors = true;
+        alert("Пожалуйста, заполните все обязательные поля!");
+        return;
+      }
+
+      try {
+        // Шаг 1: Создание заказа и получение его ID
+        const order = await this.createOrder();
+
+        console.log(`Создан заказ с ID: ${order.id}`);
+
+        // Шаг 2: Формирование и отправка запроса на оплату
+        const paymentRequest = {
+          orderId: this.orderId,  // Используем сохранённый orderId
+          amount: {
+            value: this.totalPrice.toFixed(2), // Пример: "200.00"
+            currency: "RUB",  // Валюта
+          },
+          returnUrl: `${window.location.origin}/thank-you`, // URL возврата
+        };
+
+        const paymentResponse = await axios.post("http://localhost:8080/api/payments", paymentRequest);
+
+        if (paymentResponse.data && paymentResponse.data.confirmation_url) {
+          if (this.saveInfo) {
+            await updateProfile(this.form);
+            alert("Информация профиля сохранена!");
+          }
+
+          // Перенаправление пользователя на платёжную страницу
+          window.location.href = paymentResponse.data.confirmation_url;
+        } else {
+          alert("Не удалось получить URL для оплаты.");
+        }
+      } catch (error) {
+        console.error("Ошибка при создании платежа:", error);
+        alert("Произошла ошибка при создании заказа или оплаты.");
       }
     },
   },
   async mounted() {
-    await this.fetchCart(); // Загружаем данные корзины
-    await this.fetchProfile(); // Загружаем данные профиля
+    await this.fetchCart();
+    await this.fetchProfile();
   },
 };
 </script>
