@@ -7,19 +7,15 @@ import axios from '@axios';
  */
 export const getFullCartData = async () => {
     try {
-        // Шаг 1: Получаем корзину
         const cartResponse = await getCart();
         const cart = cartResponse.data;
 
-        // Шаг 2: Получаем продукты
         const productsResponse = await axios.get('/products');
         const products = productsResponse.data;
 
-        // Шаг 3: Получаем цвета и размеры
         const colors = await fetchColors();
         const sizes = await fetchSizes();
 
-        // Шаг 4: Обогащаем данные корзины
         const enrichedCartItems = cart.items.map((cartItem) => {
             const product = products.find((p) => p.id === cartItem.productId);
             if (!product) return null;
@@ -39,11 +35,12 @@ export const getFullCartData = async () => {
                 quantity: cartItem.quantity,
                 color: color ? color.name : 'Неизвестно',
                 size: size ? size.name : 'Неизвестно',
+                colorId: cartItem.colorId,
+                sizeId: cartItem.sizeId,
                 imageUrl,
             };
         }).filter(Boolean);
 
-        // Возвращаем обогащенные данные корзины и итоговую сумму
         const totalPrice = enrichedCartItems.reduce(
             (sum, item) => sum + item.price * item.quantity,
             0

@@ -9,8 +9,8 @@
             :key="item.id"
             :item="item"
             @update-quantity="updateQuantity"
-        @remove-item="removeItem"
-        :isCheckoutPage="false"
+            @remove-item="removeItem"
+            :isCheckoutPage="false"
         />
       </div>
       <div v-else>
@@ -55,16 +55,11 @@ export default {
     },
     async updateQuantity(cartItemId, newQuantity) {
       try {
-        // Обновляем количество товара в корзине через API
         await updateCartItemQuantity(cartItemId, newQuantity);
-
-        // После успешного обновления обновляем локальное состояние
         const item = this.cartItems.find(item => item.id === cartItemId);
         if (item) {
           item.quantity = newQuantity;
         }
-
-        // Пересчитываем общую стоимость после изменения количества товара
         this.updateTotalPrice();
       } catch (error) {
         console.error("Ошибка обновления количества:", error);
@@ -72,13 +67,8 @@ export default {
     },
     async removeItem(cartItemId) {
       try {
-        // Удаляем товар из корзины через API
         await removeCartItem(cartItemId);
-
-        // Удаляем товар из локального состояния
         this.cartItems = this.cartItems.filter(item => item.id !== cartItemId);
-
-        // Пересчитываем общую стоимость после удаления товара
         this.updateTotalPrice();
       } catch (error) {
         console.error("Ошибка удаления товара из корзины:", error);
@@ -88,9 +78,8 @@ export default {
       this.$router.push("/checkout");
     },
     updateTotalPrice() {
-      // Пересчитываем общую цену корзины
       this.totalPrice = this.cartItems.reduce((total, item) => {
-        return total + item.quantity * item.price; // Примерный расчет, возможно, придется учесть скидки, налоги и т. д.
+        return total + item.quantity * item.price;
       }, 0);
     }
   },

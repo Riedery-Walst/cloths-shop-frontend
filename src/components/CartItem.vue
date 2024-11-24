@@ -12,8 +12,8 @@
       <router-link :to="productLink" class="product-name">
         <h3>{{ item.name }}</h3>
       </router-link>
-      <p>Размер: {{ item.size }}</p>
-      <p>Цвет: {{ item.color }}</p>
+      <p>Размер: {{ displaySize }}</p>
+      <p>Цвет: {{ displayColor }}</p>
       <p>Цена: {{ item.price }} ₽</p>
     </div>
 
@@ -67,6 +67,12 @@ export default {
     },
     productLink() {
       return `/product/${this.item.productId}`;
+    },
+    displaySize() {
+      return this.isCheckoutPage ? this.item.sizeId : this.item.size;
+    },
+    displayColor() {
+      return this.isCheckoutPage ? this.item.colorId : this.item.color;
     },
   },
   methods: {

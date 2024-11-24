@@ -132,12 +132,21 @@ export default {
           phone: this.form.phone,
         },
         address: this.form.address,
-        items: this.cartItems.map((item) => ({
-          productId: item.productId,
-          quantity: item.quantity,
-          price: item.price,
-        })),
-        total: this.totalPrice,
+        items: this.cartItems.map((item) => {
+          // Логируем содержимое каждого item
+          const itemData = JSON.parse(JSON.stringify(item));
+
+          // Логируем распакованный объект
+          console.log("Item data (unpacked):", itemData);
+
+          return {
+            productId: item.productId,
+            quantity: item.quantity,
+            colorId: item.colorId,    // Передаем colorId
+            sizeId: item.sizeId,      // Передаем sizeId
+          };
+        }),
+        totalPrice: this.totalPrice,  // Убедитесь, что поле называется totalPrice, а не total
       };
 
       try {
@@ -171,19 +180,18 @@ export default {
             value: this.totalPrice.toFixed(2), // Пример: "200.00"
             currency: "RUB",  // Валюта
           },
-          returnUrl: `${window.location.origin}/thank-you`, // URL возврата
         };
 
         const paymentResponse = await axios.post("http://localhost:8080/api/payments", paymentRequest);
 
-        if (paymentResponse.data && paymentResponse.data.confirmation_url) {
+        if (paymentResponse.data && paymentResponse.data.confirmation) {
           if (this.saveInfo) {
             await updateProfile(this.form);
             alert("Информация профиля сохранена!");
           }
 
           // Перенаправление пользователя на платёжную страницу
-          window.location.href = paymentResponse.data.confirmation_url;
+          window.location.href = paymentResponse.data.confirmation.confirmation_url; // Редирект на confirmation_url
         } else {
           alert("Не удалось получить URL для оплаты.");
         }
