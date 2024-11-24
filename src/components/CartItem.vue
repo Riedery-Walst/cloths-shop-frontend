@@ -69,10 +69,20 @@ export default {
       return `/product/${this.item.productId}`;
     },
     displaySize() {
-      return this.isCheckoutPage ? this.item.sizeId : this.item.size;
+      // Если на странице оформления заказа, показываем имя размера, а не ID
+      if (this.isCheckoutPage) {
+        const size = this.item.size;  // это должно быть имя размера
+        return size ? size : 'Неизвестно';
+      }
+      return this.item.sizeId;  // иначе показываем ID размера
     },
     displayColor() {
-      return this.isCheckoutPage ? this.item.colorId : this.item.color;
+      // Если на странице оформления заказа, показываем имя цвета, а не ID
+      if (this.isCheckoutPage) {
+        const color = this.item.color;  // это должно быть имя цвета
+        return color ? color : 'Неизвестно';
+      }
+      return this.item.colorId;  // иначе показываем ID цвета
     },
   },
   methods: {
