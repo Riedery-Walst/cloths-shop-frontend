@@ -14,6 +14,7 @@ const CheckoutPage = () => import('@/views/CheckoutPage.vue');
 const AdminProductsPage = () => import('@/views/admin/AdminProductsPage.vue');
 const AdminChangeAndAddProductPage = () => import('@/views/admin/AdminChangeAndAddProductPage.vue');
 const ProfilePage = () => import('@/views/ProfilePage.vue');
+const ThanksPage = () => import('@/views/ThanksPage.vue');
 
 // Определяем маршруты
 const routes = [
@@ -51,10 +52,15 @@ const routes = [
         meta: { requiresAuth: true },
     },
     {
-        path: '/profile', // Добавляем маршрут для профиля
+        path: '/profile',
         name: 'ProfilePage',
         component: ProfilePage,
-        meta: { requiresAuth: true }, // Требуется авторизация
+        meta: { requiresAuth: true },
+    },
+    {
+        path: '/thanks',
+        name: 'ThanksPage',
+        component: ThanksPage,
     },
     {
         path: '/admin/colors',
