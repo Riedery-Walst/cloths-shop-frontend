@@ -4,17 +4,19 @@ import { createRouter, createWebHistory } from "vue-router";
 const MainPage = () => import('@/views/MainPage.vue');
 const LoginPage = () => import('@/views/LoginPage.vue');
 const RegistrationPage = () => import('@/views/RegistrationPage.vue');
-const AdminColorsPage = () => import('@/views/admin/AdminColorsPage.vue');
-const AdminSizesPage = () => import('@/views/admin/AdminSizesPage.vue');
-const AdminAddColorPage = () => import('@/views/admin/AdminAddColorPage.vue');
-const AdminAddSizePage = () => import('@/views/admin/AdminAddSizePage.vue');
+const AdminColorsPage = () => import('@/views/admin/ColorsPage.vue');
+const AdminSizesPage = () => import('@/views/admin/SizesPage.vue');
+const AdminAddColorPage = () => import('@/views/admin/AddColorPage.vue');
+const AdminAddSizePage = () => import('@/views/admin/AddSizePage.vue');
 const ProductPage = () => import('@/views/ProductPage.vue');
 const CartPage = () => import('@/views/CartPage.vue');
 const CheckoutPage = () => import('@/views/CheckoutPage.vue');
-const AdminProductsPage = () => import('@/views/admin/AdminProductsPage.vue');
-const AdminChangeAndAddProductPage = () => import('@/views/admin/AdminChangeAndAddProductPage.vue');
+const AdminProductsPage = () => import('@/views/admin/ProductsPage.vue');
+const AdminChangeAndAddProductPage = () => import('@/views/admin/ChangeAndAddProductPage.vue');
 const ProfilePage = () => import('@/views/ProfilePage.vue');
 const ThanksPage = () => import('@/views/ThanksPage.vue');
+const OrdersPage = () => import('@/views/admin/OrdersPage.vue');
+
 
 // Определяем маршруты
 const routes = [
@@ -106,6 +108,13 @@ const routes = [
         props: route => ({ isEdit: true, productId: parseInt(route.params.id) }),
         meta: { requiresAuth: true, requiredRole: 'ADMIN' },
     },
+    {
+        path: '/admin/orders',
+        name: 'OrdersPage',
+        component: OrdersPage,
+        props: true,
+        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
+    }
 ];
 
 // Создаем и настраиваем маршрутизатор

@@ -51,7 +51,7 @@ export default {
           name: size.name,
         });
         size.isEditing = false;
-        this.loadSizes();
+        await this.loadSizes();
       } catch (error) {
         console.error('Ошибка сохранения размера:', error);
       }
@@ -59,7 +59,7 @@ export default {
     async deleteSize(size) {
       try {
         await axios.delete(`/admin/sizes/${size.id}`);
-        this.loadSizes();
+        await this.loadSizes();
       } catch (error) {
         console.error('Ошибка удаления размера:', error);
       }
