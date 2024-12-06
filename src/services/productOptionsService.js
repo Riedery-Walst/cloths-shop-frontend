@@ -19,3 +19,14 @@ export const fetchSizes = async () => {
         throw error;
     }
 };
+
+export const fetchProductName = async (productId) => {
+    try {
+        // Здесь предполагается, что API возвращает данные продукта по ID
+        const response = await axios.get(`/products/${productId}/name`);
+        return response.data; 
+    } catch (error) {
+        console.error('Ошибка загрузки имени продукта:', error);
+        throw error;
+    }
+};

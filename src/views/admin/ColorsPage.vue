@@ -19,7 +19,7 @@
 <script>
 import Sidebar from '@components/admin/AdminSidebar.vue';
 import Header from '@components/admin/AdminHeader.vue';
-import ColorTable from '@components/admin/ColorTable.vue';
+import ColorTable from '@/components/admin/ColorsTable.vue';
 import axios from '@axios';
 
 export default {

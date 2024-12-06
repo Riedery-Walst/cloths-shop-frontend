@@ -23,6 +23,7 @@
         <th>Продукты</th>
         <th>Общее количество</th>
         <th>Цвет</th>
+        <th>Размер</th>
         <th>Пользователь</th>
         <th>Email</th>
         <th>Телефон</th>
@@ -37,12 +38,25 @@
         <td>
           <ul>
             <li v-for="item in order.items" :key="item.productId">
-              ID: {{ item.productId }} ({{ item.quantity }} шт.)
+              {{ item.productName }} ({{ item.quantity }} шт.) <!-- Отображаем имя продукта -->
             </li>
           </ul>
         </td>
         <td>{{ order.quantity }}</td>
-        <td>{{ order.color }}</td>
+        <td>
+          <ul>
+            <li v-for="item in order.items" :key="item.productId">
+              {{ item.colorName }} <!-- Отображаем имя цвета -->
+            </li>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <li v-for="item in order.items" :key="item.productId">
+              {{ item.sizeName }} <!-- Отображаем имя размера -->
+            </li>
+          </ul>
+        </td>
         <td>{{ order.user.name }}</td>
         <td>{{ order.user.email }}</td>
         <td>{{ order.user.phone }}</td>
@@ -123,9 +137,6 @@ export default {
     handlePageSizeChange() {
       this.currentPage = 1; // Сбрасываем на первую страницу при изменении размера
     },
-    viewOrderDetails(orderId) {
-      console.log(`Детали заказа ${orderId}`);
-    },
     sort(field) {
       if (this.sortField === field) {
         this.sortDirection *= -1; // Меняем направление сортировки
@@ -145,27 +156,32 @@ export default {
 .orders-table {
   width: 100%;
 }
+
 .filters {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
 }
+
 .filters input {
   padding: 5px;
   border: 1px solid #ddd;
   border-radius: 4px;
   width: 70%;
 }
+
 .filters select {
   padding: 5px;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
+
 .pagination {
   display: flex;
   justify-content: center;
   margin-top: 10px;
 }
+
 button {
   margin: 0 5px;
   padding: 5px 10px;
@@ -175,6 +191,7 @@ button {
   border-radius: 4px;
   cursor: pointer;
 }
+
 button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
