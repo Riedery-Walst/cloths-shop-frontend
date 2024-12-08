@@ -1,2 +1,28 @@
-@import './base.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
+/* Основной стиль для текста */
+body {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.5; /* Устанавливаем комфортную высоту строки */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Добавим отступы для всего контента */
+.container {
+    padding-left: 135px;
+    padding-right: 135px;
+}
+
+/* Применим шрифт для всех заголовков */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Дополнительные стили для body, если нужно */
+body {
+    padding-left: 135px;
+    padding-right: 135px;
+}

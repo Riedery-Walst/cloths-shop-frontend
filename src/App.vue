@@ -1,7 +1,13 @@
 <script setup>
 import './assets/main.css';
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
+
 </script>
 
 <template>
-  <router-view />
+  <div id="app">
+    <Breadcrumbs />
+    <router-view />
+  </div>
 </template>
+
