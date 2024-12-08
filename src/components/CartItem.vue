@@ -12,8 +12,8 @@
       <router-link :to="productLink" class="product-name">
         <h3>{{ item.name }}</h3>
       </router-link>
-      <p>Размер: {{ displaySize }}</p>
-      <p>Цвет: {{ displayColor }}</p>
+      <p>Размер: {{ item.size }}</p>
+      <p>Цвет: {{ item.color }}</p>
       <p>Цена: {{ item.price }} ₽</p>
     </div>
 
@@ -67,22 +67,6 @@ export default {
     },
     productLink() {
       return `/product/${this.item.productId}`;
-    },
-    displaySize() {
-      // Если на странице оформления заказа, показываем имя размера, а не ID
-      if (this.isCheckoutPage) {
-        const size = this.item.size;  // это должно быть имя размера
-        return size ? size : 'Неизвестно';
-      }
-      return this.item.sizeId;  // иначе показываем ID размера
-    },
-    displayColor() {
-      // Если на странице оформления заказа, показываем имя цвета, а не ID
-      if (this.isCheckoutPage) {
-        const color = this.item.color;  // это должно быть имя цвета
-        return color ? color : 'Неизвестно';
-      }
-      return this.item.colorId;  // иначе показываем ID цвета
     },
   },
   methods: {
@@ -138,11 +122,10 @@ export default {
   border: none;
   padding: 5px 10px;
   cursor: pointer;
-  font-size: 14px;
   transition: background-color 0.3s;
 }
 
 .remove-btn:hover {
-  background-color: #e60000;
+  background-color: #ff1a1a;
 }
 </style>

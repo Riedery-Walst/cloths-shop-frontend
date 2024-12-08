@@ -3,6 +3,23 @@
     <Sidebar />
     <div class="main-content">
       <h2>Заказы</h2>
+      <!-- Панель управления пагинацией и выбором количества заказов на странице -->
+      <div class="pagination-controls">
+        <label for="pageSize">Показывать заказов на странице:</label>
+        <select id="pageSize" v-model="pageSize" @change="savePageSize">
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+        </select>
+
+        <div class="pagination">
+          <button @click="loadOrders('prev')" :disabled="pageNumber === 0">Назад</button>
+          <span>Страница {{ pageNumber + 1 }} из {{ totalPages }}</span>
+          <button @click="loadOrders('next')" :disabled="pageNumber === totalPages - 1">Вперед</button>
+        </div>
+      </div>
+
+      <!-- Таблица с заказами -->
       <OrdersTable :orders="orders" />
     </div>
   </div>
@@ -24,20 +41,33 @@ export default {
       orders: [], // Массив для хранения заказов
       colors: [], // Массив для хранения цветов
       sizes: [],  // Массив для хранения размеров
-      products: [] // Массив для хранения названий продуктов
+      pageSize: localStorage.getItem('pageSize') || 25, // Загружаем значение из localStorage или 25 по умолчанию
+      pageNumber: 0, // Начальная страница
+      totalPages: 1, // Количество страниц
     };
   },
   methods: {
-    async loadOrders() {
+    async loadOrders(direction = '') {
       try {
+        // Изменяем страницу в зависимости от действия пользователя
+        if (direction === 'next') {
+          if (this.pageNumber < this.totalPages - 1) {
+            this.pageNumber++;
+          }
+        } else if (direction === 'prev') {
+          if (this.pageNumber > 0) {
+            this.pageNumber--;
+          }
+        }
+
         // Загружаем список цветов, размеров и заказов
         const [colorsResponse, sizesResponse, ordersResponse] = await Promise.all([
           fetchColors(),
           fetchSizes(),
           axios.get('/admin/orders', {
             params: {
-              page: 0,
-              size: 100, // Загружаем максимум заказов
+              page: this.pageNumber,
+              size: this.pageSize,
             },
           }),
         ]);
@@ -63,7 +93,7 @@ export default {
           return map;
         }, {});
 
-        // Преобразуем данные заказов с добавлением имен продуктов
+        // Преобразуем данные заказов с добавлением имен продуктов, цветов и размеров
         this.orders = ordersResponse.data.content.map(order => ({
           id: order.id,
           items: order.items.map(item => ({
@@ -73,22 +103,32 @@ export default {
             sizeName: this.getSizeName(item.sizeId),    // Получаем имя размера
             productName: productNameMap[item.productId] || 'Неизвестный продукт' // Используем отображение имен
           })),
-          product: order.items.map(item => `ID: ${item.productId}`).join(', '),
-          size: order.items.map(item => item.sizeId).join(', '),
+          product: order.items.map(item => productNameMap[item.productId] || 'Неизвестный продукт').join(', '),
+          size: order.items.map(item => this.getSizeName(item.sizeId)).join(', '),
           quantity: order.items.reduce((sum, item) => sum + item.quantity, 0),
-          color: order.items.map(item => item.colorId).join(', '),
+          color: order.items.map(item => this.getColorName(item.colorId)).join(', '),
           user: {
             name: `${order.owner.firstName} ${order.owner.lastName}`,
             email: order.owner.email,
             phone: order.owner.phone || 'Не указано',
+            address: `${order.owner.address.street}, ${order.owner.address.city}, ${order.owner.address.country}, ${order.owner.address.postalCode}` // Добавляем адрес
           },
           totalPrice: order.totalPrice,
-          createdDate: order.createdDate,
+          createdDate: this.formatDate(order.createdDate), // Форматируем дату
           status: order.status,
         }));
+
+        // Рассчитываем количество страниц
+        this.totalPages = Math.ceil(ordersResponse.data.totalElements / this.pageSize);
       } catch (error) {
         console.error('Ошибка загрузки данных:', error);
       }
+    },
+
+    // Метод для сохранения выбранного размера страницы в localStorage
+    savePageSize() {
+      localStorage.setItem('pageSize', this.pageSize);
+      this.loadOrders(); // Перезагружаем данные после изменения количества заказов на странице
     },
 
     // Метод для получения имени цвета по его ID
@@ -102,6 +142,12 @@ export default {
       const size = this.sizes.find(s => s.id === sizeId);
       return size ? size.name : 'Неизвестный размер';
     },
+
+    // Метод для форматирования даты
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      return `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+    },
   },
   mounted() {
     this.loadOrders();
@@ -113,5 +159,20 @@ export default {
 .main-content {
   flex: 1;
   padding: 20px;
+}
+
+.pagination-controls {
+  margin-bottom: 20px;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 </style>
