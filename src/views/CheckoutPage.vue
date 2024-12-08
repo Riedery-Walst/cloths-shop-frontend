@@ -1,6 +1,5 @@
 <template>
   <div class="checkout-page">
-    <AppHeader />
     <div class="checkout-container">
       <h1>Оформление заказа</h1>
 
@@ -31,13 +30,10 @@
         </div>
       </div>
     </div>
-    <AppFooter />
   </div>
 </template>
 
 <script>
-import AppHeader from "@components/AppHeader.vue";
-import AppFooter from "@components/AppFooter.vue";
 import CartItem from "@components/CartItem.vue";
 import AccountInfoForm from "@components/AccountInfoForm.vue";
 import { getFullCartData } from "@services/cartProcessingService";
@@ -46,14 +42,11 @@ import axios from "@axios";
 
 export default {
   components: {
-    AppHeader,
-    AppFooter,
     CartItem,
     AccountInfoForm,
   },
   data() {
     return {
-      // Переменная для хранения ID заказа
       orderId: null,
       form: {
         firstName: "",
@@ -73,25 +66,23 @@ export default {
       cartItems: [],
       totalPrice: 0,
       countries: [
-        { code: "RU", name: "Россия" },
-        { code: "KZ", name: "Казахстан" },
-        { code: "BY", name: "Беларусь" },
+        {code: "RU", name: "Россия"},
+        {code: "KZ", name: "Казахстан"},
+        {code: "BY", name: "Беларусь"},
       ],
       showErrors: false,
     };
   },
   methods: {
-    // Загрузка корзины
     async fetchCart() {
       try {
-        const { items, totalPrice } = await getFullCartData();
+        const {items, totalPrice} = await getFullCartData();
         this.cartItems = items;
         this.totalPrice = totalPrice;
       } catch (error) {
         console.error("Ошибка загрузки корзины:", error);
       }
     },
-    // Загрузка профиля пользователя
     async fetchProfile() {
       try {
         const profile = await getProfile();
@@ -107,7 +98,6 @@ export default {
         console.error("Ошибка загрузки профиля:", error);
       }
     },
-    // Проверка валидности формы
     validateForm() {
       const requiredFields = [
         this.form.firstName,
@@ -122,7 +112,6 @@ export default {
       ];
       return requiredFields.every((field) => field && field.trim() !== "");
     },
-    // Создание заказа
     async createOrder() {
       const orderData = {
         customer: {
@@ -132,34 +121,25 @@ export default {
           phone: this.form.phone,
         },
         address: this.form.address,
-        items: this.cartItems.map((item) => {
-          // Логируем содержимое каждого item
-          const itemData = JSON.parse(JSON.stringify(item));
-
-          // Логируем распакованный объект
-          console.log("Item data (unpacked):", itemData);
-
-          return {
-            productId: item.productId,
-            quantity: item.quantity,
-            colorId: item.colorId,    // Передаем colorId
-            sizeId: item.sizeId,      // Передаем sizeId
-          };
-        }),
-        totalPrice: this.totalPrice,  // Убедитесь, что поле называется totalPrice, а не total
+        items: this.cartItems.map((item) => ({
+          productId: item.productId,
+          quantity: item.quantity,
+          colorId: item.colorId,
+          sizeId: item.sizeId,
+        })),
+        totalPrice: this.totalPrice,
       };
 
       try {
         const response = await axios.post("/orders", orderData);
-        this.orderId = response.data.id;  // Сохраняем id из ответа
-        return response.data;  // Возвращаем весь объект, включая id
+        this.orderId = response.data.id;
+        return response.data;
       } catch (error) {
         console.error("Ошибка при создании заказа:", error);
         alert("Произошла ошибка при создании заказа.");
         throw error;
       }
     },
-    // Создание платежа и редирект на платёжную страницу
     async submitOrder() {
       if (!this.validateForm()) {
         this.showErrors = true;
@@ -168,17 +148,14 @@ export default {
       }
 
       try {
-        // Шаг 1: Создание заказа и получение его ID
         const order = await this.createOrder();
-
         console.log(`Создан заказ с ID: ${order.id}`);
 
-        // Шаг 2: Формирование и отправка запроса на оплату
         const paymentRequest = {
-          orderId: this.orderId,  // Используем сохранённый orderId
+          orderId: this.orderId,
           amount: {
-            value: this.totalPrice.toFixed(2), // Пример: "200.00"
-            currency: "RUB",  // Валюта
+            value: this.totalPrice.toFixed(2),
+            currency: "RUB",
           },
         };
 
@@ -190,8 +167,7 @@ export default {
             alert("Информация профиля сохранена!");
           }
 
-          // Перенаправление пользователя на платёжную страницу
-          window.location.href = paymentResponse.data.confirmation.confirmation_url; // Редирект на confirmation_url
+          window.location.href = paymentResponse.data.confirmation.confirmation_url;
         } else {
           alert("Не удалось получить URL для оплаты.");
         }

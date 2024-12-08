@@ -61,7 +61,7 @@ export default {
   width: 100%;
   height: 250px; /* Задаем фиксированную высоту для изображения */
   overflow: hidden;
-  border-radius: 8px; /* Сглаженные углы */
+  border-radius: 4px; /* Сглаженные углы */
   position: relative;
 }
 

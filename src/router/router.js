@@ -22,7 +22,15 @@ const OrdersPage = () => import('@/views/admin/OrdersPage.vue');
 const routes = [
     {
         path: '/',
-        name: 'MainPage',
+        redirect: '/products',
+    },
+    {
+        path: '/home',
+        redirect: '/products',
+    },
+    {
+        path: '/products',
+        name: 'ProductsPage',
         component: MainPage,
     },
     {

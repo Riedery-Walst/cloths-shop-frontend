@@ -1,4 +1,3 @@
-<!-- Breadcrumbs.vue -->
 <template>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -15,30 +14,51 @@ export default {
   computed: {
     breadcrumbs() {
       const path = this.$route.path.split('/').filter(Boolean);
-      let breadcrumbs = [{ name: 'Главная', link: '/' }];
+      let breadcrumbs = [{name: 'Главная', link: '/'}];
 
       if (path.length > 0) {
-        if (path[0] === 'product') {
+        // Для страницы продуктов
+        if (path[0] === 'products' || this.$route.path === '/') {
+          breadcrumbs.push({
+            name: 'Продукты',
+            link: '/products',  // Можно настроить ссылку на страницу с продуктами
+          });
+        }
+
+        // Для страницы товара
+        else if (path[0] === 'product') {
           breadcrumbs.push({
             name: `Товар ${this.$route.params.id}`,
             link: null
           });
-        } else if (path[0] === 'cart') {
+        }
+
+        // Для корзины
+        else if (path[0] === 'cart') {
           breadcrumbs.push({
             name: 'Корзина',
             link: '/cart'
           });
-        } else if (path[0] === 'checkout') {
+        }
+
+        // Для оформления заказа
+        else if (path[0] === 'checkout') {
           breadcrumbs.push({
             name: 'Оформление заказа',
             link: '/checkout'
           });
-        } else if (path[0] === 'profile') {
+        }
+
+        // Для профиля
+        else if (path[0] === 'profile') {
           breadcrumbs.push({
             name: 'Профиль',
             link: '/profile'
           });
-        } else if (path[0] === 'admin') {
+        }
+
+        // Для админки
+        else if (path[0] === 'admin') {
           if (path[1] === 'colors') {
             breadcrumbs.push({
               name: 'Цвета',
@@ -78,12 +98,13 @@ export default {
 <style scoped>
 .breadcrumb {
   list-style: none;
-  padding: 0;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  padding-left: 135px;
   margin: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 0; /* Убираем gap, так как / будет разделять элементы */
 }
 
 .breadcrumb-item {
@@ -93,7 +114,6 @@ export default {
   align-items: center;
   justify-content: flex-start;
   height: 21px;
-  padding: 0;
   font-family: Poppins, sans-serif;
   font-size: 14px;
   font-weight: 400;
@@ -110,7 +130,7 @@ export default {
 
 .breadcrumb-item + .breadcrumb-item:before {
   content: "/";
-  margin: 0 8px; /* Уменьшаем расстояние между / и элементами */
+  margin: 0 12px;
   color: rgba(0, 0, 0, 0.5);
   display: inline-block;
 }
@@ -125,6 +145,12 @@ export default {
 
 .breadcrumb-item:last-child span {
   color: rgb(0, 0, 0);
+  opacity: 1;
+}
+
+.breadcrumb-item a:hover,
+.breadcrumb-item span:hover {
+  color: #DB4444;
   opacity: 1;
 }
 </style>

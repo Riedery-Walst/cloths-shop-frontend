@@ -1,28 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-
-/* Основной стиль для текста */
+/* Общие стили для body */
 body {
     font-family: 'Inter', sans-serif;
     font-size: 16px;
-    line-height: 1.5; /* Устанавливаем комфортную высоту строки */
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background-color: white;
 }
 
-/* Добавим отступы для всего контента */
+/* Хедер растягивается на всю ширину */
+.header {
+    width: 100%; /* Растягиваем хедер на всю ширину экрана */
+    padding: 20px 0; /* Отступы внутри хедера */
+    text-align: center;
+}
+
+/* Футер растягивается на всю ширину */
+.footer {
+    background-color: #333;
+    color: white;
+    width: 100%; /* Растягиваем футер на всю ширину экрана */
+    text-align: left;
+}
+
+/* Контейнер для основного контента */
+.main-content {
+    padding: 20px 0; /* Отступы сверху и снизу */
+}
+
+/* Ограничиваем ширину основного контента */
 .container {
-    padding-left: 135px;
-    padding-right: 135px;
-}
-
-/* Применим шрифт для всех заголовков */
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter', sans-serif;
-}
-
-/* Дополнительные стили для body, если нужно */
-body {
-    padding-left: 135px;
-    padding-right: 135px;
+    max-width: 1200px; /* Ограничиваем максимальную ширину */
+    margin: 0; /* Центрируем контейнер */
+    padding: 0 135px; /* Отступы по бокам для контейнера */
 }

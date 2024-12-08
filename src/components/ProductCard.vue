@@ -55,41 +55,47 @@ export default {
 </script>
 
 <style scoped>
-.product-card {
-  width: 220px;
-  padding: 16px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
 
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+.product-card {
+  width: 270px;
+  height: 350px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
 .product-name {
   font-size: 16px;
   font-weight: 500;
-  color: #333;
-  margin: 10px 0 5px;
+  color: #000000;
+  margin-top: 16px;
+  margin-bottom: 0;
+  transition: color 0.3s ease; /* Плавный переход */
+}
+
+/* Эффект при наведении на карточку */
+.product-card:hover .product-name {
+  color: #DB4444; /* Меняем цвет при наведении */
+}
+
+/* Эффект увеличения карточки при наведении */
+.product-card:hover {
+  transform: scale(1.05);
 }
 
 .price {
   font-size: 14px;
-  color: #666;
-  font-weight: bold;
-  margin: 5px 0;
+  color: #DB4444;
+  margin-top: 8px;
+  margin-bottom: 0;
 }
 
 .color-options {
   display: flex;
-  justify-content: center;
   gap: 8px;
-  margin: 10px 0;
+  margin-top: 8px;
+  margin-bottom: 0;
 }
 
 .color-circle {

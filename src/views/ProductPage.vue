@@ -1,6 +1,5 @@
 <template>
   <div class="product-page">
-    <AppHeader />
     <div class="product-content" v-if="product">
       <div class="image-gallery">
         <img
@@ -54,21 +53,16 @@
         <button class="add-to-cart-button" @click="addToCart">Добавить в корзину</button>
       </div>
     </div>
-    <AppFooter />
   </div>
 </template>
 
 <script>
-import AppHeader from '@components/AppHeader.vue';
-import AppFooter from '@components/AppFooter.vue';
 import QuantityControl from '@components/QuantityControl.vue'; // Import the QuantityControl component
 import axios from '@axios';
 import { addProductToCart } from '@services/cartService';
 
 export default {
   components: {
-    AppHeader,
-    AppFooter,
     QuantityControl, // Register the component
   },
   data() {

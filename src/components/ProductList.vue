@@ -65,4 +65,11 @@ export default {
 </script>
 
 <style scoped>
+.products-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px 60px;
+  margin: 0;
+  padding: 0;
+}
 </style>

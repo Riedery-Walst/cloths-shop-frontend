@@ -1,6 +1,5 @@
 <template>
   <div class="cart-page">
-    <AppHeader />
     <div class="content">
       <h1>Корзина</h1>
       <div v-if="cartItems.length > 0" class="cart-items">
@@ -18,13 +17,10 @@
       </div>
       <TotalSummary v-if="cartItems.length > 0" :total="totalPrice" @checkout="checkout" />
     </div>
-    <AppFooter />
   </div>
 </template>
 
 <script>
-import AppHeader from "@components/AppHeader.vue";
-import AppFooter from "@components/AppFooter.vue";
 import { getFullCartData } from "@services/cartProcessingService";
 import CartItem from "@components/CartItem.vue";
 import TotalSummary from "@components/TotalSummary.vue";
@@ -32,8 +28,6 @@ import { updateCartItemQuantity, removeCartItem } from "@services/cartService.js
 
 export default {
   components: {
-    AppHeader,
-    AppFooter,
     CartItem,
     TotalSummary,
   },
@@ -46,7 +40,7 @@ export default {
   methods: {
     async fetchCart() {
       try {
-        const { items, totalPrice } = await getFullCartData();
+        const {items, totalPrice} = await getFullCartData();
         this.cartItems = items;
         this.totalPrice = totalPrice;
       } catch (error) {
@@ -90,20 +84,4 @@ export default {
 </script>
 
 <style scoped>
-.cart-page {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.content {
-  flex: 1;
-}
-
-.cart-items {
-  margin-bottom: 20px;
-}
 </style>
