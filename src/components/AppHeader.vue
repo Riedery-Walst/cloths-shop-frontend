@@ -16,7 +16,7 @@
         </div>
 
         <!-- Иконка и текст для корзины -->
-        <div class="icon-container" @click="goToCart">
+        <div class="icon-container cart-icon-container" @click="goToCart">
           <svg class="icon" id="cart-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M24 27V24.3333C24 22.9188 23.5224 21.5623 22.6722 20.5621C21.8221 19.5619 20.669 19 19.4667 19H11.5333C10.331 19 9.17795 19.5619 8.32778 20.5621C7.47762 21.5623 7 22.9188 7 24.3333V27" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M16.5 14C18.9853 14 21 11.9853 21 9.5C21 7.01472 18.9853 5 16.5 5C14.0147 5 12 7.01472 12 9.5C12 11.9853 14.0147 14 16.5 14Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -54,6 +54,7 @@ export default {
 /* Линия */
 .line {
   position: absolute;
+  opacity: 0.3;
   bottom: -1px; /* Линия ниже контейнера */
   left: 0;
   width: 100%;
@@ -128,15 +129,20 @@ export default {
 
 /* Изменение цвета при наведении на контейнер */
 .icon-container:hover {
-  color: #DB4444; /* Цвет текста и иконки при наведении */
+  color: #E07575; /* Цвет текста и иконки при наведении */
 }
 
 .icon-container:hover .icon {
-  stroke: #DB4444; /* Меняем цвет иконки при наведении */
+  stroke: #E07575; /* Меняем цвет иконки при наведении */
 }
 
 .icon-container:hover .profile-link,
 .icon-container:hover .cart {
-  color: #DB4444; /* Меняем цвет текста при наведении */
+  color: #E07575; /* Меняем цвет текста при наведении */
 }
+
+.icon-container.cart-icon-container {
+  gap: 5px;
+}
+
 </style>

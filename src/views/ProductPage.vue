@@ -1,5 +1,5 @@
 <template>
-  <div class="product-page">
+  <div class="product-page container">
     <div class="product-content" v-if="product">
       <div class="image-gallery">
         <img
@@ -14,43 +14,60 @@
         <h1>{{ product.name }}</h1>
         <p class="price">{{ product.price }} ₽</p>
 
-        <div class="color-selection" v-if="product.colors && product.colors.length">
-          <h3>Выберите цвет</h3>
-          <div class="color-options">
-            <span
-                v-for="color in product.colors"
-                :key="color.id"
-                :style="{ backgroundColor: color.hex }"
-                class="color-circle"
-                :title="color.name"
-                @click="selectedColor = color"
-                :class="{ selected: selectedColor === color }"
-            ></span>
-          </div>
-        </div>
-
-        <div class="size-selection" v-if="product.sizes && product.sizes.length">
-          <h3>Выберите размер</h3>
-          <div class="size-options">
-            <span
-                v-for="size in product.sizes"
-                :key="size.id"
-                class="size-badge"
-                @click="selectedSize = size"
-                :class="{ selected: selectedSize === size }"
-            >{{ size.name }}</span>
-          </div>
-        </div>
-
         <p class="description">{{ product.description }}</p>
 
-        <!-- Use the QuantityControl component here -->
-        <QuantityControl
-            :quantity="quantity"
-            @update-quantity="updateQuantity"
-        />
+        <div class="description-line"></div>
 
-        <button class="add-to-cart-button" @click="addToCart">Добавить в корзину</button>
+        <div class="product-options">
+          <!-- Цвет -->
+          <div class="color-selection" v-if="product.colors && product.colors.length">
+            <h3>Цвет:</h3>
+            <div class="color-options">
+              <button
+                  v-for="color in product.colors"
+                  :key="color.id"
+                  :style="{ backgroundColor: color.hex }"
+                  class="color-button"
+                  :title="color.name"
+                  @click="selectedColor = color"
+                  :class="{ selected: selectedColor === color }"
+              ></button>
+            </div>
+          </div>
+
+          <!-- Размер -->
+          <div class="size-selection" v-if="product.sizes && product.sizes.length">
+            <h3>Размер:</h3>
+            <div class="size-options">
+              <button
+                  v-for="size in product.sizes"
+                  :key="size.id"
+                  class="size-button"
+                  @click="selectSize(size)"
+                  :class="{ selected: selectedSize === size }"
+                  :style="getSizeButtonStyle(size)"
+              >{{ size.name }}</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Количество и кнопка добавления -->
+        <div class="quantity-and-cart">
+          <QuantityControl
+              :quantity="quantity"
+              @update-quantity="updateQuantity"
+          />
+          <button
+              class="add-to-cart-button"
+              @click="addToCart"
+              :class="{ clicked: buttonClicked }"
+              @mousedown="buttonClicked = true"
+              @mouseup="buttonClicked = false"
+              @mouseleave="buttonClicked = false"
+          >
+            Добавить в корзину
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -71,6 +88,7 @@ export default {
       selectedColor: null,
       selectedSize: null,
       quantity: 1,
+      buttonClicked: false, // Состояние для отслеживания нажатия на кнопку
     };
   },
   methods: {
@@ -89,6 +107,14 @@ export default {
     },
     updateQuantity(newQuantity) {
       this.quantity = newQuantity;
+    },
+    selectSize(size) {
+      this.selectedSize = size; // Обновляем выбранный размер
+    },
+    getSizeButtonStyle(size) {
+      return this.selectedSize === size
+          ? { backgroundColor: '#DB4444', color: '#fff' }
+          : {};
     },
     async addToCart() {
       if (!this.selectedColor || !this.selectedSize) {
@@ -122,81 +148,147 @@ export default {
 .product-content {
   display: flex;
   gap: 20px;
-  padding: 20px;
 }
 
 .image-gallery {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px;
   max-width: 50%;
 }
 
 .product-image {
   width: 100%;
-  border-radius: 8px;
 }
 
 .product-info {
   position: sticky;
   top: 20px;
   flex: 1;
-  max-width: 300px;
+}
+
+h1 {
+  margin: 0 0 -2px;
+}
+
+.product-options {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.color-selection h3, .size-selection h3 {
+  color: rgb(0, 0, 0);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-align: left;
+  margin: 0;
 }
 
 .price {
+  color: rgb(0, 0, 0);
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  text-align: left;
+}
+
+.description {
+  margin-top: 12px; /* Установите отступ после цены */
+  font-size: 14px;
+  color: #000000;
+}
+
+.description-line {
+  display: flex;
+  width: 100%;
+  height: 1px; /* Толщина линии */
+  background-color: rgba(0, 0, 0);
 }
 
 .color-selection, .size-selection {
-  margin-top: 20px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.color-selection h3, .size-selection h3 {
+  font-size: 20px;
+  margin-right: 24px;
+  font-weight: 400;
 }
 
 .color-options, .size-options {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  margin: 0;
 }
 
-.color-circle {
-  width: 30px;
-  height: 30px;
+.color-options {
+  gap: 8px;
+}
+
+.size-options {
+  gap: 8px;
+}
+
+.color-button {
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  border: 2px solid transparent;
+  border: 1px solid rgba(0, 0, 0, 0.5);
   cursor: pointer;
+  background-color: transparent;
+  position: relative;
 }
 
-.color-circle.selected {
-  border-color: #000;
+.color-button.selected {
+  border-width: 2px;
+  border-color: black;
 }
 
-.size-badge {
-  padding: 8px 16px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-.size-badge.selected {
-  background-color: #007BFF;
-  color: #fff;
-}
-
-.description {
-  margin-top: 20px;
+.size-button {
+  width: auto;
+  height: auto;
   font-size: 14px;
-  color: #666;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  padding: 8px 14px;
+  cursor: pointer;
+  background-color: transparent;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.size-button.selected {
+  background-color: #DB4444;
+  color: #fff;
+  border-color: white;
+}
+
+.size-button:hover {
+  background-color: #E07575;
+  color: #fff;
+  border-color: white;
+}
+
+.quantity-and-cart {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
 }
 
 .add-to-cart-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background: linear-gradient(to right, #ff8269, #ff5d9e);
+  height: 44px;
+  padding: 10px 16px;
+  background-color: #db4444;
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 4px;
   cursor: pointer;
+}
+
+.add-to-cart-button:hover {
+  background-color: #E07575;
 }
 </style>
