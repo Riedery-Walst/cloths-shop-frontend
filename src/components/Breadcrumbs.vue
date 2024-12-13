@@ -14,7 +14,7 @@ export default {
   computed: {
     breadcrumbs() {
       const path = this.$route.path.split('/').filter(Boolean);
-      let breadcrumbs = [{name: 'Главная', link: '/'}];
+      let breadcrumbs = [{ name: 'Главная', link: '/' }];
 
       if (path.length > 0) {
         // Для страницы продуктов
@@ -54,6 +54,22 @@ export default {
           breadcrumbs.push({
             name: 'Профиль',
             link: '/profile'
+          });
+        }
+
+        // Для страницы входа
+        else if (path[0] === 'login') {
+          breadcrumbs.push({
+            name: 'Вход',
+            link: null
+          });
+        }
+
+        // Для страницы регистрации
+        else if (path[0] === 'register') {
+          breadcrumbs.push({
+            name: 'Регистрация',
+            link: null
           });
         }
 
@@ -98,8 +114,8 @@ export default {
 <style scoped>
 .breadcrumb {
   list-style: none;
-  padding-top: 80px;
-  padding-bottom: 80px;
+  padding-top: 40px;
+  padding-bottom: 40px;
   padding-left: 135px;
   margin: 0;
   display: flex;

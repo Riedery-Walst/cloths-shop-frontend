@@ -1,31 +1,46 @@
 <template>
-  <div>
+  <div class="container">
     <h1>Регистрация</h1>
+    <p>Введите информацию ниже</p>
     <form @submit.prevent="submitRegistration">
       <div class="name-fields">
         <input type="text" placeholder="Имя" v-model="firstName" required />
         <input type="text" placeholder="Фамилия" v-model="lastName" required />
       </div>
+      <span v-if="emailExists" class="error-message">
+        Этот email уже зарегистрирован
+      </span>
+
       <input
           type="email"
           placeholder="Электронная почта"
           v-model="email"
           @blur="checkEmail"
+          :class="{'filled': email}"
           required
       />
-      <span v-if="emailExists" class="error-message">
-        Этот email уже зарегистрирован
-      </span>
-
-      <input type="password" placeholder="Пароль" v-model="password" required />
+      <input
+          type="password"
+          placeholder="Пароль"
+          v-model="password"
+          :class="{'filled': password}"
+          required
+      />
       <span v-if="password && password.length < 8" class="error-message">
         Пароль должен содержать не менее 8 символов
       </span>
 
-      <input type="password" placeholder="Подтверждение пароля" v-model="confirmPassword" required />
       <span v-if="password !== confirmPassword && confirmPassword" class="error-message">
         Пароли не совпадают
       </span>
+
+      <input
+          type="password"
+          placeholder="Подтверждение пароля"
+          v-model="confirmPassword"
+          :class="{'filled': confirmPassword}"
+          required
+      />
 
       <button type="submit" class="submit-button">Создать</button>
     </form>
@@ -106,56 +121,100 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  padding-left: 130px;
+}
+
 h1 {
+  color: #181818;
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
+  margin-top: 0;
+}
+
+p {
+  margin-top: 24px;
+  margin-bottom: 40px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
 }
 
 .name-fields {
   display: flex;
+  width: 100%;
   gap: 1rem;
-  margin-bottom: 1rem;
 }
 
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-  width: 100%;
-  padding: 0.75rem;
+  padding: 0.3rem 0.75rem 0.5rem 0;
   font-size: 1rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 0.5rem;
+  margin-bottom: 2.5rem;
+  border: none;
+  border-bottom: 1px solid black; /* Стили для нижней границы */
+  background-color: white;
+  transition: all 0.3s ease;
+  box-sizing: border-box; /* Убедитесь, что padding и border входят в ширину элемента */
+  flex-grow: 1; /* Это заставит поля расширяться и заполнять доступное пространство */
 }
 
+.name-fields input[type="text"] {
+  flex-grow: 1; /* Устанавливаем, чтобы оба поля занимали равное пространство */
+}
+
+/* Убираем стили при заполнении */
+input[type="email"]:focus,
+input[type="password"]:focus {
+  outline: none;
+}
+
+/* Кнопка */
 .submit-button {
-  background-color: black;
+  background-color: #DB4444; /* Новый цвет */
   color: white;
-  padding: 0.75rem;
+  padding: 1.1rem;
   font-size: 1rem;
   font-weight: bold;
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem; /* Снижаем отступ до 0.5rem */
+  transition: background-color 0.3s ease;
 }
 
+.submit-button:hover {
+  background-color: #E07575; /* Цвет при наведении */
+}
+
+/* Сообщение об ошибке */
 .error-message {
   color: red;
   font-size: 0.875rem;
   margin-bottom: 1rem;
-  display: block;
 }
 
+/* Стили для ссылки регистрации */
 .already-registered {
-  text-align: center;
   font-size: 0.875rem;
+  margin-top: 0.5rem  ;
 }
 
 .already-registered a {
-  color: blue;
-  cursor: pointer;
-  text-decoration: underline;
+  color: rgba(0, 0, 0, 0.6); /* Тот же цвет, что и у кнопки */
+  text-decoration: none;
+  padding: 0.25rem 0; /* Добавляем немного отступа */
+  border-bottom: 2px solid rgba(0, 0, 0, 0.6); /* Граница снизу */
+  transition: all 0.3s ease; /* Плавное изменение */
+}
+
+.already-registered a:hover {
+  border-color: #E2B93B;
+  color: #E07575;
 }
 </style>
+

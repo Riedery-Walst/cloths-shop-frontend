@@ -76,12 +76,7 @@ export default {
 
 /* Эффект при наведении на карточку */
 .product-card:hover .product-name {
-  color: #E07575; /* Меняем цвет при наведении */
-}
-
-/* Эффект увеличения карточки при наведении */
-.product-card:hover {
-  transform: scale(1.05);
+  color: #DB4444; /* Меняем цвет при наведении */
 }
 
 .price {

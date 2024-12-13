@@ -92,7 +92,7 @@ export default {
 }
 
 .footer-column a:hover {
-  color: #DB4444;
+  color: #E07575;
 }
 
 /* Линия, разделяющая содержимое футера и авторские права */

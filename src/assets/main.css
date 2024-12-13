@@ -1,6 +1,6 @@
 /* Общие стили для body */
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 16px;
     margin: 0;
     padding: 0;
@@ -32,4 +32,33 @@ body {
 .container {
     margin: 0; /* Центрируем контейнер */
     padding: 0 135px; /* Отступы по бокам для контейнера */
+}
+
+
+h1 {
+    color: #181818;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+p {
+    margin-top: 24px;
+    margin-bottom: 40px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="email"],
+input[type="password"] {
+    padding: 0.3rem 0.75rem 0.5rem 0;
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+    border: none;
+    border-bottom: 1px solid black; /* Стили для нижней границы */
+    background-color: white;
+    transition: all 0.3s ease;
 }

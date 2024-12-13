@@ -1,15 +1,24 @@
 <template>
   <div class="product-page container">
     <div class="product-content" v-if="product">
+      <!-- Галерея изображений -->
       <div class="image-gallery">
-        <img
-            v-for="(photo, index) in product.photos"
-            :key="index"
-            :src="getImageUrl(photo)"
-            :alt="product.name"
-            class="product-image"
-        />
+        <div class="thumbnail-list">
+          <img
+              v-for="(photo, index) in product.photos"
+              :key="index"
+              :src="getImageUrl(photo)"
+              :alt="product.name"
+              class="thumbnail"
+              :class="{ active: currentIndex === index }"
+              @click="currentIndex = index"
+          />
+        </div>
+        <div class="main-image">
+          <img :src="getImageUrl(product.photos[currentIndex])" :alt="product.name" />
+        </div>
       </div>
+
       <div class="product-info">
         <h1>{{ product.name }}</h1>
         <p class="price">{{ product.price }} ₽</p>
@@ -22,17 +31,25 @@
           <!-- Цвет -->
           <div class="color-selection" v-if="product.colors && product.colors.length">
             <h3>Цвет:</h3>
-            <div class="color-options">
-              <button
-                  v-for="color in product.colors"
-                  :key="color.id"
-                  :style="{ backgroundColor: color.hex }"
-                  class="color-button"
-                  :title="color.name"
-                  @click="selectedColor = color"
-                  :class="{ selected: selectedColor === color }"
-              ></button>
-            </div>
+            <ul class="colors">
+              <li v-for="color in product.colors" :key="color.id">
+                <input
+                    type="radio"
+                    :id="'color-' + color.id"
+                    v-model="selectedColor"
+                    :value="color"
+                    :name="`color-${product.id}`"
+                    :style="{ display: 'none' }"
+                />
+                <label :for="'color-' + color.id">
+                  <span
+                      class="swatch"
+                      :style="{ backgroundColor: color.hex }"
+                      :title="color.name"
+                  ></span>
+                </label>
+              </li>
+            </ul>
           </div>
 
           <!-- Размер -->
@@ -89,6 +106,7 @@ export default {
       selectedSize: null,
       quantity: 1,
       buttonClicked: false, // Состояние для отслеживания нажатия на кнопку
+      currentIndex: 0, // Индекс текущего изображения
     };
   },
   methods: {
@@ -147,18 +165,42 @@ export default {
 
 .product-content {
   display: flex;
-  gap: 20px;
+  gap: 70px;
 }
 
 .image-gallery {
-  flex: 1;
   display: flex;
-  flex-direction: column;
-  max-width: 50%;
+  gap: 30px;
 }
 
-.product-image {
-  width: 100%;
+.thumbnail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.thumbnail {
+  width: 170px;
+  height: 170px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+}
+
+.thumbnail:hover {
+  border-color: #f1d0d0;
+}
+
+.thumbnail.active {
+  border-color: #DB4444;
+}
+
+.main-image img {
+  width: 500px;
+  height: auto;
+  object-fit: contain;
+  border: 1px solid #ccc;
 }
 
 .product-info {
@@ -220,32 +262,38 @@ h1 {
   font-weight: 400;
 }
 
-.color-options, .size-options {
-  display: flex;
-  margin: 0;
-}
-
-.color-options {
-  gap: 8px;
-}
-
 .size-options {
   gap: 8px;
 }
 
-.color-button {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-  background-color: transparent;
-  position: relative;
+.colors {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
 }
 
-.color-button.selected {
-  border-width: 2px;
-  border-color: black;
+.colors li {
+  margin-right: 20px;
+}
+
+.swatch {
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  height: 20px;
+  width: 20px;
+  border: 2px solid #d4d4d4;
+  cursor: pointer;
+}
+
+.swatch:hover {
+  border-color: #888;
+}
+
+input[type="radio"]:checked + label .swatch {
+  box-shadow: inset 0 0 0 2px white;
+  border-color: #000;
 }
 
 .size-button {
@@ -279,8 +327,10 @@ h1 {
 }
 
 .add-to-cart-button {
+  font-weight: 600;
   height: 44px;
-  padding: 10px 16px;
+  width: 100%;
+  margin-left: 16px;
   background-color: #db4444;
   color: #fff;
   border: none;

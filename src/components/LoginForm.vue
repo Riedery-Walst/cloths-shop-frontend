@@ -1,9 +1,22 @@
 <template>
-  <div>
+  <div class="container">
     <h1>Вход</h1>
+    <p>Введите информацию ниже</p>
     <form @submit.prevent="submitLogin">
-      <input type="email" placeholder="Электронная почта" v-model="email" required />
-      <input type="password" placeholder="Пароль" v-model="password" required />
+      <input
+          type="email"
+          placeholder="Электронная почта"
+          v-model="email"
+          :class="{'filled': email}"
+          required
+      />
+      <input
+          type="password"
+          placeholder="Пароль"
+          v-model="password"
+          :class="{'filled': password}"
+          required
+      />
 
       <!-- Сообщение об ошибке -->
       <span v-if="loginError" class="error-message">
@@ -11,9 +24,12 @@
       </span>
 
       <button type="submit" class="submit-button">Войти</button>
+
+      <!-- Ссылка для регистрации -->
+      <p class="registration-link">
+        Еще не зарегистрированы? <a href="/register">Регистрация</a>
+      </p>
     </form>
-    <button class="register-button" @click="goToRegister">Регистрация</button>
-    <a href="#" class="forgot-password">Забыли пароль?</a>
   </div>
 </template>
 
@@ -50,19 +66,26 @@ export default {
         this.loginError = true; // Устанавливаем ошибку, если запрос не удался
       }
     },
-    goToRegister() {
-      this.$router.push('/register');
-    },
   },
 };
 </script>
 
 <style scoped>
+.container {
+  padding-left: 130px;
+}
+
 h1 {
   color: #181818;
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
+  margin-top: 0;
+}
+
+p {
+  margin-top: 24px;
+  margin-bottom: 40px;
 }
 
 form {
@@ -72,46 +95,62 @@ form {
 
 input[type="email"],
 input[type="password"] {
-  padding: 0.75rem;
+  padding: 0.3rem 0.75rem 0.5rem 0;
   font-size: 1rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 0.5rem;
+  margin-bottom: 2.5rem;
+  border: none;
+  border-bottom: 1px solid black; /* Стили для нижней границы */
+  background-color: white;
+  transition: all 0.3s ease;
 }
 
+/* Убираем стили при заполнении */
+input[type="email"]:focus,
+input[type="password"]:focus {
+  outline: none;
+}
+
+/* Кнопка */
 .submit-button {
-  background-color: black;
+  background-color: #DB4444; /* Новый цвет */
   color: white;
-  padding: 0.75rem;
+  padding: 1.1rem;
   font-size: 1rem;
   font-weight: bold;
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem; /* Снижаем отступ до 0.5rem */
+  transition: background-color 0.3s ease;
 }
 
-.register-button {
-  background: none;
-  width: 100%;
-  color: blue;
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 1px solid blue;
-  border-radius: 0.5rem;
-  cursor: pointer;
+.submit-button:hover {
+  background-color: #E07575; /* Цвет при наведении */
 }
 
-.forgot-password {
-  color: blue;
-  text-align: right;
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
-}
-
+/* Сообщение об ошибке */
 .error-message {
   color: red;
   font-size: 0.875rem;
   margin-bottom: 1rem;
+}
+
+/* Стили для ссылки регистрации */
+.registration-link {
+  text-align: left;
+  margin-top: 0.5rem; /* Снижаем отступ */
+}
+
+.registration-link a {
+  color: rgba(0, 0, 0, 0.6); /* Тот же цвет, что и у кнопки */
+  text-decoration: none;
+  padding: 0.25rem 0; /* Добавляем немного отступа */
+  border-bottom: 2px solid rgba(0, 0, 0, 0.6); /* Граница снизу */
+  transition: all 0.3s ease; /* Плавное изменение */
+}
+
+.registration-link a:hover {
+  border-color: #E2B93B;
+  color: #E07575;
 }
 </style>
