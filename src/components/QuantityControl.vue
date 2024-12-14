@@ -1,38 +1,45 @@
 <template>
   <div class="quantity-control">
-    <button
-        @click="decreaseQuantity"
-        :disabled="quantity <= 1"
-        class="quantity-btn decrease-btn"
-    >
-      <!-- SVG для кнопки уменьшения -->
-      <svg width="1.5rem" height="1.5rem" viewBox="0 0 24 24" fill="none">
-        <defs>
-          <clipPath id="clip5366_1063">
-            <rect id="icon-minus" rx="0.000000" width="1.4375rem" height="1.4375rem" transform="translate(0.5rem 0.5rem)" fill="white" fill-opacity="0"/>
-          </clipPath>
-        </defs>
-        <rect id="icon-minus" rx="0.000000" width="1.4375rem" height="1.4375rem" transform="translate(0.5rem 0.5rem)" fill="#FFFFFF" fill-opacity="0"/>
-        <g clip-path="url(#clip5366_1063)">
-          <path id="Vector" d="M20 12L4 12" stroke="#000000" stroke-opacity="1.000000" stroke-width="0.09375rem" stroke-linecap="round"/>
-        </g>
-      </svg>
-    </button>
-    <span class="quantity-counter">{{ quantity }}</span>
-    <button @click="increaseQuantity" class="quantity-btn increase-btn">
-      <!-- SVG для кнопки увеличения -->
-      <svg width="1.5rem" height="1.5rem" viewBox="0 0 24 24" fill="none">
-        <defs>
-          <clipPath id="clip5366_1067">
-            <rect id="icon-plus" rx="0.000000" width="1.4375rem" height="1.4375rem" transform="translate(0.5rem 0.5rem)" fill="white" fill-opacity="0"/>
-          </clipPath>
-        </defs>
-        <rect id="icon-plus" rx="0.000000" width="1.4375rem" height="1.4375rem" transform="translate(0.5rem 0.5rem)" fill="#FFFFFF" fill-opacity="0"/>
-        <g clip-path="url(#clip5366_1067)">
-          <path id="Vector" d="M12 20L12 12L12 4M12 12L20 12M12 12L4 12" stroke="#000000" stroke-opacity="1.000000" stroke-width="0.09375rem" stroke-linecap="round"/>
-        </g>
-      </svg>
-    </button>
+    <!-- Слот для кнопки уменьшения -->
+    <slot name="decrease-btn">
+      <button @click="decreaseQuantity" :disabled="quantity <= 1" class="quantity-btn decrease-btn">
+        <!-- SVG для кнопки уменьшения -->
+        <svg width="1.5rem" height="1.5rem" viewBox="0 0 24 24" fill="none">
+          <defs>
+            <clipPath id="clip5366_1063">
+              <rect id="icon-minus" rx="0.000000" width="1.4375rem" height="1.4375rem" transform="translate(0.5rem 0.5rem)" fill="white" fill-opacity="0"/>
+            </clipPath>
+          </defs>
+          <rect id="icon-minus" rx="0.000000" width="1.4375rem" height="1.4375rem" transform="translate(0.5rem 0.5rem)" fill="#FFFFFF" fill-opacity="0"/>
+          <g clip-path="url(#clip5366_1063)">
+            <path id="Vector" d="M20 12L4 12" stroke="#000000" stroke-opacity="1.000000" stroke-width="0.09375rem" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </button>
+    </slot>
+
+    <!-- Слот для отображения количества -->
+    <slot name="counter">
+      <span class="quantity-counter">{{ quantity }}</span>
+    </slot>
+
+    <!-- Слот для кнопки увеличения -->
+    <slot name="increase-btn">
+      <button @click="increaseQuantity" class="quantity-btn increase-btn">
+        <!-- SVG для кнопки увеличения -->
+        <svg width="1.5rem" height="1.5rem" viewBox="0 0 24 24" fill="none">
+          <defs>
+            <clipPath id="clip5366_1067">
+              <rect id="icon-plus" rx="0.000000" width="1.4375rem" height="1.4375rem" transform="translate(0.5rem 0.5rem)" fill="white" fill-opacity="0"/>
+            </clipPath>
+          </defs>
+          <rect id="icon-plus" rx="0.000000" width="1.4375rem" height="1.4375rem" transform="translate(0.5rem 0.5rem)" fill="#FFFFFF" fill-opacity="0"/>
+          <g clip-path="url(#clip5366_1067)">
+            <path id="Vector" d="M12 20L12 12L12 4M12 12L20 12M12 12L4 12" stroke="#000000" stroke-opacity="1.000000" stroke-width="0.09375rem" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </button>
+    </slot>
   </div>
 </template>
 

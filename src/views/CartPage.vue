@@ -1,35 +1,29 @@
 <template>
-  <div class="cart-page">
+  <div class="cart-page container">
     <div class="content">
-      <h1>Корзина</h1>
-      <div v-if="cartItems.length > 0" class="cart-items">
-        <CartItem
-            v-for="item in cartItems"
-            :key="item.id"
-            :item="item"
+      <div v-if="cartItems.length > 0" class="cart-table-container">
+        <CartTable
+            :cartItems="cartItems"
+            :totalPrice="totalPrice"
             @update-quantity="updateQuantity"
             @remove-item="removeItem"
-            :isCheckoutPage="false"
         />
       </div>
       <div v-else>
         <p>Ваша корзина пуста</p>
       </div>
-      <TotalSummary v-if="cartItems.length > 0" :total="totalPrice" @checkout="checkout" />
     </div>
   </div>
 </template>
 
 <script>
 import { getFullCartData } from "@services/cartProcessingService";
-import CartItem from "@components/CartItem.vue";
-import TotalSummary from "@components/TotalSummary.vue";
+import CartTable from "@components/CartTable.vue";
 import { updateCartItemQuantity, removeCartItem } from "@services/cartService.js";
 
 export default {
   components: {
-    CartItem,
-    TotalSummary,
+    CartTable,
   },
   data() {
     return {
@@ -40,7 +34,7 @@ export default {
   methods: {
     async fetchCart() {
       try {
-        const {items, totalPrice} = await getFullCartData();
+        const { items, totalPrice } = await getFullCartData();
         this.cartItems = items;
         this.totalPrice = totalPrice;
       } catch (error) {
@@ -84,4 +78,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>
