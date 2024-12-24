@@ -27,7 +27,7 @@
 
 <script>
 import CartRow from "@components/CartRow.vue";
-import TotalSummary from "@components/TotalSummary.vue";
+import TotalSummary from "@/components/CartSummary.vue";
 import { updateCartItemQuantity, removeCartItem } from "@services/cartService.js";
 
 export default {
@@ -75,10 +75,9 @@ table {
   border-collapse: separate; /* Убирает промежутки между ячейками */
   table-layout: fixed; /* Обеспечивает одинаковую ширину столбцов */
   border-radius: 4px;
-  -webkit-border-vertical-spacing: 40px;
-
+  border-spacing: 0 40px;
+  margin-top: -40px;
 }
-
 
 th:first-child, td:first-child {
   width: 25%;
@@ -93,12 +92,6 @@ td {
 
 }
 
-.cart-table {
-  margin: 20px 0; /* Добавляет отступы вокруг таблицы */
 
-}
 
-.cart-table table {
-
-}
 </style>

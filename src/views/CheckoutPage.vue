@@ -1,5 +1,5 @@
 <template>
-  <div class="checkout-page">
+  <div class="checkout-page container">
     <div class="checkout-container">
       <h1>Оформление заказа</h1>
 
@@ -10,25 +10,16 @@
       <div class="save-info">
         <label>
           <input v-model="saveInfo" type="checkbox" />
-          Сохранить информацию
+          Сохраните эту информацию для более быстрой оплаты в следующий раз.
         </label>
       </div>
 
-      <!-- Детали заказа -->
-      <div class="order-summary">
-        <h3>Детали заказа</h3>
-        <CartItem
-            v-for="item in cartItems"
-            :key="item.id"
-            :item="item"
-            :disable-quantity-controls="true"
-            :isCheckoutPage="true"
-        />
-        <div class="total">
-          <p>Итого: {{ totalPrice }} ₽</p>
-          <button class="pay-button" @click="submitOrder">Оплатить</button>
-        </div>
-      </div>
+      <!-- Компонент с деталями заказа -->
+      <CheckoutSummary
+          :cartItems="cartItems"
+          :totalPrice="totalPrice"
+          :submitOrder="submitOrder"
+      />
     </div>
   </div>
 </template>
@@ -36,14 +27,16 @@
 <script>
 import CartItem from "@components/CartItem.vue";
 import AccountInfoForm from "@components/AccountInfoForm.vue";
-import { getFullCartData } from "@services/cartProcessingService";
-import { getProfile, updateProfile } from "@services/profileService";
+import CheckoutSummary from "@components/CheckoutSummary.vue";
+import {getFullCartData} from "@services/cartProcessingService";
+import {getProfile, updateProfile} from "@services/profileService";
 import axios from "@axios";
 
 export default {
   components: {
     CartItem,
     AccountInfoForm,
+    CheckoutSummary,
   },
   data() {
     return {
@@ -189,41 +182,5 @@ export default {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-}
-
-.checkout-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 20px;
-}
-
-.save-info {
-  margin: 20px 0;
-}
-
-.order-summary {
-  width: 300px;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 20px;
-}
-
-.total {
-  margin-top: 20px;
-}
-
-.pay-button {
-  width: 100%;
-  padding: 10px;
-  background: linear-gradient(to right, #ff8269, #ff5d9e);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.pay-button:hover {
-  opacity: 0.9;
 }
 </style>

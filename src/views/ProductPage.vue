@@ -327,7 +327,7 @@ input[type="radio"]:checked + label .swatch {
 }
 
 .add-to-cart-button {
-  font-weight: 600;
+  font-size: 16px;
   height: 44px;
   width: 100%;
   margin-left: 16px;
