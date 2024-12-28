@@ -9,39 +9,22 @@
 
     <!-- Информация о товаре -->
     <div class="product-details">
-      <router-link :to="productLink" class="product-name">
-        <h3>{{ item.name }}</h3>
-      </router-link>
-      <p>Размер: {{ item.size }}</p>
-      <p>Цвет: {{ item.color }}</p>
-      <p>Цена: {{ item.price }} ₽</p>
-    </div>
+      <div class="product-header">
+        <router-link :to="productLink" class="product-name">
+          <h3>{{ item.name }}</h3>
+        </router-link>
 
-    <!-- Управление количеством или отображение количества -->
-    <div class="controls">
-      <div v-if="isCheckoutPage" class="quantity-display">
-        <p>Количество: {{ item.quantity }}</p>
+        <!-- Отображение субтотала -->
+        <div v-if="isCheckoutPage" class="subtotal">
+          <p>{{ subtotal }} ₽</p>
+        </div>
       </div>
-      <div v-else class="quantity-controls">
-        <QuantityControl
-            :quantity="item.quantity"
-            @update-quantity="updateQuantity"
-        />
-      </div>
-      <button
-          v-if="!isCheckoutPage"
-          class="remove-btn"
-          @click="removeItem"
-      >
-        Удалить
-      </button>
     </div>
   </div>
 </template>
 
 <script>
 import { BASE_IMAGE_URL } from "@config/constants";
-import QuantityControl from "@components/QuantityControl.vue";
 
 export default {
   props: {
@@ -53,9 +36,10 @@ export default {
       type: Boolean,
       required: true,
     },
-  },
-  components: {
-    QuantityControl,
+    subtotal: {
+      type: String,
+      required: true,
+    },
   },
   computed: {
     imageUrl() {
@@ -69,19 +53,16 @@ export default {
       return `/product/${this.item.productId}`;
     },
   },
-  methods: {
-    removeItem() {
-      this.$emit("remove-item", this.item.id);
-    },
-    updateQuantity(newQuantity) {
-      this.$emit("update-quantity", this.item.id, newQuantity);
-    },
-  },
 };
 </script>
 
 <style scoped>
+
 .cart-item {
+  h3 {
+    font-size: 16px;
+  }
+
   display: flex;
   align-items: center;
   gap: 20px;
@@ -89,15 +70,19 @@ export default {
 }
 
 .product-image {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
+  width: 54px;
+  height: 54px;
   cursor: pointer;
-  transition: transform 0.3s;
 }
 
 .product-details {
   flex-grow: 1;
+}
+
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .product-name {
@@ -110,22 +95,8 @@ export default {
   color: #ff7e5f;
 }
 
-.quantity-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.subtotal {
+  color: #000000;
 }
 
-.remove-btn {
-  background-color: #ff4d4d;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.remove-btn:hover {
-  background-color: #ff1a1a;
-}
 </style>

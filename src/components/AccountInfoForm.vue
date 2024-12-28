@@ -85,6 +85,8 @@
             :class="{ 'input-error': showErrors && !form.address.house.trim() }"
             type="text"
         />
+    </div>
+    <div class="input-group">
         <label for="apartment">Квартира</label>
         <input
             id="apartment"
@@ -129,7 +131,6 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-top: 48px;
   margin-bottom: 24px;
 }
 
@@ -155,6 +156,7 @@ export default {
   color: rgba(0, 0, 0, 0.4);
   margin-bottom: 8px;
 }
+
 .input-form h3 {
   margin-top: 20px;
 }

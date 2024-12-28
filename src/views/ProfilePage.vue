@@ -1,8 +1,7 @@
 <template>
-  <div class="profile-page">
-    <AppHeader />
+  <div class="profile-page container">
     <div class="profile-container">
-      <h1>Профиль</h1>
+      <h1>Редактирование профиля</h1>
       <!-- Форма с данными профиля -->
       <AccountInfoForm :form="form" :countries="countries" />
 
@@ -12,20 +11,15 @@
         <button class="delete-button" @click="deleteProfile">Удалить профиль</button>
       </div>
     </div>
-    <AppFooter />
   </div>
 </template>
 
 <script>
-import AppHeader from "@components/AppHeader.vue";
-import AppFooter from "@components/AppFooter.vue";
 import AccountInfoForm from "@components/AccountInfoForm.vue";
 import { getProfile, updateProfile, deleteProfile } from "@services/profileService";
 
 export default {
   components: {
-    AppHeader,
-    AppFooter,
     AccountInfoForm,
   },
   data() {
@@ -101,52 +95,5 @@ export default {
 </script>
 
 <style scoped>
-.profile-page {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
 
-.profile-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.profile-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-}
-
-.save-button {
-  flex: 1;
-  padding: 10px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.save-button:hover {
-  background-color: #45a049;
-}
-
-.delete-button {
-  flex: 1;
-  padding: 10px;
-  background-color: #f44336;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.delete-button:hover {
-  background-color: #d32f2f;
-}
 </style>

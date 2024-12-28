@@ -1,14 +1,6 @@
 <template>
   <div class="order-summary">
-    <h3>Детали заказа</h3>
 
-    <CartItem
-        v-for="item in cartItems"
-        :key="item.id"
-        :item="item"
-        :disable-quantity-controls="true"
-        :isCheckoutPage="true"
-    />
 
     <!-- Блок доставки -->
     <div class="shipping-row">
@@ -54,31 +46,20 @@ export default {
 </script>
 
 <style scoped>
-.order-summary {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.total {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
 .pay-button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
+  display: inline-block;
+  width: 100%;
   padding: 10px 20px;
   font-size: 16px;
+  color: white;
+  background: #DB4444;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .pay-button:hover {
-  background-color: #45a049;
+  background: #E07575;
 }
-
-
 </style>
