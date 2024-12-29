@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header /> <!-- Header в верхней части страницы -->
-    <div class="admin-layout">
+    <div class="admin-layout container">
       <Sidebar /> <!-- Sidebar слева -->
       <div class="main-content">
         <h2>{{ isEdit ? 'Изменить продукт' : 'Добавить продукт' }}</h2>
@@ -66,12 +66,10 @@
 <script>
 import axios from '@axios';
 import Sidebar from '@components/admin/AdminSidebar.vue';
-import Header from '@components/admin/AdminHeader.vue';
 
 export default {
   components: {
     Sidebar,
-    Header,
   },
   props: {
     isEdit: {
@@ -211,11 +209,6 @@ export default {
 <style scoped>
 .admin-layout {
   display: flex;
-}
-
-.main-content {
-  flex: 1;
-  padding: 20px;
 }
 
 .color-options, .size-options {

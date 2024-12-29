@@ -1,9 +1,8 @@
 <template>
-  <div class="admin-page">
+  <div class="admin-page container">
     <Sidebar />
     <div class="main-content">
       <Header />
-      <h2>Добавить новый цвет</h2>
       <form @submit.prevent="addColor">
         <div>
           <label for="name">Название цвета:</label>
@@ -30,13 +29,11 @@
 
 <script>
 import Sidebar from '@components/admin/AdminSidebar.vue';
-import Header from '@components/admin/AdminHeader.vue';
 import axios from '@axios';
 
 export default {
   components: {
     Sidebar,
-    Header,
   },
   data() {
     return {

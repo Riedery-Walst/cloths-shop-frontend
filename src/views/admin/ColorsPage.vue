@@ -1,9 +1,8 @@
 <template>
-  <div class="admin-page">
+  <div class="admin-page container">
     <Sidebar />
     <div class="main-content">
       <Header />
-      <h2>Цвета</h2>
       <button @click="goToAddColorPage" class="add-button">Добавить</button>
       <ColorTable
           :colors="colors"
@@ -18,14 +17,12 @@
 
 <script>
 import Sidebar from '@components/admin/AdminSidebar.vue';
-import Header from '@components/admin/AdminHeader.vue';
 import ColorTable from '@/components/admin/ColorsTable.vue';
 import axios from '@axios';
 
 export default {
   components: {
     Sidebar,
-    Header,
     ColorTable,
   },
   data() {
@@ -83,10 +80,7 @@ export default {
 .admin-page {
   display: flex;
 }
-.main-content {
-  flex: 1;
-  padding: 20px;
-}
+
 .add-button {
   margin-bottom: 10px;
   padding: 5px 10px;

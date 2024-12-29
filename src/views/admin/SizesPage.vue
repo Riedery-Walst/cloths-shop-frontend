@@ -1,9 +1,8 @@
 <template>
-  <div class="admin-page">
+  <div class="admin-page container">
     <Sidebar />
     <div class="main-content">
       <Header />
-      <h2>Размеры</h2>
       <button @click="goToAddSizePage" class="add-button">Добавить</button>
       <SizeTable
           :sizes="sizes"
@@ -18,14 +17,12 @@
 
 <script>
 import Sidebar from '@/components/admin/AdminSidebar.vue';
-import Header from '@/components/admin/AdminHeader.vue';
 import SizeTable from '@/components/admin/SizesTable.vue';
 import axios from '@/axiosInstance.js';
 
 export default {
   components: {
     Sidebar,
-    Header,
     SizeTable,
   },
   data() {
@@ -82,10 +79,7 @@ export default {
 .admin-page {
   display: flex;
 }
-.main-content {
-  flex: 1;
-  padding: 20px;
-}
+
 .add-button {
   margin-bottom: 10px;
   padding: 5px 10px;

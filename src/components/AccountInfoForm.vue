@@ -1,5 +1,5 @@
 <template>
-  <div class="input-form">
+  <div :class="['input-form', layoutStyle]">
     <div class="input-group">
       <label for="firstName">Имя</label>
       <input
@@ -74,25 +74,23 @@
           id="street"
           v-model="form.address.street"
           :class="{ 'input-error': showErrors && !form.address.street.trim() }"
+          type="text"
       />
     </div>
 
     <div class="input-group">
-        <label for="house">Дом</label>
-        <input
-            id="house"
-            v-model="form.address.house"
-            :class="{ 'input-error': showErrors && !form.address.house.trim() }"
-            type="text"
-        />
+      <label for="house">Дом</label>
+      <input
+          id="house"
+          v-model="form.address.house"
+          :class="{ 'input-error': showErrors && !form.address.house.trim() }"
+          type="text"
+      />
     </div>
+
     <div class="input-group">
-        <label for="apartment">Квартира</label>
-        <input
-            id="apartment"
-            v-model="form.address.apartment"
-            type="text"
-        />
+      <label for="apartment">Квартира</label>
+      <input id="apartment" v-model="form.address.apartment" type="text" />
     </div>
 
     <div class="input-group">
@@ -122,30 +120,35 @@ export default {
       type: Boolean,
       required: true,
     },
+    layoutStyle: {
+      type: String,
+      default: "single-column", // По умолчанию — одноколоночный вид
+    },
   },
 };
 </script>
 
 <style scoped>
+/* Общие стили */
 .input-form {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 1rem;
-  margin-bottom: 24px;
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .input-form input,
 .input-form select {
   padding: 16px;
-  border: 0 solid #F5F5F5;
+  border: 1px solid #f5f5f5;
   border-radius: 4px;
   font-size: 16px;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
 }
 
 .input-error {
@@ -153,11 +156,17 @@ export default {
 }
 
 .input-group label {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.6);
   margin-bottom: 8px;
 }
 
-.input-form h3 {
-  margin-top: 20px;
+/* Стиль для одноколоночного отображения */
+.single-column .input-group {
+  width: 100%;
+}
+
+/* Стиль для двухколоночного отображения */
+.multi-column .input-group {
+  width: calc(50% - 1rem);
 }
 </style>

@@ -1,14 +1,14 @@
 <template>
-  <div class="products-list">
+  <div class="products-list" :class="customClass"> <!-- Применяем переданный класс -->
     <ProductCard
         v-for="product in products"
         :key="product.id"
         :product="product"
         :isAdmin="isAdmin"
-    :showActions="showActions"
-    :showImageArrows="showImageArrows"
-    @edit-product="editProduct"
-    @delete-product="deleteProduct"
+        :showActions="showActions"
+        :showImageArrows="showImageArrows"
+        @edit-product="editProduct"
+        @delete-product="deleteProduct"
     />
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
   name: 'ProductList',
   components: { ProductCard },
   props: {
-    isAdmin: { // добавлено
+    isAdmin: {
       type: Boolean,
       default: false
     },
@@ -32,6 +32,10 @@ export default {
     showImageArrows: {
       type: Boolean,
       default: true
+    },
+    customClass: {  // Пропс для кастомного класса
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -66,10 +70,10 @@ export default {
 
 <style scoped>
 .products-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px 60px;
-  margin: 0;
-  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Автоматическая настройка колонок */
+  gap: 20px; /* Расстояние между элементами */
+  margin: 0 auto;
+  max-width: 1200px; /* Ограничение ширины */
 }
 </style>

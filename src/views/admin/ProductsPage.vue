@@ -1,14 +1,14 @@
 <template>
-  <div class="admin-page">
+  <div class="admin-page container">
     <Sidebar />
     <div class="main-content">
       <Header />
-      <h2>Продукты</h2>
       <button @click="goToAddProductPage" class="add-button">Добавить</button>
       <ProductList
           ref="productList"
           :isAdmin="true"
           :showActions="true"
+          :customClass="customProductListClass"
           @edit-product="goToEditProductPage"
           @delete-product="deleteProduct"
       />
@@ -18,22 +18,25 @@
 
 <script>
 import Sidebar from '@components/admin/AdminSidebar.vue';
-import Header from '@components/admin/AdminHeader.vue';
 import ProductList from '@components/ProductList.vue';
 import axios from '@axios';
 
 export default {
   components: {
     Sidebar,
-    Header,
     ProductList
+  },
+  data() {
+    return {
+      customProductListClass: 'custom-product-list'  // Класс для настройки стилей
+    };
   },
   methods: {
     goToAddProductPage() {
       this.$router.push({ name: 'AdminAddProductPage' });
     },
     goToEditProductPage(product) {
-      this.$router.push({name: 'AdminEditProductPage', params: {id: product.id}});
+      this.$router.push({ name: 'AdminEditProductPage', params: { id: product.id } });
     },
     async deleteProduct(productId) {
       try {
@@ -50,24 +53,7 @@ export default {
 <style scoped>
 .admin-page {
   display: flex;
+  height: 100vh;
 }
 
-.main-content {
-  flex: 1;
-  padding: 20px;
-}
-
-.add-button {
-  margin-bottom: 20px;
-  padding: 8px 16px;
-  background-color: #000;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.add-button:hover {
-  background-color: #444;
-}
 </style>

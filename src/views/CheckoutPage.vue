@@ -4,12 +4,17 @@
       <h1>Детали заказа</h1>
 
       <div class="checkout-content">
-        <!-- Информация о доставке (слева) -->
+        <!-- Информация о доставке (левая колонка) -->
         <div class="profile-info">
-          <AccountInfoForm :form="form" :countries="countries" :showErrors="showErrors" />
+          <AccountInfoForm
+              :form="form"
+              :countries="countries"
+              :showErrors="showErrors"
+              layoutStyle="single-column"
+          />
         </div>
 
-        <!-- Блок с деталями заказа (справа) -->
+        <!-- Блок с деталями заказа (правая колонка) -->
         <div class="order-block">
           <div class="cart-items-list">
             <CartItem
@@ -29,7 +34,7 @@
         </div>
       </div>
 
-      <!-- Чекбокс для сохранения информации (не в колонках) -->
+      <!-- Чекбокс для сохранения информации -->
       <div class="save-info">
         <label>
           <input v-model="saveInfo" type="checkbox" />
@@ -95,7 +100,11 @@ export default {
     async fetchProfile() {
       try {
         const profile = await getProfile();
-        this.form = { ...this.form, ...profile, address: { ...this.form.address, ...profile.address } };
+        this.form = {
+          ...this.form,
+          ...profile,
+          address: { ...this.form.address, ...profile.address },
+        };
       } catch (error) {
         console.error("Ошибка загрузки профиля:", error);
       }
@@ -158,7 +167,10 @@ export default {
           amount: { value: this.totalPrice.toFixed(2), currency: "RUB" },
         };
 
-        const paymentResponse = await axios.post("http://localhost:8080/api/payments", paymentRequest);
+        const paymentResponse = await axios.post(
+            "http://localhost:8080/api/payments",
+            paymentRequest
+        );
 
         if (paymentResponse.data && paymentResponse.data.confirmation) {
           if (this.saveInfo) {
@@ -166,7 +178,8 @@ export default {
             alert("Информация профиля сохранена!");
           }
 
-          window.location.href = paymentResponse.data.confirmation.confirmation_url;
+          window.location.href =
+              paymentResponse.data.confirmation.confirmation_url;
         } else {
           alert("Не удалось получить URL для оплаты.");
         }
@@ -204,12 +217,12 @@ h1 {
 }
 
 .profile-info {
-  width: 475px;
+  flex: 0 0 625px;
 }
 
 .order-block {
+  flex: 0 0 425px;
   margin-top: 24px;
-  width: 425px;
   border-radius: 8px;
 }
 
@@ -220,12 +233,16 @@ h1 {
   gap: 8px;
 }
 
+label {
+  margin-top: 24px;
+}
+
 .save-info input {
   margin: 0;
   width: 24px;
   height: 24px;
   appearance: none; /* Убираем стандартное отображение */
-  border: 2px solid #DB4444;
+  border: 2px solid #db4444;
   border-radius: 4px;
   background-color: #fff;
   position: relative;
@@ -233,8 +250,8 @@ h1 {
 }
 
 .save-info input:checked {
-  background-color: #DB4444;
-  border-color: #DB4444;
+  background-color: #db4444;
+  border-color: #db4444;
 }
 
 .save-info input:checked::before {
@@ -251,12 +268,7 @@ h1 {
 }
 
 .save-info input:checked + label {
-  color: #DB4444;
-}
-
-.save-info input {
-  width: 24px;
-  height: 24px;
+  color: #db4444;
 }
 
 .cart-items-list {

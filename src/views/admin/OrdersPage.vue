@@ -1,8 +1,7 @@
 <template>
-  <div class="orders-page">
+  <div class="orders-page container">
     <Sidebar />
     <div class="main-content">
-      <h2>Заказы</h2>
       <!-- Панель управления пагинацией и выбором количества заказов на странице -->
       <div class="pagination-controls">
         <label for="pageSize">Показывать заказов на странице:</label>
@@ -156,11 +155,6 @@ export default {
 </script>
 
 <style scoped>
-.main-content {
-  flex: 1;
-  padding: 20px;
-}
-
 .pagination-controls {
   margin-bottom: 20px;
 }

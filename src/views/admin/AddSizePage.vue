@@ -1,10 +1,9 @@
 <template>
-  <div class="admin-page">
+  <div class="admin-page container">
     <Sidebar />
     <div class="main-content">
       <Header />
       <div class="form-container">
-        <h2>Добавить новый размер</h2>
         <form @submit.prevent="addSize">
           <div class="form-group">
             <label for="name">Название размера:</label>
@@ -21,13 +20,11 @@
 
 <script>
 import Sidebar from '@components/admin/AdminSidebar.vue';
-import Header from '@components/admin/AdminHeader.vue';
 import axios from '@axios';
 
 export default {
   components: {
     Sidebar,
-    Header,
   },
   data() {
     return {
@@ -59,11 +56,6 @@ export default {
 <style scoped>
 .admin-page {
   display: flex;
-}
-
-.main-content {
-  flex: 1;
-  padding: 20px;
 }
 
 .form-container {
