@@ -58,8 +58,8 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
 
 .product-card {
-  width: 270px;
-  height: 350px;
+  width: 100%;
+  height: 100%;
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.3s ease;

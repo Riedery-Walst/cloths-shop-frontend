@@ -1,5 +1,5 @@
 <template>
-  <div class="products-list" :class="customClass"> <!-- Применяем переданный класс -->
+  <div :class="['products-list', customClass]"> <!-- Применяем переданный класс -->
     <ProductCard
         v-for="product in products"
         :key="product.id"
@@ -71,9 +71,12 @@ export default {
 <style scoped>
 .products-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Автоматическая настройка колонок */
-  gap: 20px; /* Расстояние между элементами */
-  margin: 0 auto;
-  max-width: 1200px; /* Ограничение ширины */
+  grid-auto-flow: row;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px 80px;
+}
+
+.custom-product-list-gap {
+  gap: 60px;
 }
 </style>

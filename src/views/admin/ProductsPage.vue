@@ -4,6 +4,7 @@
     <div class="main-content">
       <Header />
       <button @click="goToAddProductPage" class="add-button">Добавить</button>
+      <!-- Передаем customClass только на этой странице -->
       <ProductList
           ref="productList"
           :isAdmin="true"
@@ -28,7 +29,7 @@ export default {
   },
   data() {
     return {
-      customProductListClass: 'custom-product-list'  // Класс для настройки стилей
+      customProductListClass: 'custom-product-list-gap'  // Класс для кастомного gap
     };
   },
   methods: {
@@ -53,7 +54,7 @@ export default {
 <style scoped>
 .admin-page {
   display: flex;
-  height: 100vh;
+  flex-grow: 1;
 }
 
 </style>

@@ -59,7 +59,7 @@ export default {
 <style scoped>
 .image-slider {
   width: 100%;
-  height: 250px; /* Задаем фиксированную высоту для изображения */
+  height: 420px; /* Задаем фиксированную высоту для изображения */
   overflow: hidden;
   border-radius: 4px; /* Сглаженные углы */
   position: relative;
