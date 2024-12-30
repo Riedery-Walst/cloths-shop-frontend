@@ -8,8 +8,8 @@
         layoutStyle="multi-column"
     />
     <div class="profile-actions">
-      <button class="save-button" @click="updateProfileInfo">Сохранить</button>
       <button class="delete-button" @click="deleteProfile">Удалить профиль</button>
+      <button class="save-button" @click="updateProfileInfo">Сохранить</button>
     </div>
   </div>
 </template>
@@ -98,25 +98,28 @@ h1 {
 .profile-actions {
   margin-top: 20px;
   display: flex;
+  justify-content: flex-end; /* Кнопки по правому краю */
   gap: 10px;
 }
 
 .save-button {
-  padding: 10px 15px;
-  background-color: #4caf50;
+  font-size: 16px;
+  height: 44px;
+  width: 200px;
+  background-color: #db4444;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
 }
 
 .save-button:hover {
-  background-color: #45a049;
+  background-color: #E07575;
 }
 
 .delete-button {
   padding: 10px 15px;
-  background-color: #f44336;
+  background-color: #000000;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -124,6 +127,6 @@ h1 {
 }
 
 .delete-button:hover {
-  background-color: #d32f2f;
+  background-color: rgba(77, 77, 77, 0.4);
 }
 </style>

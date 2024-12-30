@@ -149,6 +149,7 @@ export default {
   border-radius: 4px;
   font-size: 16px;
   background-color: #f5f5f5;
+  box-sizing: border-box; /* Учитываем padding и border в ширине */
 }
 
 .input-error {
@@ -167,6 +168,6 @@ export default {
 
 /* Стиль для двухколоночного отображения */
 .multi-column .input-group {
-  width: calc(50% - 1rem);
+  width: calc(50% - 0.5rem); /* Скорректировано значение для предотвращения отступов */
 }
 </style>

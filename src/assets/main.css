@@ -1,4 +1,3 @@
-/* Общие стили для body */
 body {
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
@@ -23,6 +22,11 @@ body {
     text-align: left;
 }
 
+/* Контейнер для основного контента */
+.main-content {
+    padding: 20px 0; /* Отступы сверху и снизу */
+}
+
 /* Ограничиваем ширину основного контента */
 .container {
     margin: 0; /* Центрируем контейнер */
@@ -33,7 +37,6 @@ h1 {
     margin: 0;
     font-weight: 500;
 }
-
 th, td {
     font-weight: normal;
     padding: 24px 0 24px 24px;
@@ -50,7 +53,6 @@ h3 {
     height: 1px; /* Высота линии */
     background-color: #000000; /* Цвет линии */
 }
-
 .total-price-container {
     height: 24px;
     display: flex;
@@ -58,32 +60,25 @@ h3 {
     align-items: center;
     margin: 16px 0 16px 0;
 }
-
 .total-price {
     font-size: 16px;
     color: #000000;
 }
-
 .total-price-amount {
     font-size: 16px;
     color: #000000;
 }
-
 .shipping-row {
     display: flex;
     justify-content: space-between; /* Размещает текст по противоположным сторонам */
     align-items: center;
     margin: 16px 0;
 }
-
 .shipping-text {
     font-size: 16px;
     color: #000000;
 }
-
 .shipping-price {
     font-size: 16px;
     color: black;
 }
-
-

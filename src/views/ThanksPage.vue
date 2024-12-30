@@ -67,5 +67,17 @@ h1 {
 
 .continue-button {
   margin-top: 20px;
+  font-size: 16px;
+  height: 44px;
+  width: 400px;
+  background-color: #db4444;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.continue-button:hover {
+  background-color: #E07575;
 }
 </style>
