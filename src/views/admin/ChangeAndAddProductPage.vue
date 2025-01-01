@@ -1,12 +1,10 @@
 <template>
   <div>
-    <Header /> <!-- Header в верхней части страницы -->
+    <Header />
     <div class="admin-layout container">
-      <Sidebar /> <!-- Sidebar слева -->
-      <div class="main-content">
-        <h2>{{ isEdit ? 'Изменить продукт' : 'Добавить продукт' }}</h2>
+      <Sidebar />
+      <div>
         <form @submit.prevent="handleSubmit">
-          <!-- Поля ввода для данных продукта -->
           <div>
             <label>Название продукта:</label>
             <input type="text" v-model="product.name" required />
@@ -23,7 +21,7 @@
           <div>
             <label>Выберите цвета:</label>
             <div class="color-options">
-              <label v-for="color in colors" :key="color.id" :style="{ color: color.hex }">
+              <label v-for="color in colors" :key="color.id">
                 <input type="checkbox" :value="color.id" v-model="product.colorIds" />
                 <span :style="{ backgroundColor: color.hex }" class="color-square"></span> {{ color.name }}
               </label>
@@ -49,7 +47,8 @@
             <input type="file" @change="handleImageUpload" multiple />
             <div v-if="product.images.length" class="image-preview">
               <div v-for="(image, index) in product.images" :key="index" class="image-container">
-                <span>{{ image.name || image }}</span>
+                <img :src="image.previewUrl" alt="Preview" class="image-preview-img" />
+                <span>{{ image.name || image.fileName }}</span>
                 <button type="button" @click="removeImage(index)">Удалить</button>
               </div>
             </div>
@@ -141,9 +140,19 @@ export default {
     },
     handleImageUpload(event) {
       const files = Array.from(event.target.files);
-      this.product.images.push(...files);
+      files.forEach(file => {
+        // Добавляем объект с URL для отображения изображения и оригинальное имя файла
+        const fileWithPreview = {
+          file,
+          previewUrl: URL.createObjectURL(file),
+          name: file.name,
+          fileName: file.name
+        };
+        this.product.images.push(fileWithPreview);
+      });
     },
     removeImage(index) {
+      // Удаляем объект изображения из массива
       this.product.images.splice(index, 1);
     },
     async handleSubmit() {
@@ -166,8 +175,8 @@ export default {
       formData.append('product', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
 
       this.product.images.forEach(image => {
-        if (image instanceof File) {
-          formData.append('photos', image);
+        if (image.file) {
+          formData.append('photos', image.file);
         }
       });
 
@@ -211,37 +220,106 @@ export default {
   display: flex;
 }
 
+label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+button[type="submit"] {
+  margin-top: 30px;
+  font-size: 16px;
+  height: 44px;
+  width: 300px;
+  background-color: #db4444;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #E07575;
+}
+
+button[type="button"] {
+  background-color: #f44336;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type="button"]:hover {
+  background-color: #d32f2f;
+}
+
 .color-options, .size-options {
   display: flex;
-  gap: 10px;
+  gap: 15px;
+}
+
+.color-options label,
+.size-options label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
 .color-square {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  margin-right: 8px;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  border-radius: 3px;
   border: 1px solid #ccc;
-  border-radius: 2px;
+}
+
+.image-preview {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
 }
 
 .image-container {
   display: inline-block;
   position: relative;
+  margin-bottom: 10px;
 }
 
-.image-container button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: red;
-  color: white;
-  border: none;
-  cursor: pointer;
+.image-preview-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-bottom: 5px;
+}
+
+.image-container span {
+  display: block;
+  width: 100px;
+  text-align: center;
+  font-size: 12px;
+  margin-bottom: 5px;
 }
 
 .error {
   color: red;
+  margin-top: 10px;
 }
 
 .success {

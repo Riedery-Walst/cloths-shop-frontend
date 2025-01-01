@@ -1,5 +1,5 @@
 <template>
-  <table>
+  <table class="sizes-table">
     <thead>
     <tr>
       <th>#</th>
@@ -51,3 +51,30 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.sizes-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.sizes-table th,
+.sizes-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.sizes-table th {
+  background-color: #f4f4f4;
+}
+
+.sizes-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.sizes-table tr:hover {
+  background-color: #f1f1f1;
+}
+</style>

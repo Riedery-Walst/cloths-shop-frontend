@@ -1,22 +1,23 @@
-// Динамически загружаем все компоненты
 import { createRouter, createWebHistory } from "vue-router";
 
-const MainPage = () => import('@/views/MainPage.vue');
-const LoginPage = () => import('@/views/LoginPage.vue');
-const RegistrationPage = () => import('@/views/RegistrationPage.vue');
-const AdminColorsPage = () => import('@/views/admin/ColorsPage.vue');
-const AdminSizesPage = () => import('@/views/admin/SizesPage.vue');
-const AdminAddColorPage = () => import('@/views/admin/AddColorPage.vue');
-const AdminAddSizePage = () => import('@/views/admin/AddSizePage.vue');
-const ProductPage = () => import('@/views/ProductPage.vue');
-const CartPage = () => import('@/views/CartPage.vue');
-const CheckoutPage = () => import('@/views/CheckoutPage.vue');
-const AdminProductsPage = () => import('@/views/admin/ProductsPage.vue');
-const AdminChangeAndAddProductPage = () => import('@/views/admin/ChangeAndAddProductPage.vue');
-const ProfilePage = () => import('@/views/ProfilePage.vue');
-const ThanksPage = () => import('@/views/ThanksPage.vue');
-const OrdersPage = () => import('@/views/admin/OrdersPage.vue');
-
+// Импортируем компоненты
+import MainPage from '@/views/MainPage.vue';
+import LoginPage from '@/views/LoginPage.vue';
+import RegistrationPage from '@/views/RegistrationPage.vue';
+import AdminColorsPage from '@/views/admin/ColorsPage.vue';
+import AdminSizesPage from '@/views/admin/SizesPage.vue';
+import AdminAddColorPage from '@/views/admin/AddColorPage.vue';
+import AdminAddSizePage from '@/views/admin/AddSizePage.vue';
+import ProductPage from '@/views/ProductPage.vue';
+import CartPage from '@/views/CartPage.vue';
+import CheckoutPage from '@/views/CheckoutPage.vue';
+import AdminProductsPage from '@/views/admin/ProductsPage.vue';
+import AdminChangeAndAddProductPage from '@/views/admin/ChangeAndAddProductPage.vue';
+import ProfilePage from '@/views/ProfilePage.vue';
+import ThanksPage from '@/views/ThanksPage.vue';
+import OrdersPage from '@/views/admin/OrdersPage.vue';
+import TermsOfService from '@/views/TermsOfService.vue';
+import PrivacyPolicy from '@/views/PrivacyPolicy.vue';
 
 // Определяем маршруты
 const routes = [
@@ -71,6 +72,16 @@ const routes = [
         path: '/thanks',
         name: 'ThanksPage',
         component: ThanksPage,
+    },
+    {
+        path: '/terms-of-service',
+        name: 'TermsOfService',
+        component: TermsOfService,  // Новый маршрут для страницы условий
+    },
+    {
+        path: '/privacy-policy',
+        name: 'PrivacyPolicy',
+        component: PrivacyPolicy,  // Новый маршрут для страницы политики конфиденциальности
     },
     {
         path: '/admin/colors',

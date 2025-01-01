@@ -42,7 +42,7 @@
           required
       />
 
-      <button type="submit" class="submit-button">Создать</button>
+      <button type="submit" class="add-button">Создать</button>
     </form>
     <p v-if="successMessage" class="success-message">
       Регистрация прошла успешно!
@@ -174,20 +174,20 @@ input[type="password"]:focus {
 }
 
 /* Кнопка */
-.submit-button {
-  background-color: #DB4444; /* Новый цвет */
+.add-button {
+  width: 100%;
+  background-color: #DB4444;
   color: white;
-  padding: 1.1rem;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: normal;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.4rem;
   cursor: pointer;
   margin-bottom: 0.5rem; /* Снижаем отступ до 0.5rem */
   transition: background-color 0.3s ease;
 }
 
-.submit-button:hover {
+.add-button:hover {
   background-color: #E07575; /* Цвет при наведении */
 }
 
@@ -200,7 +200,6 @@ input[type="password"]:focus {
 
 /* Стили для ссылки регистрации */
 .already-registered {
-  font-size: 0.875rem;
   margin-top: 0.5rem  ;
 }
 

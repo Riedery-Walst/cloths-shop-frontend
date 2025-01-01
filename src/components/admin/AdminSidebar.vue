@@ -18,7 +18,8 @@ export default {
 <style scoped>
 /* Общие стили для боковой панели */
 .sidebar {
-  width: 250px;
+  width: 100px;
+  margin-right: 100px;
   height: 100vh; /* Высота на всю страницу */
   background-color: #ffffff; /* Темный фон */
   display: flex;

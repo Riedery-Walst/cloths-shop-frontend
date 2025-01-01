@@ -1,7 +1,7 @@
 <template>
-  <div class="admin-page container">
+  <div class="colors-page container">
     <Sidebar />
-    <div class="main-content">
+    <div>
       <Header />
       <button @click="goToAddProductPage" class="add-button">Добавить</button>
       <!-- Передаем customClass только на этой странице -->
@@ -52,7 +52,12 @@ export default {
 </script>
 
 <style scoped>
-.admin-page {
+.add-button {
+  margin-bottom: 10px;
+  padding: 5px 10px;
+}
+
+.colors-page {
   display: flex;
   flex-grow: 1;
 }

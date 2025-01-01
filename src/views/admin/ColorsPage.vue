@@ -1,7 +1,7 @@
 <template>
-  <div class="admin-page container">
+  <div class="colors-page container">
     <Sidebar />
-    <div class="main-content">
+    <div>
       <Header />
       <button @click="goToAddColorPage" class="add-button">Добавить</button>
       <ColorTable
@@ -77,12 +77,23 @@ export default {
 </script>
 
 <style scoped>
-.admin-page {
+.colors-page {
   display: flex;
 }
 
 .add-button {
-  margin-bottom: 10px;
-  padding: 5px 10px;
+  font-size: 16px;
+  height: 44px;
+  width: 125px;
+  background-color: #db4444;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
+
+.add-button:hover {
+  background-color: #E07575;
+}
+
 </style>

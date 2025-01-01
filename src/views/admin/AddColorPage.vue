@@ -1,7 +1,7 @@
 <template>
-  <div class="admin-page container">
+  <div class="colors-page container">
     <Sidebar />
-    <div class="main-content">
+    <div>
       <Header />
       <form @submit.prevent="addColor">
         <div>
@@ -19,7 +19,7 @@
               style="margin-left: 10px; width: 40px; height: 40px; border: none; cursor: pointer;"
           />
         </div>
-        <button type="submit" class="add-button">Добавить цвет</button>
+        <button type="submit" class="add-button">Создать</button>
       </form>
       <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
       <div v-if="successMessage" class="success">{{ successMessage }}</div>
@@ -69,22 +69,47 @@ export default {
 </script>
 
 <style scoped>
-.admin-page {
+.colors-page {
   display: flex;
 }
 
-.main-content {
-  flex: 1;
-  padding: 20px;
+#hex {
+  margin-left: 8px;
+  margin-bottom: 0;
 }
 
 .add-button {
   margin-top: 10px;
-  padding: 8px 16px;
+  font-size: 16px;
+  height: 44px;
+  width: 300px;
+  background-color: #db4444;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background-color: #E07575;
+}
+
+label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .error {
   color: red;
+  margin-top: 10px;
 }
 
 .success {
@@ -94,5 +119,7 @@ export default {
 
 .color-picker {
   cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 </style>

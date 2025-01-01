@@ -2,15 +2,15 @@
   <table class="orders-table">
     <thead>
     <tr>
-      <th>ID заказа</th>
+      <th>ID</th>
       <th>Имя клиента</th>
-      <th>Email</th>
+      <th>Электронная почта</th>
       <th>Телефон</th>
-      <th>Товары</th>
+      <th>Заказанные товары</th>
       <th>Размеры</th>
       <th>Цвета</th>
       <th>Количество</th>
-      <th>Итоговая цена</th>
+      <th>Сумма</th>
       <th>Статус</th>
       <th>Дата заказа</th>
     </tr>
@@ -49,6 +49,7 @@ export default {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  table-layout: auto;
 }
 
 .orders-table th,

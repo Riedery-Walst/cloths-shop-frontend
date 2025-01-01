@@ -21,7 +21,7 @@ export default {
         if (path[0] === 'products' || this.$route.path === '/') {
           breadcrumbs.push({
             name: 'Продукты',
-            link: '/products',  // Можно настроить ссылку на страницу с продуктами
+            link: '/products',
           });
         }
 
@@ -73,6 +73,22 @@ export default {
           });
         }
 
+        // Для политики конфиденциальности
+        else if (path[0] === 'privacy-policy') {
+          breadcrumbs.push({
+            name: 'Политика конфиденциальности',
+            link: null
+          });
+        }
+
+        // Для условий использования
+        else if (path[0] === 'terms-of-service') {
+          breadcrumbs.push({
+            name: 'Условия использования',
+            link: null
+          });
+        }
+
         // Для админки
         else if (path[0] === 'admin') {
           if (path[1] === 'colors') {
@@ -80,11 +96,23 @@ export default {
               name: 'Цвета',
               link: '/admin/colors'
             });
+            if (path[2] === 'add') {
+              breadcrumbs.push({
+                name: 'Добавить цвет',
+                link: '/admin/colors/add'
+              });
+            }
           } else if (path[1] === 'sizes') {
             breadcrumbs.push({
               name: 'Размеры',
               link: '/admin/sizes'
             });
+            if (path[2] === 'add') {
+              breadcrumbs.push({
+                name: 'Добавить размер',
+                link: '/admin/sizes/add'
+              });
+            }
           } else if (path[1] === 'products') {
             breadcrumbs.push({
               name: 'Продукты',
@@ -101,6 +129,11 @@ export default {
                 link: null
               });
             }
+          } else if (path[1] === 'orders') {
+            breadcrumbs.push({
+              name: 'Заказы',
+              link: '/admin/orders'
+            });
           }
         }
       }

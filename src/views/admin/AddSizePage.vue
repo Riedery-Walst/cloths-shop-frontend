@@ -1,7 +1,7 @@
 <template>
-  <div class="admin-page container">
+  <div class="colors-page container">
     <Sidebar />
-    <div class="main-content">
+    <div>
       <Header />
       <div class="form-container">
         <form @submit.prevent="addSize">
@@ -9,7 +9,7 @@
             <label for="name">Название размера:</label>
             <input type="text" id="name" v-model="size.name" required />
           </div>
-          <button type="submit" class="submit-button">Добавить размер</button>
+          <button type="submit" class="add-button">Создать</button>
           <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
           <div v-if="successMessage" class="success">{{ successMessage }}</div>
         </form>
@@ -54,49 +54,37 @@ export default {
 </script>
 
 <style scoped>
-.admin-page {
+.colors-page {
   display: flex;
 }
 
-.form-container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
+label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+  margin: 10px 0 5px;
 }
 
-.form-group input {
+input[type="text"] {
   width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-.submit-button {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #007bff;
+.add-button {
+  margin-top: 10px;
+  font-size: 16px;
+  height: 44px;
+  width: 300px;
+  background-color: #db4444;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.submit-button:hover {
-  background-color: #0056b3;
+.add-button:hover {
+  background-color: #E07575;
 }
 
 .error {
