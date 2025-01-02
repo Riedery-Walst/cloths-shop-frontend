@@ -14,7 +14,7 @@ export default {
   computed: {
     breadcrumbs() {
       const path = this.$route.path.split('/').filter(Boolean);
-      let breadcrumbs = [{ name: 'Главная', link: '/' }];
+      let breadcrumbs = [{name: 'Главная', link: '/'}];
 
       if (path.length > 0) {
         // Для страницы продуктов
@@ -29,7 +29,7 @@ export default {
         else if (path[0] === 'product') {
           breadcrumbs.push({
             name: `Товар ${this.$route.params.id}`,
-            link: null
+            link: null,
           });
         }
 
@@ -37,7 +37,7 @@ export default {
         else if (path[0] === 'cart') {
           breadcrumbs.push({
             name: 'Корзина',
-            link: '/cart'
+            link: '/cart',
           });
         }
 
@@ -45,7 +45,7 @@ export default {
         else if (path[0] === 'checkout') {
           breadcrumbs.push({
             name: 'Оформление заказа',
-            link: '/checkout'
+            link: '/checkout',
           });
         }
 
@@ -53,7 +53,7 @@ export default {
         else if (path[0] === 'profile') {
           breadcrumbs.push({
             name: 'Профиль',
-            link: '/profile'
+            link: '/profile',
           });
         }
 
@@ -61,7 +61,7 @@ export default {
         else if (path[0] === 'login') {
           breadcrumbs.push({
             name: 'Вход',
-            link: null
+            link: null,
           });
         }
 
@@ -69,7 +69,7 @@ export default {
         else if (path[0] === 'register') {
           breadcrumbs.push({
             name: 'Регистрация',
-            link: null
+            link: null,
           });
         }
 
@@ -77,7 +77,7 @@ export default {
         else if (path[0] === 'privacy-policy') {
           breadcrumbs.push({
             name: 'Политика конфиденциальности',
-            link: null
+            link: null,
           });
         }
 
@@ -85,7 +85,15 @@ export default {
         else if (path[0] === 'terms-of-service') {
           breadcrumbs.push({
             name: 'Условия использования',
-            link: null
+            link: null,
+          });
+        }
+
+        // Для страницы FAQ
+        else if (path[0] === 'faq') {
+          breadcrumbs.push({
+            name: 'FAQ',
+            link: '/faq',
           });
         }
 
@@ -94,45 +102,45 @@ export default {
           if (path[1] === 'colors') {
             breadcrumbs.push({
               name: 'Цвета',
-              link: '/admin/colors'
+              link: '/admin/colors',
             });
             if (path[2] === 'add') {
               breadcrumbs.push({
                 name: 'Добавить цвет',
-                link: '/admin/colors/add'
+                link: '/admin/colors/add',
               });
             }
           } else if (path[1] === 'sizes') {
             breadcrumbs.push({
               name: 'Размеры',
-              link: '/admin/sizes'
+              link: '/admin/sizes',
             });
             if (path[2] === 'add') {
               breadcrumbs.push({
                 name: 'Добавить размер',
-                link: '/admin/sizes/add'
+                link: '/admin/sizes/add',
               });
             }
           } else if (path[1] === 'products') {
             breadcrumbs.push({
               name: 'Продукты',
-              link: '/admin/products'
+              link: '/admin/products',
             });
             if (path[2] === 'add') {
               breadcrumbs.push({
                 name: 'Добавить продукт',
-                link: '/admin/products/add'
+                link: '/admin/products/add',
               });
             } else if (path[2] === 'edit') {
               breadcrumbs.push({
                 name: `Редактировать продукт ${this.$route.params.id}`,
-                link: null
+                link: null,
               });
             }
           } else if (path[1] === 'orders') {
             breadcrumbs.push({
               name: 'Заказы',
-              link: '/admin/orders'
+              link: '/admin/orders',
             });
           }
         }

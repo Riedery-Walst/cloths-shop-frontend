@@ -16,8 +16,9 @@ import AdminChangeAndAddProductPage from '@/views/admin/ChangeAndAddProductPage.
 import ProfilePage from '@/views/ProfilePage.vue';
 import ThanksPage from '@/views/ThanksPage.vue';
 import OrdersPage from '@/views/admin/OrdersPage.vue';
-import TermsOfService from '@/views/TermsOfService.vue';
-import PrivacyPolicy from '@/views/PrivacyPolicy.vue';
+import TermsOfService from '@/views/TermsOfServicePage.vue';
+import PrivacyPolicy from '@/views/PrivacyPolicyPage.vue';
+import FAQPage from '@/views/FAQPage.vue';
 
 // Определяем маршруты
 const routes = [
@@ -82,6 +83,11 @@ const routes = [
         path: '/privacy-policy',
         name: 'PrivacyPolicy',
         component: PrivacyPolicy,  // Новый маршрут для страницы политики конфиденциальности
+    },
+    {
+        path: '/faq',
+        name: 'FAQPage',
+        component: FAQPage, // Указываем компонент для маршрута FAQ
     },
     {
         path: '/admin/colors',
