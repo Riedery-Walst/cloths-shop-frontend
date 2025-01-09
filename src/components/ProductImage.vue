@@ -1,5 +1,5 @@
 <template>
-  <div class="image-slider">
+  <div class="product-image">
     <button @click="prevImage" v-if="showArrows && hasPhotos" class="arrow-button">❮</button>
     <img :src="getImageUrl(imageUrl)" alt="Product Image" class="product-image" />
     <button @click="nextImage" v-if="showArrows && hasPhotos" class="arrow-button">❯</button>
@@ -57,7 +57,7 @@ export default {
 </script>
 
 <style scoped>
-.image-slider {
+.product-image {
   width: 100%;
   height: 420px; /* Задаем фиксированную высоту для изображения */
   overflow: hidden;

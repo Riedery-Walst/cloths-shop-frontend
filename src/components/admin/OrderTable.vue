@@ -1,5 +1,5 @@
 <template>
-  <table class="orders-table">
+  <table class="order-table">
     <thead>
     <tr>
       <th>ID</th>
@@ -45,29 +45,29 @@ export default {
 </script>
 
 <style scoped>
-.orders-table {
+.order-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
   table-layout: auto;
 }
 
-.orders-table th,
-.orders-table td {
+.order-table th,
+.order-table td {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: left;
 }
 
-.orders-table th {
+.order-table th {
   background-color: #f4f4f4;
 }
 
-.orders-table tr:nth-child(even) {
+.order-table tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-.orders-table tr:hover {
+.order-table tr:hover {
   background-color: #f1f1f1;
 }
 </style>

@@ -4,18 +4,18 @@ import { createRouter, createWebHistory } from "vue-router";
 import MainPage from '@/views/MainPage.vue';
 import LoginPage from '@/views/LoginPage.vue';
 import RegistrationPage from '@/views/RegistrationPage.vue';
-import AdminColorsPage from '@/views/admin/ColorsPage.vue';
-import AdminSizesPage from '@/views/admin/SizesPage.vue';
+import AdminColorsPage from '@/views/admin/ColorListPage.vue';
+import AdminSizesPage from '@/views/admin/SizeListPage.vue';
 import AdminAddColorPage from '@/views/admin/AddColorPage.vue';
 import AdminAddSizePage from '@/views/admin/AddSizePage.vue';
 import ProductPage from '@/views/ProductPage.vue';
 import CartPage from '@/views/CartPage.vue';
 import CheckoutPage from '@/views/CheckoutPage.vue';
-import AdminProductsPage from '@/views/admin/ProductsPage.vue';
+import AdminProductsPage from '@/views/admin/ProductListPage.vue';
 import AdminChangeAndAddProductPage from '@/views/admin/ChangeAndAddProductPage.vue';
 import ProfilePage from '@/views/ProfilePage.vue';
 import ThanksPage from '@/views/ThanksPage.vue';
-import OrdersPage from '@/views/admin/OrdersPage.vue';
+import OrdersPage from '@/views/admin/OrderListPage.vue';
 import TermsOfService from '@/views/TermsOfServicePage.vue';
 import PrivacyPolicy from '@/views/PrivacyPolicyPage.vue';
 import FAQPage from '@/views/FAQPage.vue';
@@ -29,6 +29,10 @@ const routes = [
     {
         path: '/home',
         redirect: '/products',
+    },
+    {
+        path: '/admin',
+        redirect: '/admin/products', // Перенаправление с /admin на /admin/products
     },
     {
         path: '/products',
@@ -77,17 +81,17 @@ const routes = [
     {
         path: '/terms-of-service',
         name: 'TermsOfService',
-        component: TermsOfService,  // Новый маршрут для страницы условий
+        component: TermsOfService,
     },
     {
         path: '/privacy-policy',
         name: 'PrivacyPolicy',
-        component: PrivacyPolicy,  // Новый маршрут для страницы политики конфиденциальности
+        component: PrivacyPolicy,
     },
     {
         path: '/faq',
         name: 'FAQPage',
-        component: FAQPage, // Указываем компонент для маршрута FAQ
+        component: FAQPage,
     },
     {
         path: '/admin/colors',
