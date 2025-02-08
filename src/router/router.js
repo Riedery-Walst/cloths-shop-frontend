@@ -4,20 +4,20 @@ import { createRouter, createWebHistory } from "vue-router";
 import MainPage from '@/views/MainPage.vue';
 import LoginPage from '@/views/LoginPage.vue';
 import RegistrationPage from '@/views/RegistrationPage.vue';
-import AdminColorsPage from '@/views/admin/ColorsPage.vue';
-import AdminSizesPage from '@/views/admin/SizesPage.vue';
+import AdminColorsPage from '@/views/admin/ColorListPage.vue';
+import AdminSizesPage from '@/views/admin/SizeListPage.vue';
 import AdminAddColorPage from '@/views/admin/AddColorPage.vue';
 import AdminAddSizePage from '@/views/admin/AddSizePage.vue';
 import ProductPage from '@/views/ProductPage.vue';
 import CartPage from '@/views/CartPage.vue';
 import CheckoutPage from '@/views/CheckoutPage.vue';
-import AdminProductsPage from '@/views/admin/ProductsPage.vue';
+import AdminProductsPage from '@/views/admin/ProductListPage.vue';
 import AdminChangeAndAddProductPage from '@/views/admin/ChangeAndAddProductPage.vue';
 import ProfilePage from '@/views/ProfilePage.vue';
 import ThanksPage from '@/views/ThanksPage.vue';
-import OrdersPage from '@/views/admin/OrdersPage.vue';
-import TermsOfService from '@/views/TermsOfServicePage.vue';
-import PrivacyPolicy from '@/views/PrivacyPolicyPage.vue';
+import OrdersPage from '@/views/admin/OrderListPage.vue';
+import TermsOfServicePage from '@/views/TermsOfServicePage.vue';
+import PrivacyPolicyPage from '@/views/PrivacyPolicyPage.vue';
 import FAQPage from '@/views/FAQPage.vue';
 
 // Определяем маршруты
@@ -34,111 +34,119 @@ const routes = [
         path: '/products',
         name: 'ProductsPage',
         component: MainPage,
+        meta: { title: 'Товары' }, 
     },
     {
         path: '/login',
         name: 'LoginPage',
         component: LoginPage,
+        meta: { title: 'Вход' }, 
     },
     {
         path: '/register',
         name: 'RegisterPage',
         component: RegistrationPage,
+        meta: { title: 'Регистрация' },
     },
     {
         path: '/product/:id',
         name: 'ProductPage',
         component: ProductPage,
         props: true,
+        meta: { title: 'Товар' }, 
     },
     {
         path: '/cart',
         name: 'CartPage',
         component: CartPage,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, title: 'Корзина' }, 
     },
     {
         path: '/checkout',
         name: 'CheckoutPage',
         component: CheckoutPage,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, title: 'Оформление заказа' }, 
     },
     {
         path: '/profile',
         name: 'ProfilePage',
         component: ProfilePage,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, title: 'Профиль' }, 
     },
     {
         path: '/thanks',
         name: 'ThanksPage',
         component: ThanksPage,
+        meta: { title: 'Спасибо за заказ' }, 
     },
     {
         path: '/terms-of-service',
-        name: 'TermsOfService',
-        component: TermsOfService,  // Новый маршрут для страницы условий
+        name: 'TermsOfServicePage',
+        component: TermsOfServicePage,
+        meta: { title: 'Условия использования' }, 
     },
     {
         path: '/privacy-policy',
-        name: 'PrivacyPolicy',
-        component: PrivacyPolicy,  // Новый маршрут для страницы политики конфиденциальности
+        name: 'PrivacyPolicyPage',
+        component: PrivacyPolicyPage,
+        meta: { title: 'Политика конфиденциальности' }, 
     },
     {
         path: '/faq',
         name: 'FAQPage',
-        component: FAQPage, // Указываем компонент для маршрута FAQ
+        component: FAQPage,
+        meta: { title: 'Часто задаваемые вопросы' }, 
     },
     {
         path: '/admin/colors',
         name: 'AdminColorsPage',
         component: AdminColorsPage,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Управление цветами' }, 
     },
     {
         path: '/admin/colors/add',
         name: 'AdminAddColorPage',
         component: AdminAddColorPage,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Добавить цвет' }, 
     },
     {
         path: '/admin/sizes',
         name: 'AdminSizesPage',
         component: AdminSizesPage,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Управление размерами' }, 
     },
     {
         path: '/admin/sizes/add',
         name: 'AdminAddSizePage',
         component: AdminAddSizePage,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Добавить размер' }, 
     },
     {
         path: '/admin/products',
         name: 'AdminProductsPage',
         component: AdminProductsPage,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Управление товарами' }, 
     },
     {
         path: '/admin/products/add',
         name: 'AdminAddProductPage',
         component: AdminChangeAndAddProductPage,
         props: { isEdit: false },
-        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Добавить товар' }, 
     },
     {
         path: '/admin/products/edit/:id',
         name: 'AdminEditProductPage',
         component: AdminChangeAndAddProductPage,
         props: route => ({ isEdit: true, productId: parseInt(route.params.id) }),
-        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Редактировать товар' }, 
     },
     {
         path: '/admin/orders',
         name: 'OrdersPage',
         component: OrdersPage,
         props: true,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN' },
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Заказы' }, 
     }
 ];
 
@@ -156,6 +164,10 @@ router.beforeEach((to, from, next) => {
     if (token) {
         role = getRoleFromToken(token);
     }
+
+    // Установка заголовка страницы
+    const pageTitle = to.meta.title || 'ArtShaped';
+    document.title = `${pageTitle} | ArtShaped`;
 
     // Проверяем, нужен ли доступ к защищенному маршруту
     if (to.matched.some(record => record.meta.requiresAuth)) {

@@ -88,7 +88,7 @@ tr {
 }
 
 td {
-  word-wrap: break-word; /* Позволяет словам переноситься, если они не помещаются в ячейке */
+  word-wrap: break-word;
 
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="orders-page container">
+  <div class="list-page container">
     <Sidebar />
     <div>
       <!-- Панель управления пагинацией и выбором количества заказов на странице -->
@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import Sidebar from '@/components/admin/AdminSidebar.vue';
-import OrdersTable from '@/components/admin/OrdersTable.vue';
+import Sidebar from '@/components/admin/Sidebar.vue';
+import OrdersTable from '@/components/admin/OrderTable.vue';
 import { fetchColors, fetchSizes, fetchProductName } from '@/services/productOptionsService'; // Импортируем функции для получения цветов, размеров и продуктов
 import axios from '@axios';
 
@@ -155,7 +155,7 @@ export default {
 </script>
 
 <style scoped>
-.orders-page {
+.list-page {
   display: flex;
 }
 

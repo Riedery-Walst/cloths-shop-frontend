@@ -1,5 +1,5 @@
 <template>
-  <table class="colors-table">
+  <table class="color-table">
     <thead>
     <tr>
       <th>#</th>
@@ -56,28 +56,28 @@ export default {
 </script>
 
 <style scoped>
-.colors-table {
+.color-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
 
-.colors-table th,
-.colors-table td {
+.color-table th,
+.color-table td {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: left;
 }
 
-.colors-table th {
+.color-table th {
   background-color: #f4f4f4;
 }
 
-.colors-table tr:nth-child(even) {
+.color-table tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-.colors-table tr:hover {
+.color-table tr:hover {
   background-color: #f1f1f1;
 }
 </style>

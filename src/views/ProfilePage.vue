@@ -9,7 +9,10 @@
     />
     <div class="profile-actions">
       <button class="delete-button" @click="deleteProfile">Удалить профиль</button>
-      <button class="save-button" @click="updateProfileInfo">Сохранить</button>
+      <div class="right-actions">
+        <button class="logout-button" @click="logout">Выйти</button>
+        <button class="save-button" @click="updateProfileInfo">Сохранить</button>
+      </div>
     </div>
   </div>
 </template>
@@ -83,6 +86,16 @@ export default {
         alert("Не удалось удалить профиль.");
       }
     },
+    async logout() {
+      try {
+        localStorage.removeItem('authToken'); // Очистка токена
+        this.$router.push('/login'); // Перенаправление на страницу входа
+        alert("Вы успешно вышли из аккаунта!");
+      } catch (error) {
+        console.error("Ошибка при выходе из аккаунта:", error);
+        alert("Не удалось выйти из аккаунта.");
+      }
+    },
   },
   async mounted() {
     await this.fetchProfile();
@@ -98,8 +111,13 @@ h1 {
 .profile-actions {
   margin-top: 20px;
   display: flex;
-  justify-content: flex-end; /* Кнопки по правому краю */
-  gap: 10px;
+  justify-content: space-between; /* Распределение пространства между элементами */
+  align-items: center; /* Выравнивание по вертикали */
+}
+
+.right-actions {
+  display: flex;
+  gap: 10px; /* Расстояние между кнопками справа */
 }
 
 .save-button {
@@ -115,6 +133,21 @@ h1 {
 
 .save-button:hover {
   background-color: #E07575;
+}
+
+.logout-button {
+  font-size: 16px;
+  height: 44px;
+  width: 150px;
+  background-color: #656565;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #727272;
 }
 
 .delete-button {

@@ -6,7 +6,6 @@
         :product="product"
         :isAdmin="isAdmin"
         :showActions="showActions"
-        :showImageArrows="showImageArrows"
         @edit-product="editProduct"
         @delete-product="deleteProduct"
     />
@@ -19,7 +18,7 @@ import axios from '@axios';
 
 export default {
   name: 'ProductList',
-  components: { ProductCard },
+  components: {ProductCard},
   props: {
     isAdmin: {
       type: Boolean,
@@ -28,10 +27,6 @@ export default {
     showActions: {
       type: Boolean,
       default: false
-    },
-    showImageArrows: {
-      type: Boolean,
-      default: true
     },
     customClass: {  // Пропс для кастомного класса
       type: String,

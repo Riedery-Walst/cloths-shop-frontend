@@ -1,6 +1,6 @@
 <template>
   <div class="product-card" @click="goToProductPage">
-    <ImageSlider :photos="product.photos" :showArrows="false" />
+    <ImageSlider :photos="product.photos" />
     <h3 class="product-name">{{ product.name }}</h3>
     <p class="price">{{ product.price }} ₽</p>
 

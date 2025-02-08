@@ -64,7 +64,7 @@
 
 <script>
 import axios from '@axios';
-import Sidebar from '@components/admin/AdminSidebar.vue';
+import Sidebar from '@/components/admin/Sidebar.vue';
 
 export default {
   components: {

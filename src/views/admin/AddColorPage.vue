@@ -1,5 +1,5 @@
 <template>
-  <div class="colors-page container">
+  <div class="list-page container">
     <Sidebar />
     <div>
       <Header />
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import Sidebar from '@components/admin/AdminSidebar.vue';
+import Sidebar from '@/components/admin/Sidebar.vue';
 import axios from '@axios';
 
 export default {
@@ -69,7 +69,7 @@ export default {
 </script>
 
 <style scoped>
-.colors-page {
+.list-page {
   display: flex;
 }
 
