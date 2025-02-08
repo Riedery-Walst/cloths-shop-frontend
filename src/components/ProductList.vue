@@ -68,10 +68,8 @@ export default {
   display: grid;
   grid-auto-flow: row;
   grid-template-columns: repeat(4, 1fr);
-  gap: 30px 80px;
+  gap: 100px 80px;
 }
 
-.custom-product-list-gap {
-  gap: 60px;
-}
+
 </style>

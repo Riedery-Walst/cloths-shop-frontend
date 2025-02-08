@@ -17,14 +17,7 @@ export default {
 
 <style scoped>
 /* Общие стили для боковой панели */
-.sidebar {
-  width: 100px;
-  margin-right: 100px;
-  height: 100vh; /* Высота на всю страницу */
-  background-color: #ffffff; /* Темный фон */
-  display: flex;
-  flex-direction: column;
-}
+
 
 /* Стили списка */
 .sidebar ul {
