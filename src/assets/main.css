@@ -2,35 +2,24 @@ body {
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
     margin: 0;
-    padding: 0;
     box-sizing: border-box;
     background-color: white;
 }
 
-/* Хедер растягивается на всю ширину */
 .header {
-    width: 100%; /* Растягиваем хедер на всю ширину экрана */
-    padding: 20px 0; /* Отступы внутри хедера */
+    width: 100%;
+    padding: 20px 0;
     text-align: center;
 }
 
-/* Футер растягивается на всю ширину */
-.footer {
-    background-color: #333;
-    color: white;
-    width: 100%; /* Растягиваем футер на всю ширину экрана */
-    text-align: left;
-}
-
-/* Контейнер для основного контента */
 .main-content {
-    padding: 20px 0; /* Отступы сверху и снизу */
+    padding: 20px 0;
+    min-height: 50vh;
 }
 
-/* Ограничиваем ширину основного контента */
 .container {
-    margin: 0; /* Центрируем контейнер */
-    padding: 0 135px; /* Отступы по бокам для контейнера */
+    margin: 0;
+    padding: 0 135px;
 }
 
 h1 {
@@ -50,34 +39,40 @@ h3 {
 
 .line {
     width: 100%;
-    height: 1px; /* Высота линии */
-    background-color: #000000; /* Цвет линии */
+    height: 1px;
+    background-color: #000000;
 }
+
 .total-price-container {
     height: 24px;
     display: flex;
-    justify-content: space-between; /* Размещает элементы по противоположным сторонам */
+    justify-content: space-between;
     align-items: center;
     margin: 16px 0 16px 0;
 }
+
 .total-price {
     font-size: 16px;
     color: #000000;
 }
+
 .total-price-amount {
     font-size: 16px;
     color: #000000;
 }
+
 .shipping-row {
     display: flex;
-    justify-content: space-between; /* Размещает текст по противоположным сторонам */
+    justify-content: space-between;
     align-items: center;
     margin: 16px 0;
 }
+
 .shipping-text {
     font-size: 16px;
     color: #000000;
 }
+
 .shipping-price {
     font-size: 16px;
     color: black;

@@ -22,7 +22,6 @@ export const fetchSizes = async () => {
 
 export const fetchProductName = async (productId) => {
     try {
-        // Здесь предполагается, что API возвращает данные продукта по ID
         const response = await axios.get(`/products/${productId}/name`);
         return response.data; 
     } catch (error) {

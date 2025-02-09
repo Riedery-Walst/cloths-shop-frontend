@@ -1,15 +1,17 @@
 <script setup>
 import './assets/main.css';
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import AppHeader from "@/components/AppHeader.vue";  // Импорт AppHeader
-import AppFooter from "@/components/AppFooter.vue";  // Импорт AppFooter
+import AppHeader from "@/components/AppHeader.vue";
+import AppFooter from "@/components/AppFooter.vue";
 </script>
 
 <template>
   <div id="app">
-    <AppHeader />  <!-- Добавляем AppHeader вверху -->
+    <AppHeader />
     <Breadcrumbs />
-    <router-view />
-    <AppFooter />  <!-- Добавляем AppFooter внизу -->
+    <main class="main-content">
+      <router-view />
+    </main>
+    <AppFooter />
   </div>
 </template>

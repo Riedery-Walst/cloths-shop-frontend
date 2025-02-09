@@ -19,6 +19,7 @@ import OrdersPage from '@/views/admin/OrderListPage.vue';
 import TermsOfServicePage from '@/views/TermsOfServicePage.vue';
 import PrivacyPolicyPage from '@/views/PrivacyPolicyPage.vue';
 import FAQPage from '@/views/FAQPage.vue';
+import AdminMainPage from '@/views/admin/MainPage.vue'
 
 // Определяем маршруты
 const routes = [
@@ -34,13 +35,13 @@ const routes = [
         path: '/products',
         name: 'ProductsPage',
         component: MainPage,
-        meta: { title: 'Товары' }, 
+        meta: { title: 'Товары' },
     },
     {
         path: '/login',
         name: 'LoginPage',
         component: LoginPage,
-        meta: { title: 'Вход' }, 
+        meta: { title: 'Вход' },
     },
     {
         path: '/register',
@@ -53,100 +54,107 @@ const routes = [
         name: 'ProductPage',
         component: ProductPage,
         props: true,
-        meta: { title: 'Товар' }, 
+        meta: { title: 'Товар' },
     },
     {
         path: '/cart',
         name: 'CartPage',
         component: CartPage,
-        meta: { requiresAuth: true, title: 'Корзина' }, 
+        meta: { requiresAuth: true, title: 'Корзина' },
     },
     {
         path: '/checkout',
         name: 'CheckoutPage',
         component: CheckoutPage,
-        meta: { requiresAuth: true, title: 'Оформление заказа' }, 
+        meta: { requiresAuth: true, title: 'Оформление заказа' },
     },
     {
         path: '/profile',
         name: 'ProfilePage',
         component: ProfilePage,
-        meta: { requiresAuth: true, title: 'Профиль' }, 
+        meta: { requiresAuth: true, title: 'Профиль' },
     },
     {
         path: '/thanks',
         name: 'ThanksPage',
         component: ThanksPage,
-        meta: { title: 'Спасибо за заказ' }, 
+        meta: { title: 'Спасибо за заказ' },
     },
     {
         path: '/terms-of-service',
         name: 'TermsOfServicePage',
         component: TermsOfServicePage,
-        meta: { title: 'Условия использования' }, 
+        meta: { title: 'Условия использования' },
     },
     {
         path: '/privacy-policy',
         name: 'PrivacyPolicyPage',
         component: PrivacyPolicyPage,
-        meta: { title: 'Политика конфиденциальности' }, 
+        meta: { title: 'Политика конфиденциальности' },
     },
     {
         path: '/faq',
         name: 'FAQPage',
         component: FAQPage,
-        meta: { title: 'Часто задаваемые вопросы' }, 
+        meta: { title: 'Часто задаваемые вопросы' },
     },
     {
         path: '/admin/colors',
         name: 'AdminColorsPage',
         component: AdminColorsPage,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Управление цветами' }, 
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Управление цветами' },
     },
     {
         path: '/admin/colors/add',
         name: 'AdminAddColorPage',
         component: AdminAddColorPage,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Добавить цвет' }, 
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Добавить цвет' },
     },
     {
         path: '/admin/sizes',
         name: 'AdminSizesPage',
         component: AdminSizesPage,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Управление размерами' }, 
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Управление размерами' },
     },
     {
         path: '/admin/sizes/add',
         name: 'AdminAddSizePage',
         component: AdminAddSizePage,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Добавить размер' }, 
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Добавить размер' },
     },
     {
         path: '/admin/products',
         name: 'AdminProductsPage',
         component: AdminProductsPage,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Управление товарами' }, 
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Управление товарами' },
     },
     {
         path: '/admin/products/add',
         name: 'AdminAddProductPage',
         component: AdminChangeAndAddProductPage,
         props: { isEdit: false },
-        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Добавить товар' }, 
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Добавить товар' },
     },
     {
         path: '/admin/products/edit/:id',
         name: 'AdminEditProductPage',
         component: AdminChangeAndAddProductPage,
         props: route => ({ isEdit: true, productId: parseInt(route.params.id) }),
-        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Редактировать товар' }, 
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Редактировать товар' },
     },
     {
         path: '/admin/orders',
         name: 'OrdersPage',
         component: OrdersPage,
         props: true,
-        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Заказы' }, 
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Заказы' },
+    },
+    {
+        path: '/admin',
+        name: 'AdminPage',
+        component: AdminMainPage,
+        props: true,
+        meta: { requiresAuth: true, requiredRole: 'ADMIN', title: 'Админ-панель' },
     }
 ];
 
@@ -210,8 +218,8 @@ function decodeToken(token) {
     }
 
     try {
-        const decoded = atob(parts[1]); // Декодируем payload токена
-        return JSON.parse(decoded); // Возвращаем объект данных
+        const decoded = atob(parts[1]);
+        return JSON.parse(decoded);
     } catch (error) {
         throw new Error('Ошибка при декодировании токена: ' + error.message);
     }

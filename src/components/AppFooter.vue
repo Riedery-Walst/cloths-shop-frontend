@@ -47,18 +47,16 @@ export default {
 </script>
 
 <style scoped>
-/* Основной контейнер футера */
 .footer {
-  background-color: #000; /* Черный фон */
+  background-color: #000;
   color: #fff;
-  margin-top: 140px/* Белые буквы */
+  margin-top: 140px;
 }
 
 /* Контейнер для содержимого */
 .footer-content {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
   align-items: flex-start;
   padding: 80px 135px 40px 135px;
 }
@@ -88,20 +86,19 @@ export default {
   display: block;
   color: #fff;
   text-decoration: none;
-  margin-bottom: 16px; /* Отступ 16px между ссылками */
+  margin-bottom: 16px;
 }
 
 .footer-column a:hover {
   color: #E07575;
 }
 
-/* Линия, разделяющая содержимое футера и авторские права */
 .footer-line {
   width: 100%;
   height: 1px; /* Толщина линии */
-  background-color: rgba(255, 255, 255, 0.4); /* Белая линия с 40% прозрачностью */
-  margin: 40px auto 0; /* Отступ сверху и центрирование по горизонтали */
-  opacity: 0.4; /* Прозрачность линии */
+  background-color: rgba(255, 255, 255, 0.4);
+  margin: 40px auto 0;
+  opacity: 0.4;
 }
 
 /* Авторские права */

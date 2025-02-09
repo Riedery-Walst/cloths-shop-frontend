@@ -16,17 +16,13 @@ export default {
 </script>
 
 <style scoped>
-/* Общие стили для боковой панели */
-
-
-/* Стили списка */
 .sidebar ul {
-  list-style: none; /* Убираем маркеры списка */
-  padding: 0; /* Убираем внутренние отступы */
-  margin: 0; /* Убираем внешние отступы */
+  list-style: none;
+  padding: 0 100px 0 0;
+  margin: 0;
   display: flex;
-  flex-direction: column; /* Вертикальный список */
-  gap: 15px; /* Расстояние между элементами */
+  flex-direction: column;
+  gap: 15px;
 }
 
 /* Стили для ссылок */
@@ -34,29 +30,29 @@ export default {
   color: #000000; /* Белый цвет текста */
   text-decoration: none;
   font-size: 16px;
-  transition: background-color 0.3s, color 0.3s; /* Плавный переход для эффекта наведения */
+  transition: background-color 0.3s, color 0.3s;
 }
 
 /* Эффекты при наведении */
 .sidebar-link:hover {
-  color: #E07575; /* Светлый цвет текста */
+  color: #E07575;
 }
 
 /* Стили для активной ссылки */
 .router-link-active {
-  color: #DB4444; /* Белый текст */
-  font-weight: bold; /* Жирный текст для акцента */
+  color: #DB4444;
+  font-weight: bold;
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
   .sidebar {
-    width: 200px; /* Уменьшаем ширину на мобильных */
+    width: 200px;
     padding: 15px;
   }
 
   .sidebar-link {
-    font-size: 14px; /* Уменьшаем размер текста */
+    font-size: 14px;
     padding: 8px 12px;
   }
 }

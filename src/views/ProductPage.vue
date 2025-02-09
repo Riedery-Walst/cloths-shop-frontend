@@ -30,7 +30,7 @@
         <div class="product-options">
           <!-- Цвет -->
           <div class="color-selection" v-if="product.colors && product.colors.length">
-            <h3>Цвет:</h3>
+            <h3>Цвет</h3>
             <ul class="colors">
               <li v-for="color in product.colors" :key="color.id">
                 <input
@@ -54,7 +54,7 @@
 
           <!-- Размер -->
           <div class="size-selection" v-if="product.sizes && product.sizes.length">
-            <h3>Размер:</h3>
+            <h3>Размер</h3>
             <div class="size-options">
               <button
                   v-for="size in product.sizes"
@@ -91,22 +91,22 @@
 </template>
 
 <script>
-import QuantityControl from '@components/QuantityControl.vue'; // Import the QuantityControl component
+import QuantityControl from '@components/QuantityControl.vue';
 import axios from '@axios';
 import { addProductToCart } from '@services/cartService';
 
 export default {
   components: {
-    QuantityControl, // Register the component
+    QuantityControl,
   },
   data() {
     return {
-      product: null, // Информация о продукте будет загружена с сервера
+      product: null,
       selectedColor: null,
       selectedSize: null,
       quantity: 1,
-      buttonClicked: false, // Состояние для отслеживания нажатия на кнопку
-      currentIndex: 0, // Индекс текущего изображения
+      buttonClicked: false,
+      currentIndex: 0,
     };
   },
   methods: {
@@ -238,16 +238,16 @@ h1 {
 }
 
 .description {
-  margin-top: 12px; /* Установите отступ после цены */
-  font-size: 14px;
-  color: #000000;
+  margin-top: 12px;
+  font-size: 18px;
+  color: #545454;
 }
 
 .description-line {
   display: flex;
   width: 100%;
-  height: 1px; /* Толщина линии */
-  background-color: rgba(0, 0, 0);
+  height: 1px;
+  background-color: rgb(0, 0, 0);
 }
 
 .color-selection, .size-selection {
@@ -257,7 +257,7 @@ h1 {
 }
 
 .color-selection h3, .size-selection h3 {
-  font-size: 20px;
+  font-size: 18px;
   margin-right: 24px;
   font-weight: 400;
 }
