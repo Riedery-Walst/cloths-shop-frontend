@@ -25,26 +25,23 @@ export default {
   gap: 15px;
 }
 
-/* Стили для ссылок */
 .sidebar-link {
-  color: #000000; /* Белый цвет текста */
+  color: #000000;
   text-decoration: none;
   font-size: 16px;
   transition: background-color 0.3s, color 0.3s;
 }
 
-/* Эффекты при наведении */
 .sidebar-link:hover {
   color: #E07575;
 }
 
-/* Стили для активной ссылки */
 .router-link-active {
   color: #DB4444;
   font-weight: bold;
 }
 
-/* Адаптивность */
+
 @media (max-width: 768px) {
   .sidebar {
     width: 200px;
