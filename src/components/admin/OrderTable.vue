@@ -6,6 +6,7 @@
       <th>Имя клиента</th>
       <th>Электронная почта</th>
       <th>Телефон</th>
+      <th>Адрес</th>
       <th>Заказанные товары</th>
       <th>Размеры</th>
       <th>Цвета</th>
@@ -21,6 +22,7 @@
       <td>{{ order.user.name }}</td>
       <td>{{ order.user.email }}</td>
       <td>{{ order.user.phone }}</td>
+      <td>{{ order.user.address }}</td>
       <td>{{ order.product }}</td>
       <td>{{ order.size }}</td>
       <td>{{ order.color }}</td>
